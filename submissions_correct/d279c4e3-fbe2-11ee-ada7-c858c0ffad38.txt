@@ -1,0 +1,31 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length == 0)
+            return new int[]{-1, -1};
+        int l = 0, r = nums.length - 1;
+        while(l < r) {
+            int mid = r + l >> 1;
+            if(nums[mid] >= target) 
+                r = mid;        //代表答案在左边且包含mid这个点
+            else
+                l = mid + 1;    //代表答案在右边且不包含mid这个点
+        }
+        int left = l;
+        if(nums[left] != target)    //如果target在数组不存在
+            return new int[]{-1, -1};
+        else {
+            l = 0;
+            r = nums.length - 1;
+            while(l < r) {
+                int mid = r + l + 1 >> 1;   //加1为了防止死循环
+                if(nums[mid] <= target)
+                    l = mid;        //代表答案在右边且包含mid这个点
+                else 
+                    r = mid - 1;    //代表答案在左边且不包含mid这个点
+            }
+            return new int[]{left, r};
+        }
+    }
+}  
+

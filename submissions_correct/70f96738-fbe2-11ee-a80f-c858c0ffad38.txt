@@ -1,0 +1,45 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums:
+            return [-1, -1]
+        left = 0
+        right = len(nums) - 1
+        return self.find_target(nums, target, left, right)
+
+    # 二分查找 
+    def find_target(self, nums: List[int], target: int, left: int, right: int) -> List[int]:
+        if left == right:
+            if nums[left] == target:
+                return [left, right]
+            else:
+                return [-1, -1]
+        elif left > right or left < 0 or right >= len(nums):
+            return [-1, -1]
+        
+        mid = (left + right) >> 1
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] == target:
+            real_left = mid
+            real_right = mid
+            if nums[left] == target: # 区间内最左侧都等于target了
+                real_left = left
+            else: # 在mid左侧找target的区间
+                if mid - 1 >= 0:
+                    r = self.find_target(nums, target, left, mid-1)
+                    if r[0] != -1:
+                        real_left = r[0]
+            if nums[right] == target: # 区间内最右侧都等于target了
+                real_right = right
+            else: # 在mid右侧找target的区间
+                if mid + 1 < len(nums):
+                    r = self.find_target(nums, target, mid+1, right)
+                    if r[1] != -1:
+                        real_right = r[1]
+            return [real_left, real_right]    
+        else:
+            right = mid - 1
+        return self.find_target(nums, target, left, right)
+
+

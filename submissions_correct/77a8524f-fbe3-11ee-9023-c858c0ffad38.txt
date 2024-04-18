@@ -1,0 +1,12 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        import bisect
+        if not nums: return [-1,-1]
+        l, r = bisect.bisect_left(nums, target), bisect.bisect_right(nums, target)-1
+        if l >= len(nums) or nums[l] != target:
+            l = -1
+        if r >= len(nums) or nums[r] != target:
+            r = -1            
+        return [l, r]
+

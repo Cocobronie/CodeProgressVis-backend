@@ -1,0 +1,26 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l=0,r=nums.size()-1;
+        vector<int> num;
+        num.push_back(-1);
+        num.push_back(-1);
+        while(l<=r){
+            if(nums[l]==target){
+                num[0]=l;
+                break;
+            }
+            ++l;
+        }
+        while(l<=r){
+            if(nums[r]==target){
+                num[1]=r;
+                break;
+            }
+            --r;
+        }
+        return num;
+    }
+};
+

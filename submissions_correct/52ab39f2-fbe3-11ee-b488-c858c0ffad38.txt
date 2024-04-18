@@ -1,0 +1,46 @@
+java
+class Solution {
+   /**
+     * 二分法
+     */
+    public int[] searchRange(int[] nums, int target) {
+        int[] ret = {-1, -1};
+        int len = nums.length;
+        int left = 0;
+        int right = len - 1;
+        // 先找到target的所在位置
+        int p = -1;
+        while (left <= right) {
+            int mid = (left + right)/2;
+            if (nums[mid] == target) {
+                p = mid;
+                break;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // 判断是否找到
+        if (p != -1) {
+            // 向前寻找
+            int i = p;
+            int j = p;
+            // 向前寻找
+            for (; i>-1; i--) {
+                if (nums[i] != target)
+                    break;
+            }
+            // 向后
+            for (; j<nums.length; j++) {
+                if (nums[j] != target)
+                    break;
+            }
+            // 赋值
+            ret[0] = i + 1;
+            ret[1] = j - 1;
+        }
+        return ret;
+    }
+}
+

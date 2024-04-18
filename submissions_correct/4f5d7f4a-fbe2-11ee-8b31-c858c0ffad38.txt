@@ -1,0 +1,33 @@
+java
+class Solution {
+    public int binarySearch(int[] nums, int target, boolean lower) {
+        int left=0;
+        int right=nums.length-1;
+        int ans=nums.length;
+        while(left<=right){
+            int mid=(right-left)/2+left;
+            //巧妙使用boolean和||达成条件变更 实现代码复用减少重复代码
+            //lower=true-》；求left
+            //lower=false-》：求right
+            if (nums[mid]>target || (lower && nums[mid]>=target)){
+                right=mid-1;
+                //平时都是求唯一一个等值 所以是如果相等时ans
+                //但这里值不唯一 所以每次都要记录 最后一次ans才为所求值
+                ans=mid;
+            }else{
+                left=mid+1;
+            }
+        }
+        return ans;
+    }
+
+    public int[] searchRange(int[] nums, int target) {
+        int left = binarySearch(nums,target,true);
+        int right = binarySearch(nums,target,false)-1;
+        if(left<=right && right<=nums.length && nums[left]==target && nums[right]==target){
+            return new int[]{left,right};
+        }
+        return new int[]{-1,-1};
+    }
+}
+

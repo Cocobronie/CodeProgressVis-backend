@@ -1,0 +1,51 @@
+c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* searchRange(int* nums, int numsSize, int target, int* returnSize){
+    int left, right, mid;
+    *returnSize = 2;
+    int *res = calloc(2, sizeof(int));
+
+    if (nums == NULL || numsSize == 0) {
+        res[0] = res[1] = -1;
+        return res;
+    }
+
+    //find left
+    left = 0;
+    right = numsSize - 1;
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+        if (nums[mid] >= target) {
+            right = mid - 1;
+        }
+        else {
+            left = mid + 1;
+        }
+    }
+    res[0] = left;
+    if (left < 0 || left >= numsSize || nums[left] != target) {
+        res[0] = -1;
+    }
+
+    //find right
+    left = 0;
+    right = numsSize - 1;
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+        if (nums[mid] <= target) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+    res[1] = left - 1;
+    if (left - 1 < 0 || left - 1 >= numsSize || nums[left - 1] != target) {
+        res[1] = -1;
+    }
+
+    return res;
+}
+

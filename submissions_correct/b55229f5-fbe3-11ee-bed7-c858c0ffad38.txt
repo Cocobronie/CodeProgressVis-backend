@@ -1,0 +1,28 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums==null)
+            return new int[0];
+        
+        int start=0,end=0,num=0;
+        int i;
+        for (i=0;i<nums.length;i++) {
+            while(i<nums.length&&nums[i]==target){
+                num++;
+                i++;
+            }
+            if (num>0){
+                break;
+            }
+
+        }
+        if (num==0){
+            return new int[]{-1,-1};
+        }
+        end=i-1;
+        start=i-num;
+        int [] res={start,end};
+        return res;
+    }
+}
+

@@ -1,0 +1,35 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty()) return vector<int>{-1, -1};
+        int l_p = lower_p(nums, target);
+        int u_p = upper_p(nums, target) - 1;
+        if(l_p == nums.size() || nums[l_p] != target) return vector<int>{-1, -1};
+        return vector<int>{l_p, u_p};
+    }
+    int lower_p(vector<int>& nums, int target)
+    {
+        int l = 0, r = nums.size(), mid;
+        while(l < r)
+        {
+            mid = (l + r) / 2;
+            if(nums[mid] >= target) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+
+    int upper_p(vector<int>& nums, int target)
+    {
+        int l = 0, r = nums.size(), mid;
+        while(l < r)
+        {
+            mid = (l + r) / 2;
+            if(nums[mid] > target) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+};
+

@@ -1,0 +1,73 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        //特殊情况 nums.length == 0, nums.length == 1
+        if(nums.length == 0 || nums == null){
+            return new int[]{-1,-1};
+        }
+        if(nums.length == 1){
+            if(nums[0] == target){
+                return new int[]{0,0};
+            }else{
+                return new int[]{-1,-1};
+            }
+        }
+
+        int left = 0,right = nums.length-1;
+        left = findLeft(nums,target);
+        right = findRight(nums,target);
+        return new int[]{left,right};
+    }
+    //找到左边界
+    private int findLeft(int[] nums,int target){
+        int left = 0,right = nums.length-1;
+        //如果数组中第一项就是target，直接得到左边界为0.
+        if(nums[0] == target){
+            return left;
+        }
+        //二分查找
+        while(left <= right){
+            int mid = left + (right-left)/2;
+            //当nums[mid] == target,需要判断是不是左边界，判断条件为nums[mid-1] == target ？
+            //其实可以不用判断 mid-1 是否越界，因为只有当 mid = 0 时才会越界，但是nums[0] = target的情况已经判断过了
+            if(nums[mid] == target && mid - 1 >= 0 && nums[mid-1] != target){
+                return mid;
+            }
+            if(nums[mid] < target){
+                left = mid + 1;
+                if(left <= right && nums[left] == target){
+                    return left;
+                }
+            }//else的条件不但包含nums[mid] != target,也包含nums[mid] == target但是不是左边界
+            else{
+                right = mid - 1;
+            }
+        }
+        return -1;
+    }
+    //找到右边界
+    //和找右边界同理。
+    private int findRight(int[] nums,int target){
+        int left = 0,right = nums.length-1;
+        if(nums[nums.length-1] == target){
+            return right;
+        }
+        while(left <= right){
+            int mid = left + (right-left)/2;
+            if(nums[mid] == target && mid + 1 < nums.length-1 && nums[mid + 1] != target){
+                return mid;
+            }
+            if(nums[mid] > target){
+                right = mid - 1;
+                if(mid - 1 >= 0 && nums[mid-1] == target){
+                    return right;
+                }
+            }else{
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+    
+}
+

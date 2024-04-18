@@ -1,0 +1,73 @@
+python
+def searchLeft(nums, target):
+            # 左边界需要满足两个条件：
+            # 1. 他的值为target
+            # 2. 他的左边元素小于他，或者他的下标为0
+            left, right = 0, len(nums)-1
+            while left <= right:
+                mid = (right-left)//2 + left
+                if nums[mid] == target:
+                    if mid == 0 or nums[mid-1] < target:
+                        return mid
+                    else:
+                        right = mid - 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            return -1
+
+
+整体思路只是在if nums[mid] == target:时多加了一步判断，如果不是起始位置，那么起始位置一定在mid左侧，所以需要同时修改right = mid - 1.
+
+同样的，右边界的位置需要满足：
+1. 该位置值为target；
+2. 该位置右边的元素小于他，或者该位置的下标为len(nums)-1。
+
+
+也只需要稍微修改一下二分查找的代码就可以，最后完整代码如下：
+
+
+
+
+python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def searchLeft(nums, target):
+            # 左边界需要满足两个条件：
+            # 1. 他的值为target
+            # 2. 他的左边元素小于他，或者他的下标为0
+            left, right = 0, len(nums)-1
+            while left <= right:
+                mid = (right-left)//2 + left
+                if nums[mid] == target:
+                    if mid == 0 or nums[mid-1] < target:
+                        return mid
+                    else:
+                        right = mid - 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            return -1
+        
+        def searchRight(nums, target):
+            # 右边界需要满足两个条件：
+            # 1. 他的值为target
+            # 2. 他的右边元素大于他，或者他的下标为len(nums)-1
+            left, right = 0, len(nums)-1
+            while left <= right:
+                mid = (right-left)//2 + left
+                if nums[mid] == target:
+                    if mid == len(nums)-1 or nums[mid+1] > target:
+                        return mid
+                    else:
+                        left = mid + 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            return -1
+
+        return [searchLeft(nums, target), searchRight(nums, target)]
+

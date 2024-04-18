@@ -1,0 +1,34 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def bainariSachiFirst(nums, target):
+            left, right = 0, len(nums) - 1
+            while left < right:
+                mid = (left + right) // 2
+                if nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid
+            return left
+
+        if not nums:
+            return [-1, -1]
+        x1 = bainariSachiFirst(nums, target)
+        if nums[x1] != target:
+            return [-1, -1]
+        else:
+            x2 = bainariSachiFirst(nums, target + 1)
+            if nums[x2] == target:
+                return [x1, x2]
+            else:
+                return [x1, x2-1]
+        # def bainariSachiLast(nums, target):
+        #     left, right = 0, len(nums) - 1
+        #     while left < right:
+        #         mid = (left + right) // 2
+        #         if nums[mid] <= target:
+        #             left = mid + 1
+        #         else:
+        #             right = mid
+        #     return left
+

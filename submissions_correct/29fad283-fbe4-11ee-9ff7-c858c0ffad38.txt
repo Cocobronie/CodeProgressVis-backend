@@ -1,0 +1,26 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[]{-1,-1};
+        if(nums.length == 0){return result;}
+        int i = 0;
+        int j = nums.length-1;
+        int m = (i+j)/2;
+        while(i <= j){
+            if(nums[m] == target) {
+                i = m;
+                j = m;
+                while(i >= 0 && nums[i] == target){i--;}//左边第一个不等于target的元素或者到达数组左边界
+                while(j < nums.length && nums[j] == target){j++;}//右边第一个不等于target的元素或者到达数组右边界
+                result[0] = i+1;//左边界
+                result[1] = j-1;//右边界
+                break;
+                }
+            else if(nums[m] > target) {j = m-1;}
+            else {i = m+1;}
+            m = (i+j)/2;
+        }
+        return result;
+    }
+}
+

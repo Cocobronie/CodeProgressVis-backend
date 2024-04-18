@@ -1,0 +1,67 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] num2={-1,-1};
+        int len1=nums.length;
+        if(len1==0) return num2;
+        else if(len1==1){
+            if(nums[0]==target){
+                num2[0]=0;
+                num2[1]=0;
+            }
+        }else{
+            int index=-1,index2=0;
+            for (int i = 0; i <len1 ; i++) {
+                if(nums[i] == target && index==-1){
+                    index=i;
+                }else if(nums[i]==target){
+                    index2++;
+                }
+            }
+            num2[0]=index;
+            num2[1]=index+index2;
+        }
+        return num2;
+    }
+}
+
+
+### 运行效率
+![2.png](https://pic.leetcode-cn.com/1620291080-MrdiFG-2.png)
+
+
+### 改进算法
+利用二分查找，耗时较少，但内存消耗较多
+
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] num2={-1,-1};
+        int len1=nums.length;
+        if(len1==0) return num2;
+        else if(len1==1){
+            if(nums[0]==target){
+                num2[0]=0;
+                num2[1]=0;
+            }
+        }else{
+            int left=0;
+            int right=len1-1;
+            while(left<=right){
+                int mid=(left+right)/2;
+                if(nums[mid]>target) right=mid-1;
+                else if(nums[mid]<target) left=mid+1;
+                else{
+                    int index=mid,index2=mid;
+                    while((index-1)>=0&&nums[index-1]==target) index--;
+                    while((index2+1)<len1&&nums[index2+1]==target) index2++;
+                    num2[0]=index;
+                    num2[1]=index2;
+                    break;
+                }
+            }
+        }
+        return num2;
+    }
+}
+

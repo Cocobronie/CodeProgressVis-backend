@@ -1,0 +1,39 @@
+c++
+class Solution {
+public:
+    // upper_bound()
+    int upper_bound(vector<int>& nums,int st,int ed,int tar){
+        // [st,ed)
+        while(st<ed){
+            int mid = st + (ed - st)/2;
+            if(nums[mid]<=tar){
+                st = mid+1;
+            }else{
+                ed = mid;
+            }
+        }
+        return st;
+    }
+    // lower_bound();
+    int lower_bound(vector<int>& nums,int st,int ed,int tar){
+        while(st<ed){
+            int mid = st + (ed - st)/2;
+            if(nums[mid]<tar){
+                st = mid+1;
+            }else{
+                ed = mid;
+            }
+        }
+        return st;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 其实是两种二分查找模式
+        int pst = upper_bound(nums,0,nums.size(),target)-1;
+        int pre = lower_bound(nums,0,nums.size(),target);
+        if(nums.size()==0||pre>=nums.size()||nums[pre]!=target) { //这一步的检查要求必须num 至少有1个元素
+            pre=pst = -1;
+        }
+        return {pre,pst};
+    }
+};
+

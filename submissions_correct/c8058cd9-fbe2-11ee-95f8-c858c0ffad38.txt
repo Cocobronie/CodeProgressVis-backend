@@ -1,0 +1,39 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length;
+        int[] res = {-1, -1};
+        while (left < right) {
+            int mid = (left + right) >>> 1;
+            if (nums[mid] == target) {
+                res = find(nums, mid);
+                return res;
+            }
+            else if (nums[mid] > target) {
+                right = mid;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+
+    }
+
+    private int[] find(int[] nums, int index) {
+        int[] res = new int[2];
+        int left = index;
+        int right = index;
+        while (left >= 0 && nums[left] == nums[index]) {
+            left--;
+        }
+        res[0] = left+1;
+        while (right < nums.length && nums[right] == nums[index]) {
+            right++;
+        }
+        res[1] = right-1;
+        return res;
+    }
+}
+

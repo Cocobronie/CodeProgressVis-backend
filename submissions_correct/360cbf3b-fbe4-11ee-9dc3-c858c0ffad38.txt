@@ -1,0 +1,32 @@
+c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* searchRange(int* nums, int numsSize, int target, int* returnSize){
+    int l = 0;
+    int h = numsSize - 1;
+    *returnSize = 2;
+    int *ret = (int*)malloc(2 * sizeof(int));
+    ret[0] = -1;
+    ret[1] = -1;
+    if (numsSize == 0 || target < nums[l] || target > nums[h]) {
+        return ret;
+    }
+    while (l <= h) {
+        int mid = (l + h) / 2;
+        if (target == nums[mid]) {
+            l = h = mid;
+            while (--l >= 0 && target == nums[l]);
+            while (++h < numsSize && target == nums[h]);
+            ret[0] = l + 1;
+            ret[1] = h - 1;
+            break;
+        } else if (target < nums[mid]) {
+            h = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+    }
+    return ret;
+}
+

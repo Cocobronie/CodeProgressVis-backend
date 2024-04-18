@@ -1,0 +1,31 @@
+
+    List<Integer> list = new ArrayList<>();
+
+    public  void fun(int[] nums, int target, int left, int right) {
+        if (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                list.add(mid);
+                fun(nums, target, left, mid - 1);
+                fun(nums, target, mid + 1, right);
+            } else if (nums[mid] > target) {
+                fun(nums, target, left, mid - 1);
+            } else {
+                fun(nums, target, mid + 1, right);
+            }
+        }
+
+    }
+
+    public  int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) {
+            return new int[]{-1, -1};
+        }
+        fun(nums, target, 0, nums.length - 1);
+        if (list.size() == 0) {
+            return new int[]{-1, -1};
+        }
+        return new int[]{Collections.min(list), Collections.max(list)};
+
+    }
+

@@ -1,0 +1,58 @@
+
+static int search(
+    vector<int>& nums, 
+    int target, 
+    const function<bool(int, int)>& compare) 
+{
+    size_t p1 = 0, p2 = nums.size();
+    while(p1 < p2) {
+        size_t mid = p1 + (p2 - p1) / 2;
+        if (compare(nums[mid], target))
+            p1 = mid + 1;
+        else p2 = mid;
+    }
+    return p1;
+}
+
+
+有序数组区间被两个指针 p1, p2 划分的三个区间以及对应不变特征:
+
+- `[0, p1)` : 所有元素 val 满足 `compare(val, target)`, 称为区间一.
+- `[p1,p2)` : 尚未判断关系的元素, 称为区间二.
+- `[p2,len)`: 所有元素满足 `!compare(val, target)`, 称为区间三.
+
+证明循环前, 不变量成立. 循环前区间一和区间三都是空区间, 显然满足不变量. 区间二为整个数组, 且尚未访问任何元素, 也满足区间二尚未判断关系的元素.
+
+证明循环时, 不变量依然成立. 通过检查区间二 `[p1,p2)` 中间元素与 `target` 的关系, 判断被中间元素划分的区间二的左右两个区间哪个有统一的特征: 左区间元素都满足 `compare(val, target)` 或者右区间元素都满足 `!compare(val, target)`. 被确定的某一区间所有元素与 target 的关系被确定后, 不再符合区间二元素尚未判断关系的定义, 根据其与 target 关系并入相应的区间一或者区间三. 并入完成后, 新的三个区间依然满足各自不变量. 
+
+退出循环时三个区间的状态. 循环条件 `p1 < p2`, 其含义为区间二非空. 那么退出时, 区间二为空, 根据区间二循环不变量的定义, 退出循环时, 我们已经检查了所有元素. 此时, 整个数组被划分为区间一和区间三. 区间三所有元素满足 `!compare(val, target)`. 且指针 p1 等于指针 p2 都指向区间三第一个元素, 即满足 `!compare(val, target)` 的最小元素 (原数组升序). 
+
+根据 lower_bound 和 upper_bound 的定义, 各自对应的 `compare` 函数为 `less<int>()` 和 `less_equal<int>()`. 
+
+完整代码如下:
+
+
+C++
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        auto func = bind(Solution::search, nums, target, placeholders::_1);
+        int lower = func(less<int>()),
+            upper = func(less_equal<int>());
+        if (lower == upper) return {-1,-1};
+        else return {lower, upper - 1};
+    }
+
+private:
+    static int search(vector<int>& nums, int target, const function<bool(int, int)>& compare) {
+        size_t p1 = 0, p2 = nums.size();
+        while(p1 < p2) {
+            size_t mid = p1 + (p2 - p1) / 2;
+            if (compare(nums[mid], target))
+                p1 = mid + 1;
+            else p2 = mid;
+        }
+        return p1;
+    }
+};
+

@@ -1,0 +1,24 @@
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int r=se(nums,target);
+        int l=se(nums,target-1)+1;
+        if(r<0||nums[r]!=target)//没找到或者找到的不是目标
+        return{-1,-1};
+        return {l,r};
+
+
+    }
+    //找到<=target的最后一个位置
+    int se(vector<int>&nums,int t){
+        int l=0,r=nums.size()-1;
+        while(l<=r){
+            int m=(l+r)/2;
+            if(t>=nums[m])l=m+1;
+            else r=m-1;
+        }
+        return r;
+    }
+};
+

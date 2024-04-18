@@ -1,0 +1,37 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length -1;
+        int result = -1;
+
+        while (start <= end){
+            int mid = start + (end - start)/2;    //防止溢位
+            if (nums[mid] > target)
+                end = mid - 1;
+            else if (nums[mid] < target)
+                start = mid + 1;
+            else {
+                result = mid ;
+                break;
+            }
+        }
+
+        int[] searchResult = new int[]{-1,-1};
+        if (result == -1) {
+            return searchResult;
+        }
+        searchResult[0] = result;
+        searchResult[1] = result;
+
+        while (searchResult[0]>= 0 && searchResult[0]-1 >=0 && target == nums[searchResult[0]-1]) {
+            searchResult[0]--;
+        }
+        while (searchResult[1]<= (nums.length -1) && (searchResult[1]+1) < nums.length &&target == nums[searchResult[1]+1]) {
+            searchResult[1]++;
+        }
+
+        return searchResult;
+    }
+}
+

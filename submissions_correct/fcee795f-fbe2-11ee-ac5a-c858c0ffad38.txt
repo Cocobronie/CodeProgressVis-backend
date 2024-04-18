@@ -1,0 +1,27 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+
+        int s = -1 , e = -1 ;
+        int i = 0 , j = nums.size()-1 ;
+        while(i<=j && (s<0 || e<0))
+        {
+            if(s<0)
+            {
+                (nums[i]==target) ? s = i : i++ ;
+            }
+             
+            if(e<0)
+            {
+                (nums[j]==target) ? e = j : j-- ;
+            }
+        }
+
+
+        vector<int> arr = {s ,e} ;
+
+        return arr ;
+    }
+};
+

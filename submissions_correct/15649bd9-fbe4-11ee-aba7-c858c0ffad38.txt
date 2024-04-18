@@ -1,0 +1,22 @@
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector res = {-1,-1};
+        for(int i=0;i<nums.size();i++){
+            if(nums[i] == target){
+                int left = i,right =i;
+                // 找到左边界
+                while(left >= 0 && nums[left] == target) left--;
+                // 找到右边界
+                while(right < nums.size() && nums[right] == target) right++;
+
+                res[0] = left+1;
+                res[1] = right-1;
+                break;
+            }
+        }
+        return res;
+    }
+};
+

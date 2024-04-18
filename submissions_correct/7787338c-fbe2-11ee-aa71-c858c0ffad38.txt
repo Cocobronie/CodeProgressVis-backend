@@ -1,0 +1,46 @@
+golang
+func searchRange(nums []int, target int) []int {
+	res := []int{-1, -1}
+	l, r := 0, len(nums)-1
+	for l < r {
+		mid := (l + r) / 2
+		if nums[mid] < target {
+			l = mid + 1
+		} else {
+			r = mid
+		}
+	}
+	if l != r || target != nums[l] {
+		return res
+	}
+	res[0] = l
+
+	l, r = 0, len(nums)-1
+	for l < r {
+		mid := (l + r + 1) / 2
+		if nums[mid] <= target {
+			l = mid
+		} else {
+			r = mid - 1
+		}
+	}
+	res[1] = l
+	return res
+}
+
+
+
+### 函数
+sort.SearchInts很有意思，找不到返回len，告诉你应该排在哪里。
+
+
+golang
+func searchRange(nums []int, target int) []int {
+	begin := sort.SearchInts(nums, target)
+	end := sort.SearchInts(nums, target+1)
+	if begin == end {
+		return []int{-1, -1}
+	}
+	return []int{begin, end - 1}
+}
+

@@ -1,0 +1,58 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[2];
+        //二分先查找target的位置，找不到直接返回-1，找到了，就将数组切分成两份，左边的找左边界，右边的找又边界，找不到就返回target本身的位置
+        int left = 0;
+        int right = nums.length-1;
+        int targetIndex = findTarget(nums, target, left, right);
+
+        if (targetIndex == -1){
+            return new int[]{-1,-1};
+        }
+
+        //左半端查询左边界，直到不能再左的时候
+        int leftIndex = findTargetInLeft(nums,target,targetIndex-1);
+
+        //右半段查询右边界
+        int rightIndex = findTargetInRight(nums,target,targetIndex+1);
+        return new int[]{leftIndex,rightIndex};
+    }
+
+    private int findTargetInRight(int[] nums, int target, int targetIndex) {
+        int rightIndex = findTarget(nums,target,targetIndex,nums.length-1);
+        if (rightIndex == -1){
+            return targetIndex-1;
+        }
+
+        return findTargetInRight(nums,target,rightIndex+1);
+    }
+
+    private int findTargetInLeft(int[] nums, int target, int targetIndex) {
+        int leftIndex = findTarget(nums,target,0,targetIndex);
+        if (leftIndex == -1){
+            return targetIndex+1;
+        }
+
+        return findTargetInLeft(nums,target,leftIndex-1);
+    }
+
+    private int  findTarget(int[] nums, int target, int left, int right) {
+        while(left <= right){
+            int mid = left + ((right-left) >> 1);
+            if(nums[mid] == target){
+                return mid;
+            }
+
+            if(nums[mid] < target){
+                left = mid + 1;
+                continue;
+            }
+
+            right = mid -1;
+        }
+
+        return -1;
+    }
+}
+

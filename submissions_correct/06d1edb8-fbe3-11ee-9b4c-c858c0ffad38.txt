@@ -1,0 +1,17 @@
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        auto a = nums.begin();
+        auto first = lower_bound(nums.begin(), nums.end(), target);
+        auto second = lower_bound(nums.begin(), nums.end(), target+1);
+        if (first == nums.end() || *first != target) {
+            return {-1, -1};
+        } else {
+            int b = first - a;
+            int c = second - a - 1;
+            return {b, c};
+        }
+    }
+};
+

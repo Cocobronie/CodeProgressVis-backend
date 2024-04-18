@@ -1,0 +1,59 @@
+python
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        N = len(nums)
+        i,j=0,N-1
+        while i<=j:
+            mid=(i+j)/2
+            if target<nums[mid]:
+                j=mid-1
+            elif target>nums[mid]:
+                i=mid+1
+            else:
+                break
+        if i>j:
+            return [-1, -1]
+
+        left,right=0,mid
+        ans_left = -1
+        while True:
+            if right==0 or nums[right]!=nums[right-1]:
+                ans_left = right
+                break
+            right-=1
+            left = 0
+            while left<=right:
+                mid2=(left+right)/2
+                if target<nums[mid2]:
+                    right=mid2-1
+                elif target>nums[mid2]:
+                    left=mid2+1
+                else:
+                    right = mid2
+                    break
+
+        left,right=mid, N-1
+        ans_right = -1
+        while True:
+            if left==N-1 or nums[left]!=nums[left+1]:
+                ans_right = left
+                break
+            left+=1
+            right = N-1
+            while left<=right:
+                mid2=(left+right)/2
+                if target<nums[mid2]:
+                    right=mid2-1
+                elif target>nums[mid2]:
+                    left=mid2+1
+                else:
+                    left = mid2
+                    break
+        return [ans_left, ans_right]
+
+

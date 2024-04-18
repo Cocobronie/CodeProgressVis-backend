@@ -1,0 +1,28 @@
+golang
+func searchRange(nums []int, target int) []int {
+    var left ,right int
+    left,right=-1,-1
+    res:=make([]int,2)
+    res[0]=left
+    res[1]=right
+
+    if len(nums)<1{
+        return res
+    }
+    for left<len(nums)&&right<len(nums){
+        if left>=0&&right>=0{
+            if nums[left]==target&&nums[right]==target{
+                res[0]=left
+                res[1]=right
+                right++
+                continue
+            }else if nums[left]==target&&nums[right]!=target{
+                break
+            }
+        }
+        left++
+        right++
+    }
+    return res
+}
+

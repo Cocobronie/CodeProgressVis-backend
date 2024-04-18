@@ -1,0 +1,50 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length == 0) return new int[]{-1, -1};
+        int left = 0;
+        int right = nums.length - 1;
+        int leftResult = 0;
+        int rightResult = 0;
+        // 找到一个target
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if(nums[left] != target) return new int[]{-1,-1};
+        int tempTarget = left;
+
+        // 找左边界
+        left = 0;
+        right = tempTarget;
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] == target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        leftResult = left;
+
+        // 找右边界
+        left = tempTarget;
+        right = nums.length - 1;
+        while(left < right) {
+            int mid = left + (right - left + 1) / 2;
+            if(nums[mid] == target) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        rightResult = left;
+
+        return new int[]{leftResult, rightResult};
+    }
+}
+

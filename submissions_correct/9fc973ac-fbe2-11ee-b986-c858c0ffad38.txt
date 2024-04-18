@@ -1,0 +1,31 @@
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def bi_search(nums,start,end,target):
+            while start<=end:
+                mid = start + (end - start) // 2
+                if nums[mid]<target:
+                    start = mid + 1
+                elif nums[mid] == target:
+                    return mid
+                else:
+                    end = mid-1
+            return -1
+        n = len(nums)
+        target_index = bi_search(nums,0,n-1,target)
+        res = [target_index,target_index]
+        if target_index<0: return res
+        for i in range(target_index):
+            left_index = bi_search(nums,0,target_index-i,target)
+            if left_index>= 0:
+                res[0] = left_index
+            else:
+                break
+        for i in range(n-target_index):
+            right_index = bi_search(nums,target_index+i,n-1,target)
+            if right_index>=0:
+                res[1] = right_index
+            else:
+                break
+        return res
+

@@ -1,0 +1,53 @@
+
+class Solution {
+public:
+    //两次二分
+    vector<int> searchRange(vector<int>& nums, int target) {
+        //首先判断空集
+        vector<int> ans;
+        if (nums.size()==0){
+            ans.push_back(-1);
+            ans.push_back(-1);
+            return ans;
+        }
+        //第一次二分，求出第一个>=target的元素
+        int left1=0;
+        int right=nums.size();
+        while(left1<right){
+            int mid = left1 +(right-left1)/2;
+            if (nums[mid]>=target){
+                right = mid;
+            }else{
+                left1 = mid+1;
+            }
+        }
+        //求出的left1可以是0～nums.size()
+        //如果求出的left1是num.size()肯定为-1
+        //如果求出的left1位置的元素不是target，表明该集合没有target，直接返回[-1,-1]
+        if(left1==nums.size()||nums[left1]!=target){
+            left1=-1;
+            ans.push_back(-1);
+            ans.push_back(-1);
+            return ans;
+        }
+        
+        //如果left1求出来后,在[0,num.size()-1]的范围内，且num[left1]==target，那么就继续第二次二分求第一个>target的值
+
+        int left2 = 0;
+        right = nums.size();
+        while(left2<right){
+            int mid = left2+(right-left2)/2;
+            if (nums[mid]>target){
+                right = mid;
+            }else{
+                left2 = mid+1;
+            }
+        }
+        //经历过第一个二分没返回[-1,-1],表明target肯定在数组里
+        //所以求出的left2可以是1～nums.size(),这时候left2-1肯定是最后一个=target的值的下标
+        ans.push_back(left1);
+        ans.push_back(left2-1);
+        return ans;
+    }
+};
+

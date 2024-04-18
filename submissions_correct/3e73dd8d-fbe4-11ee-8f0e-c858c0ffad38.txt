@@ -1,0 +1,31 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let left = lowerBound(nums, target), right = upperBound(nums, target);
+    return [left, right]
+};
+
+function lowerBound(arr, k){
+    let left = 0, right = arr.length
+    while(left < right){
+        let mid = (left + right) >> 1
+        if(arr[mid] < k) left = mid + 1;
+        else right = mid;
+    }
+    return  arr[left] == k? left : -1
+}
+
+function upperBound(arr, k){
+    let left = 0, right = arr.length
+    while(left < right){
+        let mid = (left + right) >> 1
+        if(arr[mid] <= k) left = mid + 1;
+        else right = mid;
+    }
+    return arr[left-1]==k ? left-1:-1;
+}
+

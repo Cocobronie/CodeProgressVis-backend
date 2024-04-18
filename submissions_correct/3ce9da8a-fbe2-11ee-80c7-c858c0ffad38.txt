@@ -1,0 +1,24 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    var len = nums.length;
+    var start = 0;
+    var end = len-1;
+    for(var i=0;i<len;i++){
+        if(nums[i]===target&&(i===0||nums[i-1]!==target)){
+            start=i
+        }
+        if(nums[i]===target&&(i===len-1||nums[i+1]!==target)){
+            end = i
+        }
+    }
+    if(nums[start]!==target){
+        return [-1,-1]
+    }
+    return [start,end]
+};
+

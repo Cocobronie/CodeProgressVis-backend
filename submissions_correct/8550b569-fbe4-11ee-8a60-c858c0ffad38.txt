@@ -1,0 +1,47 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty())
+            return {-1, -1};
+        vector<int> res(2, -1);
+
+        int left = 0, right = nums.size();
+        int mid = 0;
+        while(left < right) //先找左边界
+        {
+            mid = left + (right - left)/2;
+            if(nums[mid] == target) //注意，这是与传统二分不同的地方。
+                right = mid;
+            else if(nums[mid] < target)
+                left = mid + 1;
+            else if(nums[mid] > target)
+                right = mid;
+        }
+
+        if(left == nums.size() || nums[left] != target) //结束时left == right，这时要判断为什么结束，即是找到左边界了，还是没找到。
+            return res;
+        res[0] = left;
+
+        left = 0;
+        right = nums.size();
+        while(left < right) //再找右边界
+        {
+            mid = left + (right - left)/2;
+            if(nums[mid] == target) //注意
+                left = mid + 1;
+            else if(nums[mid] < target)
+                left = mid + 1;
+            else if(nums[mid] > target)
+                right = mid;
+        }
+
+        if(right == 0 || nums[left-1] != target) //结束时left == right, 这时要判断为什么结束，是找到右边界了，还是没找到。
+            return res;
+        
+        res[1] = left - 1; //记录left - 1 是因为，如果nums[mid] == target时，left = mid + 1, 即left处是最后一个target的下一个位置。
+
+        return res;
+    }
+};
+

@@ -1,0 +1,14 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int i=0,count=0,right=-1;
+        for(i=0;i<nums.size();i++){
+            if(nums[i]==target){count++;right=i;}
+        }
+        if(right==-1) return{-1,-1};
+        vector<int> res={right-count+1,right};
+        return res;
+    }
+};
+

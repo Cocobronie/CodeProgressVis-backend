@@ -1,0 +1,60 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        // 普通二分查找
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                // 不返回，继续在mid的两侧寻找左边界和右边界
+                // 复用left和right变量，节省内存空间消耗
+                left = leftBound(nums, target, left, mid);
+                right = rightBound(nums, target, mid, right);
+                return new int[] {left, right};
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        // 没有找到返回
+        return new int[] {-1, -1};
+    }
+
+    // 左测边界查找
+    // 这里在searchRange函数中给right传入的参数是mid，
+    // 因此left到right中至少存在一个索引能够满足等于target的条件，所以不存在找不到的情况，进而不用处理
+    public int leftBound(int[] nums, int target, int left, int right) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                right = mid - 1;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+        
+    }
+
+    // 右侧边界查找
+    // 解释同左侧边界查找
+    public int rightBound(int[] nums, int target, int left, int right) {
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                left = mid + 1;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
+    }
+}
+

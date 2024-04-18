@@ -1,0 +1,22 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if nums == []:return [-1,-1]
+        n = len(nums)
+        left,right = 0,n-1
+        mid = (left+right) // 2
+        while nums[mid] != target:    #如果mid不等於target進入迴圈
+            if left == right: return [-1,-1]    #如果左右標已相同還沒找到target, return 沒找到
+            if nums[mid] < target:
+                left += 1
+            else :
+                right = mid
+            mid = (left+right) // 2
+            
+        tStart,tEnd = mid,mid    #設定區間頭尾
+        while tEnd+1 < n and nums[tEnd+1] == target:
+            tEnd +=1
+        while tStart-1 > -1 and nums[tStart-1] == target:
+            tStart -=1
+        return [tStart,tEnd]
+

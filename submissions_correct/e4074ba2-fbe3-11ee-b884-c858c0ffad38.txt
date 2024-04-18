@@ -1,0 +1,56 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] range = new int[]{-1,-1};
+        if(nums == null || nums.length == 0){
+            return range;
+        }else if(nums.length == 1){
+            if(nums[0] == target){
+                range[0] = range[1] = 0;
+            }
+            return range;
+        }
+        int left = 0;
+        int lastIndex = nums.length - 1;
+        int right = lastIndex;
+        int lastlt = -1;
+        int i = 0;
+        int hiti = -1;
+        while(true){
+            i = left + (right - left)/2;
+            int mid = nums[i];
+            if(target == mid){
+                if(range[0] == -1){
+                    if(hiti == -1) hiti = i;
+                    if(i == 0 || nums[i-1] < target){
+                        range[0] = i;
+                        left = hiti + 1;
+                        right = lastlt!=-1?lastlt:lastIndex;
+                    }else{
+                        right = i-1;
+                    }
+                }
+                if(range[0] != -1){
+                    if(i == lastIndex || nums[i+1] > target) {
+                        range[1] = i;
+                        return range;
+                    }else{
+                        left = i + 1;
+                    }
+                }
+            }else{
+                if(target < mid){
+                    lastlt = i - 1;
+                    right = i - 1;
+                }else if(target > mid){
+                    left = i + 1;
+                }
+                if(left > right){
+                    break;
+                }
+            }
+        }
+        return range;
+    }
+}
+

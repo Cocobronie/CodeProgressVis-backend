@@ -1,0 +1,29 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let left = 0,right = nums.length - 1
+    let findNumberList = []
+    while(left<=right){
+        const center = Math.floor((left+right)/2);
+        if(target==nums[center]){
+            let max = min = center;
+            while(target==nums[max]||target==nums[min]){
+                if(target==nums[max])max++
+                if(target==nums[min])min--;
+            }
+          
+           return [++min,--max]
+        }else if(target>nums[center]){
+            left = center+1
+        }else{
+            right = center - 1
+        }
+       
+    }
+    return [-1,-1]
+};
+

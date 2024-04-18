@@ -1,0 +1,34 @@
+[
+        {
+            progress: '家具家电',
+            solutions: 38,
+        },
+        {
+            progress: '粮油副食',
+            solutions: 52,
+        },
+        {
+            progress: '生鲜水果',
+            solutions: 0,
+        },
+        {
+            progress: '美容洗护',
+            solutions: 145,
+        },
+        {
+            progress: '母婴用品',
+            solutions: 48,
+        },
+        {
+            progress: '进口食品',
+            solutions: 38,
+        },
+        {
+            progress: '食品饮料',
+            solutions: 38,
+        },
+        {
+            progress: '家庭清洁',
+            solutions: 38,
+        },
+    ]

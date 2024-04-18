@@ -1,0 +1,26 @@
+cpp
+class Solution {
+public:
+    int BinarySearchLeft(vector<int>& nums, int target) {
+        int l=0,r=nums.size()-1;
+        while(l<=r) {
+            int m = (l+r)>>1;
+            if(nums[m]<target) {
+                l = m+1;
+            } else {
+                r = m-1;
+            }
+        }
+        return l;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int a = BinarySearchLeft(nums,target);
+        int c = BinarySearchLeft(nums,target+1)-BinarySearchLeft(nums,target);
+        int b = a + c - 1;
+        vector<int> res={a,b};
+        if(c==0||nums.size()==0) res={-1,-1};
+        return res;
+
+    }
+};
+

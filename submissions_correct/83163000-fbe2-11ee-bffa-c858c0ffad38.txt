@@ -1,0 +1,40 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        int lhs = 0;
+        int rhs = n - 1;
+        if(n == 0)
+        {
+            return vector<int>{-1, -1};
+        }
+        while(lhs <= rhs)
+        {
+            int mid = (lhs + rhs) / 2;
+            if(nums[mid] == target)
+            {
+                int temp = mid;
+                while(mid > 0 && nums[mid - 1] == target)
+                {
+                    mid--;
+                }
+                while(temp < n - 1 && nums[temp + 1] == target)
+                {
+                    temp++;
+                }
+                return vector<int>{mid, temp};
+            }
+            if(nums[mid] < target)
+            {
+                lhs = mid + 1;
+            }
+            else
+            {
+                rhs = mid - 1;
+            }
+        }
+        return vector<int>{-1, -1};
+    }
+};
+

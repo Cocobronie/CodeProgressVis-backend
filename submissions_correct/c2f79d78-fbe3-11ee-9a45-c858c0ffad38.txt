@@ -1,0 +1,40 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int n = nums.length;
+        int l = 0,r = n-1;
+        int[] res = new int[]{-1,-1};
+        while(l<=r){
+            int mid = (l+r)/2;
+            int p;
+            if(nums[mid]==target){
+                p = mid;
+                while(p>=0&&nums[p]==target){
+                    p--;
+                }
+                res[0]=p+1;
+                p = mid;
+                while(p<n&&nums[p]==target){
+                    p++;
+                }
+                res[1]=p-1;
+                return res;
+            }
+            else if(nums[mid]<target){
+                p = mid;
+                while(p<n&&nums[p]==nums[mid]){
+                    p++;
+                }
+                l = p;
+            }else {
+                p = mid;
+                while(p>=0&&nums[p]==nums[mid]){
+                    p--;
+                }
+                r = p;
+            }
+        }
+        return res;
+    }
+}
+

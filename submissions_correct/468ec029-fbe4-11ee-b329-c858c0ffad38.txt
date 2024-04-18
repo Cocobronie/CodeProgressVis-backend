@@ -1,0 +1,42 @@
+java
+class Solution {
+    int ans=-1;//记录查找到的位置，初始化为-1，应对没有查找到元素的情形
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length==0){
+            return new int[]{-1,-1};
+        }
+        binarySearch(nums,target,0,nums.length-1,true);//查找第一个位置
+        int min=ans;//记录第一个位置
+        ans=-1;
+        binarySearch(nums,target,0,nums.length-1,false);//查找最后一个位置
+        int max=ans;//记录最后一个位置
+        return new int[]{min,max};
+    }
+    public void binarySearch(int [] nums,int target,int left,int right,boolean min){
+        if(left>right){
+            return;
+        }
+        int mid=(left+right)>>1;
+        if(nums[mid]==target){
+            //由于这里初始化时ans==-1,所以在使用Math.min函数时需要判断一下ans是否为-1，如果为-1则用mid直接赋值，否则取mid,ans中较小值
+            //当min==true,ans等于{mid,ans}中的较小值；min==flase,ans等于{mid,ans}中的较大值
+            ans=(min? (ans==-1?mid:Math.min(ans,mid)):Math.max(ans,mid));
+        }
+        //找第一个位置
+        if(min){
+            if(target<=nums[mid]){//优先找左边
+                 binarySearch(nums,target,left,mid-1,min);
+            }else{
+                 binarySearch(nums,target,mid+1,right,min);
+            }
+
+        }else{//找最后一个位置
+            if(target>=nums[mid]){//优先找右边
+                 binarySearch(nums,target,mid+1,right,min);
+            }else{
+                 binarySearch(nums,target,left,mid-1,min);
+            }
+        }
+    }
+}
+

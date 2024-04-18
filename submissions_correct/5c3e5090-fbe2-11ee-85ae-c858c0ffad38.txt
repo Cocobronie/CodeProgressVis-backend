@@ -1,0 +1,42 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = new int[2];
+        int idx = Arrays.binarySearch(nums, target);
+        if (idx < 0) {
+            ans[0] = -1;
+            ans[1] = -1;
+        } else {
+            boolean findStart = false;
+            boolean findEnd = false;
+            int start = idx;
+            int end = idx;
+            while (!findStart || !findEnd) {
+                if (start == 0) {
+                    findStart = true;
+                }
+                if (end == nums.length - 1) {
+                    findEnd = true;
+                }
+                if (!findStart) {
+                    if (nums[start - 1] != target) {
+                        findStart = true;
+                    } else {
+                        start--;
+                    }
+                }
+                if (!findEnd) {
+                    if (nums[end + 1] != target) {
+                        findEnd = true;
+                    } else {
+                        end++;
+                    }
+                }
+            }
+            ans[0] = start;
+            ans[1] = end;
+        }
+        return ans;
+    }
+}
+

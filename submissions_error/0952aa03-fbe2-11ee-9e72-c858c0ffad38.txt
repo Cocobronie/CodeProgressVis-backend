@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        //情况一：数组长度=0
+        if(nums.size()==0){
+            return {-1,-1};
+        }
+        //情况二：target没出现
+        int first = getFirst(nums,target);
+        //cout<<first<<endl;
+        if(first==-1){
+            return {-1,-1};
+        }
+        //情况三：target出现
+        int last = getLast(nums,target);
+        return {first,last};
+    }
+
+    int getFirst(vector<int>& nums, int target) {   //寻找第一个target下标
+        int l=0;
+        int r=nums.size()-1;  //左闭右闭
+        int mid;
+        while(l<r){
+            int mid = l + ((r - l) / 2);
+            if(target>nums[mid]){   //[mid+1,r]
+                l = mid+1;
+            }else if(target<nums[mid]){
+                r = mid;            //[l,mid]
+            }else{                  //[l,mid]
+                r = mid;
+            }
+        }
+        if(nums[l]==target){
+            return l;
+        }else{
+            return -1;
+        }
+    }
+
+     int getLast(vector<int>& nums, int target) {
+        int l=0;
+        int r=nums.size()-1;    //左闭右闭
+        int mid;
+        while(l<r){             //找到第一个大于target数的位置
+            mid=(l+r)/2;          
+            if(target>nums[mid]){           //[mid+1,r]
+                l = mid+1;
+            }else if(target<nums[mid]){     //[l,mid]
+                r = mid;  
+            }else{                          //[mid+1,r]
+                l = mid+1;
+            }
+        }
+        if(nums[l]==target) return l;
+        return l-1;
+    }
+};
+C++
+

@@ -1,0 +1,1 @@
+java class Solution { public int[] searchRange(int[] nums, int target) { int[] res = new int[]{-1,-1}; int n = 0; for (int i = 0;i<nums.length;i++){ if (nums[i] == target){ n++; res[1] = i; } } if (n == 0) return res; else{ res[0] = res[1] - n + 1; return res; } } } 

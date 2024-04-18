@@ -1,0 +1,44 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int l = 0;
+        int r = nums.length-1;
+        if(r==-1 || nums[l] > target || nums[r] < target) return new int[]{-1,-1};
+        int leftB = 0;
+        int rightB = r;
+        while(l < r){
+            int mid = (l+r)/2;
+            if(nums[mid] < target){
+                l = mid + 1;
+            }else{
+                r = mid;
+            }
+        }
+        if(nums[l] == target){
+            leftB = l;
+        }else{
+            return new int[]{-1,-1};
+        }
+        l = 0;
+        r = nums.length-1;
+        while(l<r){
+            int mid;
+            if((l+r)%2 != 0){
+                mid = (l+r)/2+1;
+            }else{
+                mid = (l+r)/2;
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }else{
+                l = mid;
+            }
+        }
+        if(nums[l] == target){
+            rightB = l;
+        }else return new int[]{-1,-1};
+
+        return new int[]{leftB,rightB};
+    }
+}
+

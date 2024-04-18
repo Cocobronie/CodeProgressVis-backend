@@ -1,0 +1,42 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        # binary search twice to find leftBoarder and rightBoarder
+        left=0
+        right=len(nums)-1
+        # first, find leftBoarder
+        while left<=right: # define [a,b] interval
+            mid=(left+right)//2
+            if nums[mid]==target: # target == nums[mid] 时，让 right = mid - 1即可，这样我们就可以继续在 mid 的左区间继续找 5 。
+                right=mid-1
+                # right=mid # wrong, will loop forever
+            elif nums[mid]>target:
+                right=mid-1
+            else: # nums[mid]<target
+                left=mid+1
+        leftBoarder=left
+
+        left=0
+        right=len(nums)-1
+        # then, find rightBoarder
+        while left<=right:
+            mid=(left+right)//2
+            if nums[mid]==target:
+                left=mid+1
+            elif nums[mid]>target:
+                right=mid-1
+            else:
+                left=mid+1
+        rightBoarder=right
+        if leftBoarder>rightBoarder: # //不存在情况
+            return [-1,-1]
+        else:
+            return [leftBoarder,rightBoarder]
+    
+
+
+
+
+
+
+

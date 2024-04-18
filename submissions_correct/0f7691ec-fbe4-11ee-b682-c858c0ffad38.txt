@@ -1,0 +1,9 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if nums.count(target)==0:
+            return[-1,-1]
+        for i in range(len(nums)):
+            if nums[i]==target:
+                return[i,i+(nums.count(target))-1]
+

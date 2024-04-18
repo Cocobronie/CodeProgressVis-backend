@@ -1,0 +1,45 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums == null || nums.length == 0) return new int[]{-1, -1};
+        
+        int first = getFirst(nums, target); //返回下标位置
+        if(nums[first] != target) {  //判断返回坐标的元素是否是目标元素,不是的话直接返回[-1, -1],没有第一个就没有第二个
+            return new int[]{-1, -1};
+        }
+        int second = getSecond(nums, target); //在找到第一个的基础上寻找最后一个位置
+        return new int[]{first, second};
+
+    }
+
+    //找到第一个元素位置
+    public int getFirst(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] >= target) {//找到目标元素,但是它有可能不是第一个目标元素,因此right = mid,继续判断左边
+                right = mid;
+            } else {        //nums[mid] < target 当前下标以及它的左边下标一定不是目标元素所在位置,因此left = mid + 1
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    //寻找第二个目标元素位置
+    public int getSecond(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        while(left < right) {
+            int mid = left + (right - left + 1) / 2;
+            if(nums[mid] <= target) {    //找到目标元素,它有可能不是最后一个目标元素位置,因此left = mid;
+                left = mid;
+            } else {                    //如果nums[mid] > target 当前下标以及右边一定不会是目标元素存在位置
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+}
+

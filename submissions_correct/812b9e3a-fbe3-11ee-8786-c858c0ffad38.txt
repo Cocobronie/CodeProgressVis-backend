@@ -1,0 +1,43 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+
+        int[] res = new int[2];
+        res[0] = res[1] = -1;
+        if(nums.length == 0) return res;
+
+        int loc = bSearch(nums,target);
+        int low = loc, high = loc;
+        if(loc == -1){
+            return res;
+        } else {
+            while (high+1 < nums.length && nums[high+1]==target){
+                high++;
+            }
+            while (low-1 >= 0 && nums[low-1]==target){
+                low--;
+            }
+        }
+        res[0] = low;
+        res[1] = high;
+        return res;
+    }
+    public int bSearch(int[] nums, int target){
+        int low = 0;
+        int high = nums.length-1;
+        int mid = (low + high)/2;
+        while (low <= high){
+            if(nums[mid] == target){
+                return mid;
+            }else {
+                if(nums[mid] > target){
+                    high = --mid;
+                }else low = ++mid;
+            }
+            mid = (low+high)/2;
+        }
+        return -1;
+    }
+}
+
+

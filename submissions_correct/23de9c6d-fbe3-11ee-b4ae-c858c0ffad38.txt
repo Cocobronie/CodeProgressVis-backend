@@ -1,0 +1,23 @@
+
+def searchRange(self, nums, target):
+    if not nums:
+        return [-1, -1]
+    left, right = 0, len(nums) - 1
+    start, end = -1, -1
+    while left <= right:
+        if nums[left] == target:
+            start = left
+        elif nums[left] < target:
+            left += 1
+        else:
+            return [-1, -1]
+        if nums[right] == target:
+            end = right
+        elif nums[right] > target:
+            right -= 1
+        else:
+            return [-1, -1]
+        if start != -1 and end != -1:
+            return [start, end]
+    return [-1, -1]
+

@@ -1,0 +1,32 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+const binarySearch = (nums, target, flag) => {
+    let low = 0,
+        high = nums.length - 1,
+        mid, index = nums.length 
+    while (low <= high) {
+        mid = ~~ (low + ((high - low) >> 2))
+        if (nums[mid] > target || (flag && nums[mid] >= target)) {
+            high = mid - 1
+            index = mid
+        }
+        else low = mid + 1
+    }
+    return index
+}
+
+var searchRange = function(nums, target) {
+    let index = [-1, -1]   
+    let lowindex = binarySearch(nums, target, true)   // 找第一个大于等于 target 的元素下标 
+    let highindex = binarySearch(nums, target, false) - 1 // 找第一个大于 target 的元素下标 - 1
+    if (lowindex <= highindex && lowindex >= 0 && highindex < nums.length &&
+    nums[lowindex] === target && nums[highindex] === target) {
+        index = [lowindex, highindex]  // 判断是否存在
+    } 
+    return index
+};
+

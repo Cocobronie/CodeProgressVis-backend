@@ -1,0 +1,43 @@
+cpp
+// 二分查找
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target)
+    {
+        vector<int> res { -1, -1 };
+        // 查找左侧位置
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left++;
+            } else if (nums[mid] > target) {
+                right--;
+            } else {
+                right--;
+            }
+        }
+        if (left >= nums.size() || nums[left] != target)
+            res[0] = -1;
+        else
+            res[0] = left;
+        // 查找右侧位置
+        left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left++;
+            } else if (nums[mid] > target) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+        if (right < 0 || nums[right] != target)
+            res[1] = -1;
+        else
+            res[1] = right;
+        return res;
+    }
+};
+

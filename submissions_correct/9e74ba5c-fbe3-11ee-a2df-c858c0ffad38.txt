@@ -1,0 +1,29 @@
+java
+class Solution {
+    public static final boolean UPPER_BOUND_FLAG = true;
+    public static final boolean LOWER_BOUND_FLAG = false;
+    public int[] searchRange(int[] nums, int target) {
+        int UpperIndex = getBound(nums, target, UPPER_BOUND_FLAG);
+        int LowerIndex = getBound(nums, target, LOWER_BOUND_FLAG);
+        return UpperIndex < LowerIndex ? new int[]{-1, -1} : new int[]{LowerIndex, UpperIndex};
+    }
+    public int getBound(int[] nums, int target, boolean flag) {
+        int LeftIndex = 0, RightIndex = nums.length;
+        while(LeftIndex < RightIndex) {
+            int MidIndex = LeftIndex + (RightIndex - LeftIndex) / 2;
+            if(nums[MidIndex] < target) {
+                LeftIndex = MidIndex + 1;
+            }else if(nums[MidIndex] > target) {
+                RightIndex = MidIndex;
+            }else {
+                if(flag) {
+                    LeftIndex = MidIndex + 1;
+                }else {
+                    RightIndex = MidIndex;
+                }
+            }
+        }
+        return flag ? LeftIndex - 1 : LeftIndex;
+    }
+}
+

@@ -1,0 +1,64 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        //个人理解，应该是二分法
+        //找到第一个目标之后，以现有的left和right，当前的idx为Mid，划分为两个区域
+        //两个区域应该都是闭区间
+        //然后对两个区域分别再进行二分法
+        //左边区域需要找到第一个出现的
+        //左边区域找不到的情况，left = mid + 1，right = mid(这是<=的情况)
+        //右边区域是最后一个出现，所以mid要以floor的形式获得
+        //并且是left = mid(>=的情况)
+
+        int left = 0, right = nums.size() - 1;
+        int idx = -1;
+        vector<int> res(2, -1);
+        if (nums.size() == 1 && target == nums[0])
+            return vector<int>{0, 0};
+
+        while (left <= right)
+        {
+            int mid = left + (right - left)/2;
+            if (nums[mid] == target)
+            {
+                //找到的情况，开始分两个区域二分
+                //左边区域，不断的压缩右边，最终只剩一个值
+                int tmpLeft = left, tmpRight = right;
+                while (tmpLeft < tmpRight)
+                {
+                    int tmpMid = tmpLeft + (tmpRight - tmpLeft) / 2;
+                    if (target <= nums[tmpMid])
+                        tmpRight = tmpMid;
+                    else
+                        tmpLeft= tmpMid + 1;
+                }
+                res[0] = tmpLeft;
+
+
+                //右边
+                tmpLeft = left; 
+                tmpRight = right;
+                while (tmpLeft < tmpRight)
+                {
+                    int tmpMid = tmpLeft + (tmpRight - tmpLeft) / 2 + (tmpRight - tmpLeft) % 2 ;
+                    //printf("%d, %d ,%d\r\n", tmpLeft, tmpRight, tmpMid);
+                    if (nums[tmpMid] <= target)
+                        tmpLeft = tmpMid;
+                    else
+                        tmpRight = tmpMid - 1;
+                }
+                res[1] = tmpLeft;
+                break;
+            }
+            if (nums[mid] < target)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return res;
+
+
+    }
+};
+

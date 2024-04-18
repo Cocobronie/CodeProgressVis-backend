@@ -1,0 +1,12 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let i = nums.indexOf(target);
+    let j = nums.reverse().indexOf(target);
+    return [i, j > -1 ? (nums.length - 1 - j) : -1];
+};
+

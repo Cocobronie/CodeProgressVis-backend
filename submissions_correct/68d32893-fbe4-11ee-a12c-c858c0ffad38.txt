@@ -1,0 +1,35 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+  int[] res = {-1, -1};
+        searchMid(nums,target,res,0,nums.length-1,new int[]{0,1},true,true);
+        // System.out.println(Arrays.toString(res));
+        return res;
+    }
+
+    private void searchMid(int[] nums, int target, int[] res,int st ,int ed,int[] up,boolean lflag,boolean rflag) {
+        int bg = st;
+        int end = ed;
+        while (bg<=end){
+            int mid = bg+(end-bg)/2;
+            if(nums[mid]==target){
+                for (int i = 0; i < up.length; i++) {
+                    res[up[i]]=mid;
+                }
+                // System.out.println(Arrays.toString(res));
+                if(lflag){
+                    searchMid(nums,target,res,bg,mid-1,new int[]{0},lflag,false);
+                }
+                if(rflag){
+                    searchMid(nums,target,res,mid+1,end,new int[]{1},false,rflag);
+                }
+                break;
+            }else if(nums[mid]<target){
+                bg=mid+1;
+            }else {
+                end = mid-1;
+            }
+        }
+    }
+}
+

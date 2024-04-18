@@ -1,0 +1,41 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if (nums.empty()) return {-1, -1};
+        int lower = lower_bound(nums, target);
+        int upper = upper_bound(nums, target) - 1;
+        if (lower == nums.size() || nums[lower] != target)
+            // lower可能超出范围或者值不等于target
+            return {-1, -1};
+        return {lower, upper};
+
+    }
+
+    int lower_bound(vector<int>& nums, int target) {
+        int l = 0, r = nums.size(), mid;
+        // l为第一个不大于t的数
+        while (l < r) {
+            mid = (r+l) >> 1;
+            if (nums[mid] >= target)
+                r = mid;
+            else
+                l = mid+1;
+        }
+        return l;
+    }
+
+    int upper_bound(vector<int>& nums, int target) {
+        int l = 0, r = nums.size(), mid;
+        // l为第一个大于t的数
+        while (l < r) {
+            mid = (r+l) >> 1;
+            if (nums[mid] > target)
+                r = mid;
+            else
+                l = mid+1;
+        }
+        return l;
+    }
+};
+

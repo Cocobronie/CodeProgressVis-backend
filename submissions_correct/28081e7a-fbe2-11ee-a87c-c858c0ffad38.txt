@@ -1,0 +1,454 @@
+Java []
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // 首个target如果存在，一定是首个大于target-1的元素
+        int start = search(nums, target - 1);
+        if(start == nums.length || nums[start] != target){
+            return new int[]{-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到首个大于target的元素，最后一个target一定是其前一位
+        int end = search(nums, target);
+        return new int[]{start, end - 1};
+    }
+
+    /**
+     * @brief 返回首个大于target的元素索引，如果不存在，返回数组长度n
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    private int search(int[] nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.length;
+        // 找到首个大于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] > target){
+                right = mid;    // 找到一个大于target的值，暂存并在左半区间继续查找
+            }else{
+                left = mid + 1; // 没有找到大于target的值，在右半区间继续查找
+            }
+        }
+        return right;
+    }
+}
+
+
+
+Python []
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        返回首个大于target的元素索引，如果不存在，返回数组长度n
+         @param nums: 输入数组
+         @param target: 目标值
+         @return: 目标值索引
+        """
+        def search(target: int) -> int:
+            # 初始二分查找范围为整个数组[0, n)
+            left, right = 0, len(nums)
+            # 找到首个大于target的值
+            while left < right:
+                mid = left + ((right - left) >> 1) # 获取中间值
+                if nums[mid] > target:
+                    right = mid    # 找到一个大于target的值，暂存并在左半区间继续查找
+                else:
+                    left = mid + 1 # 没有找到大于target的值，在右半区间继续查找
+            return right
+
+        # 首个target如果存在，一定是首个大于target-1的元素
+        start = search(target - 1)
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]    # 首个target不存在，即数组中不包含target
+        # 找到首个大于target的元素，最后一个target一定是其前一位
+        end = search(target)
+        return [start, end - 1]
+
+
+
+C++ []
+class Solution {
+private:
+    /**
+     * @brief 返回首个大于target的元素索引，如果不存在，返回数组长度n
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    int search(vector<int>& nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.size();
+        // 找到首个大于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] > target){
+                right = mid;    // 找到一个大于target的值，暂存并在左半区间继续查找
+            }else{
+                left = mid + 1; // 没有找到大于target的值，在右半区间继续查找
+            }
+        }
+        return right;
+    }
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 首个target如果存在，一定是首个大于target-1的元素
+        int start = search(nums, target - 1);
+        if(start == nums.size() || nums[start] != target){
+            return {-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到首个大于target的元素，最后一个target一定是其前一位
+        int end = search(nums, target);
+        return {start, end - 1};
+    }
+};
+
+
+
+## 首个大于等于目标值的搜索策略
+
+![image-20240213224653535.png](https://pic.leetcode.cn/1707839561-fMPwDJ-image-20240213224653535.png)
+
+### 代码
+
+Java []
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // 首个target如果存在，一定是首个大于等于target的元素
+        int start = search(nums, target);
+        if(start == nums.length || nums[start] != target){
+            return new int[]{-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到首个大于等于target+1的元素，最后一个target一定是其前一位
+        int end = search(nums, target + 1);
+        return new int[]{start, end - 1};
+    }
+
+    /**
+     * @brief 返回首个大于等于target的元素索引，如果不存在，返回数组长度n
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    private int search(int[] nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.length;
+        // 找到首个大于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] >= target){
+                right = mid;    // 找到一个大于等于target的值，暂存并在左半区间继续查找
+            }else{
+                left = mid + 1; // 没有找到大于等于target的值，在右半区间继续查找
+            }
+        }
+        return right;
+    }
+}
+
+
+
+
+Python []
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        返回首个大于等于target的元素索引，如果不存在，返回数组长度n
+         @param nums: 输入数组
+         @param target: 目标值
+         @return: 目标值索引
+        """
+        def search(target: int) -> int:
+            # 初始二分查找范围为整个数组[0, n)
+            left, right = 0, len(nums)
+            # 找到首个大于target的值
+            while left < right:
+                mid = left + ((right - left) >> 1) # 获取中间值
+                if nums[mid] >= target:
+                    right = mid    # 找到一个大于等于target的值，暂存并在左半区间继续查找
+                else:
+                    left = mid + 1 # 没有找到大于等于target的值，在右半区间继续查找
+            return right
+
+        # 首个target如果存在，一定是首个大于等于target的元素
+        start = search(target)
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]    # 首个target不存在，即数组中不包含target
+        # 找到首个大于等于target+1的元素，最后一个target一定是其前一位
+        end = search(target + 1)
+        return [start, end - 1]
+
+
+
+C++ []
+class Solution {
+private:
+    /**
+     * @brief 返回首个大于等于target的元素索引，如果不存在，返回数组长度n
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    int search(vector<int>& nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.size();
+        // 找到首个大于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] >= target){
+                right = mid;    // 找到一个大于等于target的值，暂存并在左半区间继续查找
+            }else{
+                left = mid + 1; // 没有找到大于等于target的值，在右半区间继续查找
+            }
+        }
+        return right;
+    }
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 首个target如果存在，一定是首个大于等于target的元素
+        int start = search(nums, target);
+        if(start == nums.size() || nums[start] != target){
+            return {-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到首个大于等于target+1的元素，最后一个target一定是其前一位
+        int end = search(nums, target+1);
+        return {start, end - 1};
+    }
+};
+
+
+
+## 最后小于目标值的搜索策略
+
+![image-20240213234106411.png](https://pic.leetcode.cn/1707839561-XIfzGr-image-20240213234106411.png)
+
+### 代码
+
+Java []
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // 首个target如果存在，一定是最后小于target的元素的后一位
+        int start = search(nums, target) + 1;
+        if(start == nums.length || nums[start] != target){
+            return new int[]{-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到最后小于target+1的元素，即为最后一个target
+        int end = search(nums, target + 1);
+        return new int[]{start, end};
+    }
+
+    /**
+     * 返回最后小于target的元素索引，如果不存在，返回-1
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    private int search(int[] nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.length;
+        // 找到最后小于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] < target){
+                left = mid + 1;  // 找到一个小于target的值，暂存并在右半区间继续查找更大的小于target的值
+            }else{
+                right = mid;    // 没有找到小于target的值，则在左半区间去寻找更小的数
+            }
+        }
+        return left - 1;    // left始终为暂存结果的后一位
+    }
+}
+
+
+
+Python []
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        返回最后小于target的元素索引，如果不存在，返回-1
+         @param nums: 输入数组
+         @param target: 目标值
+         @return: 目标值索引
+        """
+        def search(target: int) -> int:
+            # 初始二分查找范围为整个数组[0, n)
+            left, right = 0, len(nums)
+            # 找到最后小于target的值
+            while left < right:
+                mid = left + ((right - left) >> 1)
+                if nums[mid] < target:
+                    left = mid + 1  # 找到一个小于target的值，暂存并在右半区间继续查找更大的小于target的值
+                else:
+                    right = mid    # 没有找到小于target的值，则在左半区间去寻找更小的数
+            
+            return left - 1    # left始终为暂存结果的后一位
+
+        # 首个target如果存在，一定是最后小于target的元素的后一位
+        start = search(target) + 1
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]    # 首个target不存在，即数组中不包含target
+        # 找到最后小于target+1的元素，即为最后一个target
+        end = search(target + 1)
+        return [start, end]
+
+
+
+C++ []
+class Solution {
+private:
+    /**
+     * @brief 返回最后小于target的元素索引，如果不存在，返回-1
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    int search(vector<int>& nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.size();
+        // 找到最后小于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] < target){
+                left = mid + 1;  // 找到一个小于target的值，暂存并在右半区间继续查找更大的小于target的值
+            }else{
+                right = mid;    // 没有找到小于target的值，则在左半区间去寻找更小的数
+            }
+        }
+        return left - 1;    // left始终为暂存结果的后一位
+    }
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 首个target如果存在，一定是最后小于target的元素的后一位
+        int start = search(nums, target) + 1;
+        if(start == nums.size() || nums[start] != target){
+            return {-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到最后小于target+1的元素，即为最后一个target
+        int end = search(nums, target + 1);
+        return {start, end};
+    }
+};
+
+
+
+## 最后小于等于目标值的搜索策略
+
+![image-20240213234318336.png](https://pic.leetcode.cn/1707839561-KagWTX-image-20240213234318336.png)
+
+### 代码
+
+Java []
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // 首个target如果存在，一定是最后小于等于target-1的元素的后一位
+        int start = search(nums, target - 1) + 1;
+        if(start == nums.length || nums[start] != target){
+            return new int[]{-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到最后小于target的元素，即为最后一个target
+        int end = search(nums, target);
+        return new int[]{start, end};
+    }
+
+    /**
+     * 返回最后小于等于target的元素索引，如果不存在，返回-1
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    private int search(int[] nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.length;
+        // 找到最后小于等于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] <= target){
+                left = mid + 1;  // 找到一个小于等于target的值，暂存并在右半区间继续查找更大的小于target的值
+            }else{
+                right = mid;    // 没有找到小于等于target的值，则在左半区间去寻找更小的数
+            }
+        }
+        return left - 1;    // left始终为暂存结果的后一位
+    }
+}
+
+
+
+Python []
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        """
+        返回最后小于等于target的元素索引，如果不存在，返回-1
+         @param nums: 输入数组
+         @param target: 目标值
+         @return: 目标值索引
+        """
+        def search(target: int) -> int:
+            # 初始二分查找范围为整个数组[0, n)
+            left, right = 0, len(nums)
+            # 找到最后小于等于target的值
+            while left < right:
+                mid = left + ((right - left) >> 1)
+                if nums[mid] <= target:
+                    left = mid + 1  # 找到一个小于等于target的值，暂存并在右半区间继续查找更大的小于target的值
+                else:
+                    right = mid    # 没有找到小于等于target的值，则在左半区间去寻找更小的数
+            
+            return left - 1    # left始终为暂存结果的后一位
+
+        # 首个target如果存在，一定是最后小于等于target-1的元素的后一位
+        start = search(target - 1) + 1
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]    # 首个target不存在，即数组中不包含target
+        # 找到最后小于等于target的元素，即为最后一个target
+        end = search(target)
+        return [start, end]
+
+
+
+C++ []
+/**
+ * 最后小于等于target的搜索策略
+*/
+class Solution {
+private:
+    /**
+     * @brief 返回最后小于等于target的元素索引，如果不存在，返回-1
+     * @param nums: 输入数组
+     * @param target: 目标值
+     * @return: 目标值索引
+    */
+    int search(vector<int>& nums, int target){
+        // 二分查找区间[left, right)，初始为整个区间
+        int left = 0;   
+        int right = nums.size();
+        // 找到最后小于等于target的值
+        while(left < right){
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] <= target){
+                left = mid + 1;  // 找到一个小于等于target的值，暂存并在右半区间继续查找更大的小于target的值
+            }else{
+                right = mid;    // 没有找到小于等于target的值，则在左半区间去寻找更小的数
+            }
+        }
+        return left - 1;    // left始终为暂存结果的后一位
+    }
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 首个target如果存在，一定是最后小于等于target-1的元素的后一位
+        int start = search(nums, target - 1) + 1;
+        if(start == nums.size() || nums[start] != target){
+            return {-1, -1};    // 首个target不存在，即数组中不包含target
+        }
+        // 找到最后小于等于target的元素，即为最后一个target
+        int end = search(nums, target);
+        return {start, end};
+    }
+};
+

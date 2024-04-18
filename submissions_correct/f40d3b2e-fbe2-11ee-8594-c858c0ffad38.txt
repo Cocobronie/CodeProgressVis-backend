@@ -1,0 +1,39 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let leftPointer = 0
+    let rightPointer = nums.length - 1
+    function findMid(left, right){
+        while (left <= right){
+            let mid = Math.floor( (left + right) / 2 )
+            if ( nums[mid] > target ){
+                right = mid - 1
+            } else if ( nums[mid] < target ){
+                left = mid + 1
+            } else {
+                return mid
+            }
+        }
+        return -1
+    }
+
+    let mid = findMid(leftPointer, rightPointer)
+
+    let midLeft = mid
+    let midRight = mid
+
+    while ( findMid(leftPointer, midLeft - 1) !== -1 ){
+        midLeft = findMid(leftPointer, midLeft - 1)
+    }
+
+    while ( findMid(midRight + 1, rightPointer) !== -1 ){
+        midRight = findMid(midRight + 1, rightPointer)
+    }
+
+    return [midLeft,midRight]
+};
+

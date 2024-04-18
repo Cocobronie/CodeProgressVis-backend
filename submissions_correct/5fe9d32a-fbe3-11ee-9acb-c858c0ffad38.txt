@@ -1,0 +1,95 @@
+java
+class Solution {
+    int L = -1;
+    int R = -1;
+
+    public int[] searchRange(int[] nums, int target) {
+        binarySearch(0, nums.length - 1, target, nums);
+        int[] ret = new int[2];
+        ret[0] = L;
+        ret[1] = R;
+        return ret;
+    }
+
+    private void binarySearch(int left, int right, int target, int[] nums) {
+        if (left > right) return;
+        int mid = left + (right - left) / 2;
+        if (target > nums[mid]) {
+            binarySearch(mid+1, right, target, nums);
+        } else if (target < nums[mid]) {
+            binarySearch(left, mid-1, target, nums);
+        } else {
+            int i = mid;
+            while (i >= 0 && nums[i] == target) {
+                L = i--;
+            }
+            int j = mid;
+            while (j < nums.length && nums[j] == target) {
+                R = j++;
+            }
+        }
+    }
+}
+
+
+
+先寻找目标值，此时数组被分成了两部分，同样以二分的方式寻找左右边界，效率更高
+
+
+class Solution {
+    int L = -1;
+    int R = -1;
+
+
+    public int[] searchRange(int[] nums, int target) {
+        binarySearch(0, nums.length - 1, target, nums);
+        int[] ret = new int[2];
+        ret[0] = L;
+        ret[1] = R;
+
+        return ret;
+    }
+
+    private void binarySearch(int left, int right, int target, int[] nums) {
+        if (left > right) return;
+        int mid = left + (right - left) / 2;
+        if (target > nums[mid]) {
+            binarySearch(mid + 1, right, target, nums);
+        } else if (target < nums[mid]) {
+            binarySearch(left, mid - 1, target, nums);
+        } else {
+            L = binarySearchLeft(left, mid, target, nums);
+            R = binarySearchRight(mid, right, target, nums);
+        }
+    }
+
+    private int binarySearchLeft(int left, int right, int target, int[] nums) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            } 
+        }
+        if (left >= nums.length || nums[left] != target)
+            return -1;
+        return left;
+
+    }
+
+    private int binarySearchRight(int left, int right, int target, int[] nums) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            } 
+        }
+        if (right < 0 || nums[right] != target)
+            return -1;
+        return right;
+    }
+}
+

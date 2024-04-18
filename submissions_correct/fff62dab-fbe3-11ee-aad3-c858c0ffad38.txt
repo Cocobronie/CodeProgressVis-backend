@@ -1,0 +1,59 @@
+java
+class Solution {
+         public int[] searchRange(int[] nums, int target)
+    {
+        //初始值就给-1,找不到直接返回就可以了,不用处理
+        int[] re = {-1, -1};
+        //简单的二分查找
+        int n = erfen(nums, 0, nums.length - 1, target);
+        //如果找得到
+        if (n != -1)
+        {
+            //temp用来获取最先和最后出现的索引
+            int temp = n;
+            int i = n;
+            //先获取最后
+            while (i < nums.length && nums[temp] == nums[i])
+            {
+                temp = i;
+                i++;
+            }
+            re[1] = temp;
+            //再获取最先
+            i = n;
+            temp = n;
+            while (i >= 0 && nums[i] == nums[temp])
+            {
+                temp = i;
+                i--;
+            }
+            re[0] = temp;
+        }
+        //大功告成
+        return re;
+    }
+
+    //简单的二分查找(递归型)
+    public int erfen(int[] nums, int left, int right, int target)
+    {
+        if (nums.length == 0)
+        {
+            return -1;
+        }
+        if (left > right || target < nums[0] || target > nums[nums.length - 1])
+        {
+            return -1;
+        }
+        int mid = (left + right) / 2;
+        if (nums[mid] > target)
+        {
+            return erfen(nums, left, mid - 1, target);
+        }
+        else if (nums[mid] < target)
+        {
+            return erfen(nums, mid + 1, right, target);
+        }
+        return mid;
+    }
+}
+

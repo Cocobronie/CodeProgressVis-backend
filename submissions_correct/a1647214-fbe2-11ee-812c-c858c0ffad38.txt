@@ -1,0 +1,30 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ret = {-1, -1};
+        if (nums.size()==0 || target<nums.front() || target>nums.back()) return ret;
+        size_t lo = 0, hi = nums.size();
+        size_t mi;
+        while (lo < hi) {
+            mi = lo + ((hi - lo) >> 1);
+            if (target < nums[mi]) {
+                hi = mi;
+            }
+            else if (target > nums[mi]) {
+                lo = mi+1;
+            }
+            else {
+                ret[0] = mi;
+                ret[1] = mi;
+                while(ret[0]>=0 && nums[ret[0]]==target) --ret[0];
+                while(ret[1]<nums.size() && nums[ret[1]]==target) ++ret[1];
+                ++ret[0];
+                --ret[1];
+                return ret;
+            }
+        }
+        return ret;
+    }
+};
+

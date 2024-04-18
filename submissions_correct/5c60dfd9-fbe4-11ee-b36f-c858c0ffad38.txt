@@ -1,0 +1,32 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1} ;
+        if(nums == null || nums.length == 0) {
+            return res ;
+        }
+        search(res, nums, 0, nums.length - 1, target) ;
+        return res ;
+    }
+
+    public void search(int[] res, int[] nums, int start, int end, int target) {
+        if(start == end) {
+            if(nums[start] == target) {
+                if(start > res[1]) {
+                    res[1] = start ;
+                }
+                if(res[0] == -1 || start < res[0]) {
+                    res[0] = start ;
+                }
+
+            }
+            return ;
+        }else if(nums[start] > target || nums[end] < target) {
+            return ;
+        }
+        int mid = (end + start) / 2 ;
+        search(res, nums, start, mid, target) ;
+        search(res, nums, mid + 1, end, target) ;
+    }
+}
+

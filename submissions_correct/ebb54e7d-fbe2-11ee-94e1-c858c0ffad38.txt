@@ -1,0 +1,46 @@
+cpp
+class Solution {
+public:
+    int findLeft(vector<int>& nums, int start, int end, int target)
+    {
+        if(start == end) 
+            {if(nums[end] != target)
+                return -1;
+            else
+                return start;}
+        int mid = (start+end) /2;
+        if(nums[mid] < target)           
+            return findLeft(nums, mid+1, end, target);
+        else
+           return findLeft(nums, start, mid, target);
+    }
+    int findRight(vector<int>& nums, int start, int end, int target)
+    {
+        if(start == end) 
+            {if(nums[end] != target)
+                return -1;
+            else
+                return end;}
+        int mid = (start+end)/2 +1;  //mid要加一，否则start永远比end小一，陷入死循环
+        if(nums[mid] > target)
+            return findRight(nums, start, mid-1, target);
+        else
+            return findRight(nums, mid, end, target);
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+            int start = 0, end = nums.size()-1;
+            vector<int> res;
+            if(end < 0) 
+            {
+                res.push_back(-1);
+                res.push_back(-1);
+                return res;
+            }
+            int left = findLeft(nums, start, end, target);
+            int right = findRight(nums, start, end, target);
+            res.push_back(left);
+            res.push_back(right);
+            return res;
+    }
+};
+

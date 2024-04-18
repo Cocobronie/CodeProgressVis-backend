@@ -1,0 +1,76 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int index = binarySearch(nums, target);
+        if (index < 0) {
+            return new int[]{-1, -1};
+        }
+        return new int[]{binarySearchMin(nums, target, index), binarySearchMax(nums, target, index)};
+    }
+
+    int binarySearch(int[] nums, int v) {
+        int low = 0;
+        int high = nums.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            int midVal = nums[mid];
+
+            if (midVal < v) {
+                low = mid + 1;
+            } else if (midVal > v) {
+                high = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+        return -(low + 1);
+    }
+
+    int binarySearchMin(int[] nums, int v, int high) {
+        int low = 0;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            int midVal = nums[mid];
+
+            if (midVal < v) {
+                low = mid + 1;
+            }/* else if (midVal > v) {
+                high = mid - 1;
+            } */ else {
+                if (mid == 0 || nums[mid - 1] < v) {
+                    return mid;
+                }
+                high = mid - 1;
+            }
+        }
+        System.out.println("err1");
+        return -(low + 1);
+    }
+
+    int binarySearchMax(int[] nums, int v, int low) {
+        int high = nums.length - 1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            int midVal = nums[mid];
+
+            /*if (midVal < v) {
+                low = mid + 1;
+            } else */
+            if (midVal > v) {
+                high = mid - 1;
+            } else {
+                if (mid == nums.length - 1 || nums[mid + 1] > v) {
+                    return mid;
+                }
+                low = mid + 1;
+            }
+        }
+        System.out.println("err2");
+        return -(low + 1);
+    }
+}
+
+

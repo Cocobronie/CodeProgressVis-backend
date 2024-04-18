@@ -1,0 +1,19 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+
+        
+        
+       auto iter = equal_range(nums.begin(),nums.end(),target);
+
+        if(iter.first==iter.second)
+        {
+            return {-1,-1};
+        }
+        else
+            return {iter.first-nums.begin(),iter.second-1-nums.begin()};
+        
+    }
+};
+

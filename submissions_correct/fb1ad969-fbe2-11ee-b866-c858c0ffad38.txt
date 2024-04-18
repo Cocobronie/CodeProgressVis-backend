@@ -1,0 +1,44 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        // 典型二分 查找两次
+        if (nums.length == 0) {
+            return new int[]{-1, -1};
+        }
+        int low = findFirstLow(nums, target);
+        int high = findFirstHigh(nums, target);
+        if (low + 1 == nums.length || nums[low + 1] != target) {
+            return new int[]{-1, -1};
+        }
+        return new int[]{low + 1, high - 1};
+    }
+
+    public int findFirstLow(int[] nums, int target) {
+        int i = 0;
+        int j = nums.length - 1;
+        while (i <= j) {
+            int mid = (i + j) / 2;
+            if (nums[mid] >= target) {
+                j = mid - 1;
+            } else {
+                i = mid + 1;
+            }
+        }
+        return j;
+    }
+
+    public int findFirstHigh(int[] nums, int target) {
+        int i = 0;
+        int j = nums.length - 1;
+        while (i <= j) {
+            int mid = (i + j) / 2;
+            if (nums[mid] <= target) {
+                i = mid + 1;
+            } else {
+                j = mid - 1;
+            }
+        }
+        return i;
+    }
+}
+

@@ -1,0 +1,21 @@
+java
+public int[] searchRange(int[] nums, int target) {
+    int index = Arrays.binarySearch(nums, target);
+    if (index < 0) return new int[]{-1, -1};
+    int left = index, right = index;
+    int temp = left;
+    while (temp > 0) {
+        // 左闭右开, 如果不存在返回负的插入索引(从1开始)
+        temp = Arrays.binarySearch(nums, 0, temp, target);
+        if (temp >= 0) left = temp;
+        else break;
+    }
+    temp = right;
+    while (temp < nums.length - 1) {
+        temp = Arrays.binarySearch(nums, temp + 1, nums.length, target);
+        if (temp >= 0) right = temp;
+        else break;
+    }
+    return new int[]{left, right};
+}
+

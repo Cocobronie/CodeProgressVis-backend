@@ -1,0 +1,66 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    const n = nums.length;
+
+    if (n === 0) {
+        return [-1, -1];
+    }
+    if (n === 1) {
+        return nums[0] === target? [0,0] : [-1,-1];
+    }
+
+    const l = findLeft(nums, target);
+    const r = findRight(nums, target);
+
+    return [l, r];
+};
+
+const findLeft = (nums, target) => {
+    let left = 0;
+    let right = nums.length - 1;
+
+    while (left + 1 < right) {
+        const mid = left + (right - left >> 1);
+        if (nums[mid] < target) {
+            left = mid;
+        } else {
+            right = mid;
+        }
+    }
+
+    if (nums[left] === target) {
+        return left;
+    } else if (nums[right] === target) {
+        return right;
+    } else {
+        return -1;
+    }
+}
+
+const findRight = (nums, target) => {
+    let left = 0;
+    let right = nums.length - 1;
+
+    while (left + 1 < right) {
+        const mid = left + (right - left >> 1);
+        if (nums[mid] > target) {
+            right = mid;
+        } else {
+            left = mid;
+        }
+    }
+    
+    if (nums[right] === target) {
+        return right;
+    } else if (nums[left] === target) {
+        return left;
+    } else {
+        return -1;
+    }
+}
+

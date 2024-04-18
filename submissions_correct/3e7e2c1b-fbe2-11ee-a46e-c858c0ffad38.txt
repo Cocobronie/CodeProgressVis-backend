@@ -1,0 +1,15 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums: return [-1, -1]
+        if len(nums) < 2 and target == nums[0]: return [0, 0]
+        res = []
+        for i in range(len(nums)):
+            if nums[i] == target:
+                if len(res) == 2:
+                    res[-1] = i
+                else:
+                    res.append(i)
+        if not res: return [-1, -1]
+        return res+res if len(res) < 2 else res
+

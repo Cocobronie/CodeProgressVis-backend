@@ -1,0 +1,92 @@
+
+类似v.upper_bound(x)          返回第一个大于x的迭代器
+v.lower_bound(x)          返回第一个大于等于x的迭代器
+
+
+所以我们这边完全可以用二分查找来实现
+c++二分查找，我习惯写成左闭右开。
+类似lower的设计思路：**那中值大于等于目标
+如果中值大于等于target，high等于med
+else low=med+1**
+
+值得注意的是：二分查找都会出现特殊情况，left一直到末尾，
+即：
+
+
+if(low==nums.size()||nums[low]!=target)
+{
+    return {-1,-1};
+}
+
+
+
+如果到末尾还没找到，要返回false
+### 代码
+
+
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+if(nums.size()==0)
+{
+    return {-1,-1};
+}
+int up=upper(nums,target)-1;
+int low=lower(nums,target);
+if(low==nums.size()||nums[low]!=target)
+{
+    return {-1,-1};
+}
+return {low,up};
+    }
+    
+
+
+    int upper(vector<int>& nums, int target)
+{
+    int low=0;
+    int high=nums.size();
+    while(low<high){
+int med=(low+high)/2;
+if(target<nums[med])
+{
+high=med;
+}
+else{
+low=med+1;
+}
+    }
+
+
+return low;
+
+
+}
+
+
+
+    int lower(vector<int>& nums, int target)
+{
+int low=0;
+    int high=nums.size();
+    while(low<high){
+int med=(low+high)/2;
+if(target<=nums[med])
+{
+high=med;
+}
+else{
+low=med+1;
+}
+    }
+
+
+return low;
+
+
+}
+
+
+};
+

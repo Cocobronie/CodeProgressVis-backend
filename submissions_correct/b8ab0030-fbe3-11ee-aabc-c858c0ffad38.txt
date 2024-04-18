@@ -1,0 +1,36 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if len(nums) == 0:
+            return [-1,-1]
+        # use the pointer
+        left, right = 0, len(nums)-1
+
+        res = [None,None]
+
+        # find the target both from left and right
+        while left <= right:
+            # print(res)
+            # print('left %d, right %d'%(left,right))
+
+            if nums[left] == target:
+                res[0] = left
+            
+            if nums[right] == target:
+                res[1] = right
+            
+            if nums[left] == target and nums[right] == target:
+                # print('res is now', res)
+                return res
+            elif nums[left] == target :
+                right -= 1
+            elif nums[right] == target:
+                left += 1
+            else:
+                left += 1
+                right -= 1 
+
+        return [-1,-1] 
+
+
+

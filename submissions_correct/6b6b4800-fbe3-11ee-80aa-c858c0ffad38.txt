@@ -1,0 +1,55 @@
+java
+class Solution {
+    // nums = [5,7,7,8,8,10]
+    //         0 1 2 3 4 5
+    public int[] searchRange(int[] nums, int target) {
+        int left = searchLeft(nums, target);
+        if (left == -1) {
+            return new int[]{-1, -1};
+        }
+        int right = searchRight(nums, target);
+
+        return new int[]{left, right};
+    }
+
+    private int searchRight(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = (left + right + 1) >>> 1;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] == target) {
+                // 找右侧边界 ，如果相等，说明左侧一定不是边界
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
+    }
+
+    private int searchLeft(int[] nums, int target) {
+        // 找左边界
+        // 5 7 7 8 8 9 10
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = (left + right) >>> 1;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] == target) {
+                // 如果相等 说明右边一定不会是左边界
+                right = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        if (nums[left] == target) {
+            return left;
+        }
+        return -1;
+    }
+}
+

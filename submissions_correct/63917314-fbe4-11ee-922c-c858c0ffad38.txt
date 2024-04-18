@@ -1,0 +1,77 @@
+cpp
+class Solution {
+public:
+    //二分查找法 O(logn)
+    int GetFirstK(vector<int>&nums,int target,int left,int right)
+    {
+        if(left>right)
+        {
+            return -1;
+        }
+         int midIndex=(left+right)/2;
+         int midData=nums[midIndex];
+         if(midData>target)
+         {
+              return GetFirstK(nums,target,left,midIndex-1);
+         }
+         else if(midData<target)
+         {
+             return GetFirstK(nums,target,midIndex+1,right);
+         }
+         else 
+         {
+             if((midIndex>0&&nums[midIndex-1]!=target)||midIndex==0)
+             {
+                 return midIndex;
+             }
+             else
+             {
+                 return GetFirstK(nums,target,left,midIndex-1);
+             }
+         }
+    }
+    int GetLastK(vector<int>&nums,int target,int left,int right)
+    {
+        if(left>right)
+        {
+            return -1;
+        }
+         int midIndex=(left+right)/2;
+         int midData=nums[midIndex];
+         if (midData>target)
+         {
+              return GetLastK(nums,target,left,midIndex-1);
+         }
+         else if(midData<target)
+         {
+             return GetLastK(nums,target,midIndex+1,right);
+         }
+         else 
+         {
+             if((midIndex<nums.size()-1&&nums[midIndex+1]!=target)||midIndex==nums.size()-1)
+             {
+                 return midIndex;
+             }
+             else
+             {
+                 return GetLastK(nums,target,midIndex+1,right);
+             }
+         }
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int>result(2,-1);
+        if(nums.size()==0)
+        {
+              return result;
+        }
+        else{
+        int a=GetFirstK(nums,target,0,nums.size()-1);
+        int b=GetLastK(nums,target,0,nums.size()-1);
+        result[0]=a;
+        result[1]=b;
+        return result;
+        }
+        
+    }
+};
+

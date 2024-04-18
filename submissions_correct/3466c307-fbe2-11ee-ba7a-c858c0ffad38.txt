@@ -1,0 +1,292 @@
+Python
+if len(nums) == 0 or nums[0] > target or nums[-1] < target:
+    return [-1,-1]
+
+
+
+此例中，target = 8，在 nums[0] ~ nums[n-1] 返回内，下面开始寻找左右边界。
+
+
+
+## 第一步：寻找左边界。
+
+1. 初始化 low 和 high 指针。
+
+![60a47e4e3feef4e02942ee6c5168d92](https://pic.leetcode-cn.com/1644286462-YcdkDo-20220104_163627593_0.jpg)
+
+
+Python
+low, high = 0, len(nums) - 1
+
+
+
+2. low = 0，high = 5，mid = low + (high - low) // 2 = 2：
+
+![c34598f63e0fa4c475f52ddf4018511](https://pic.leetcode-cn.com/1644286462-pANOUk-20220104_163705968_0.jpg)
+
+
+Python
+mid = low + (high - low) // 2
+
+
+
+此时 nums[mid] = 7 < target，所以 low 向右移动至 mid + 1 = 3 处：
+
+![da1f624a9e6cca2f15b74ef1b78fca3](https://pic.leetcode-cn.com/1644286462-IRIeDJ-20220104_163732928_0.jpg)
+
+
+Python
+if nums[mid] < target:
+    low = mid + 1
+
+
+
+3. low = 3，high = 5，mid = low + (high - low) // 2 = 4：
+
+![f9ee99dda7deae219ce4ce6cb76e80f](https://pic.leetcode-cn.com/1644286462-fQJuFA-20220104_163807455_0.jpg)
+
+此时 nums[mid] = 8 == target，所以 high 向左移动至 mid - 1 = 3 处：
+
+![89722e7bd7ee237738e4a9270453f52](https://pic.leetcode-cn.com/1644286462-aVKHwv-20220104_163821959_0.jpg)
+
+
+Python
+if nums[mid] == target:
+    high = mid - 1
+
+
+
+上面的代码是找左边界的精髓所在。
+
+**普通二分查找是，当 nums[mid] == target 时，直接返回 mid，而在本题中，则是要继续向左查找，看是否还有和 target 相等的数组元素**。
+
+
+![9ae51678347f5dc353c598a1f79beaa](https://pic.leetcode-cn.com/1644286462-btFDdD-20220104_163854142_0.jpg)
+
+
+4. low = 3，high = 3，mid = low + (high - low) // 2 = 3：
+
+
+![2ee41f7d63a41a903efd7d8bd859dff](https://pic.leetcode-cn.com/1644323342-BHGrPs-20220104_163924712_0.jpg)
+
+
+
+此时 nums[mid] = 8 == target，所以 high 向左移动至 mid - 1 = 2 处：
+
+![b7a0d9aca6d311b69f2acdeabdbcd4b](https://pic.leetcode-cn.com/1644286462-eRlvzq-20220104_163937658_0.jpg)
+
+此时 low > high，while 循环中止，此时的 nums[low] == target，所以左边界为 low = 3。
+
+![745cf27da00bb182450ad673d637164](https://pic.leetcode-cn.com/1644323342-TXTaDM-20220104_163953385_0.jpg)
+
+
+Python
+if nums[low] == target:
+    return low
+
+
+
+
+
+## 第二步：寻找右边界。
+
+1. 初始化 low 和 high 指针。
+
+![5e4d9a8b57d8079e56548804cf31a12](https://pic.leetcode-cn.com/1644286462-zqXxcy-20220104_164045847_0.jpg)
+
+
+Python
+low, high = 0, len(nums) - 1
+
+
+
+2. low = 0，high = 5，mid = low + (high - low) // 2 = 2：
+
+![67a6aaaab16977b1805b637ebacdb1c](https://pic.leetcode-cn.com/1644286462-ulcKDN-20220104_164129379_0.jpg)
+
+
+Python
+mid = low + (high - low) // 2
+
+
+
+此时 nums[mid] = 7 < target，所以 low 向右移动至 mid + 1 = 3 处：
+
+![0d35f494bf07fa312c67cfbc27133b0](https://pic.leetcode-cn.com/1644286462-omwthp-20220104_164200969_0.jpg)
+
+
+Python
+if nums[mid] < target:
+    low = mid + 1
+
+
+
+3. low = 3，high = 5，mid = low + (high - low) // 2 = 4：
+
+![d30a59a095001dd8b307c0cd871415b](https://pic.leetcode-cn.com/1644286462-ddUJJc-20220104_164237280_0.jpg)
+
+此时 nums[mid] = 8 == target，所以 low 向右移动至 mid + 1 = 4 处：
+
+![c1567266f6b9346c1b025fa3cb0fd29](https://pic.leetcode-cn.com/1644286462-ieOreY-20220104_164253268_0.jpg)
+
+
+Python
+if nums[mid] == target:
+    low = mid + 1
+
+
+
+同样，**上面的代码是找右边界的精髓所在，一直向右找，看是否还有和 target 相等的数组元素**。
+
+4. low = 4，high = 4，mid = low + (high - low) // 2 = 4：
+
+![fe36ae38726d36e2db9571ecdbc609f](https://pic.leetcode-cn.com/1644323342-AxozqY-20220104_164326487_0.jpg)
+
+此时 nums[mid] = 8 == target，所以 low 向右移动至 mid + 1 = 5 处：
+
+![9118e8a738d0014d8d9e0944974b546](https://pic.leetcode-cn.com/1644286462-zvJowl-20220104_164343670_0.jpg)
+
+此时 low > high，while 循环中止，此时的 nums[high] == target，所以右边界为 high = 4。
+
+![439ecd79fdc50082a42f58ce15c4a23](https://pic.leetcode-cn.com/1644323342-zItQrz-20220104_164358253_0.jpg)
+
+
+Python
+if nums[high] == target:
+    return high
+
+
+
+此时左右边界都已找到，至此结束，返回 [3,4]。
+
+![db87757ae4f791c6f1a2429359b1a63](https://pic.leetcode-cn.com/1644323342-glkAhb-20220104_164420520_0.jpg)
+
+本题解使用二分查找，一共执行两次，所以**时间复杂度为 O(logn)**。
+
+除了几个指针外，并无占用其它空间，所以**空间复杂度为 O(1)**。
+
+
+
+# 代码实现
+
+
+
+## Python 代码实现
+
+
+Python
+class Solution:
+
+    # 寻找左边界
+    def leftMargin(self, nums: List[int], target: int):
+
+        low, high = 0, len(nums) - 1
+
+        while low <= high:
+            mid = low + (high - low) // 2
+
+            # 如果 nums[mid] = target，继续向左寻找左边界
+            if nums[mid] == target:
+                high = mid - 1
+            elif nums[mid] > target:
+                high = mid - 1
+            else:
+                low = mid + 1
+        if nums[low] == target:
+            return low
+        # 如果左边界的值不等于 target
+        else:
+            return -1
+
+    # 寻找右边界
+    def rightMargin(self, nums: List[int], target: int):
+
+        low, high = 0, len(nums) - 1
+
+        while low <= high:
+            mid = low + (high - low) // 2
+
+            # 如果 nums[mid] = traget，继续向右寻找右边界
+            if nums[mid] == target:
+                low = mid + 1
+            elif nums[mid] > target:
+                high = mid - 1
+            else:
+                low = mid + 1
+        if nums[high] == target:
+            return high
+        # 如果右边界的值不等于 target
+        else:
+            return -1
+
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+
+        if len(nums) == 0 or nums[0] > target or nums[-1] < target:
+            return [-1,-1]
+
+        lm = self.leftMargin(nums, target)
+        rm = self.rightMargin(nums, target)
+
+        return [lm,rm]
+
+
+
+
+
+## Java 代码实现
+
+
+Java
+class Solution {
+
+    public int leftMargin(int[] nums,int target){
+        int low = 0;
+        int high = nums.length - 1;
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(nums[mid] < target){
+                low = mid + 1;
+            }else if(nums[mid] > target){
+                high = mid - 1;
+            }else if(nums[mid] == target){
+                high = mid - 1;
+            }
+        }
+        if (nums[low] == target) {
+            return low;
+        } else {
+            return -1;
+        }
+    }
+    public int rightMargin(int[] nums,int target){
+        int low = 0;
+        int high = nums.length - 1;
+        int rm = -2;
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(nums[mid] < target){
+                low = mid + 1;
+            }else if(nums[mid] > target){
+                high = mid - 1;
+            }else if(nums[mid] == target){
+                low = mid + 1;
+                rm = low;
+            }
+        }
+        if (nums[high] == target) {
+            return high;
+        } else {
+            return -1;
+        }
+    }
+    
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0 || nums[0] > target || nums[nums.length - 1] < target) {
+            return new int[] {-1,-1};
+        }
+        int lm = leftMargin(nums,target);
+        int rm = rightMargin(nums,target);
+        return new int[] {lm,rm};
+    }
+}
+

@@ -1,0 +1,61 @@
+
+if(nums[mid] == target){
+    return ；
+}
+
+
+
+
+### 代码
+
+
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int n = nums.length;
+        int[] ans = {-1,-1};
+        if(n == 0) return ans;
+        if(n == 1){
+            if(nums[0] == target){
+                ans[0]=0;
+                ans[1]=0;    
+            }
+            return ans;
+        }
+        int l = 0,r = n-1;
+        while(l<=r){
+            int mid = (l+r)/2;
+            if(nums[mid] == target){
+                int l0 = mid,r0=mid;
+                for(l0 = mid;l0>=0;l0--){
+                    if(nums[l0] != target){
+                        ans[0] = l0+1;
+                        break;
+                    }
+                }
+                if(l0<0){
+                    ans[0] = 0;
+                }
+                for(r0 = mid;r0<=n-1;r0++){
+                    if(nums[r0] != target){
+                        ans[1] = r0-1;
+                        break;
+                    }
+                }
+                if(r0>n-1){
+                    ans[1] = n-1;
+                }
+                return ans;//这里如果不return会陷入死循环！！
+            }
+            if(nums[mid] > target){
+                r = mid-1;
+            }
+            if(nums[mid] < target){
+                l = mid+1;
+            }
+        }
+        return ans;
+    }
+    
+}
+

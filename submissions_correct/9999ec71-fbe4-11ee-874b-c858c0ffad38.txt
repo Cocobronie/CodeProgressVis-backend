@@ -1,0 +1,18 @@
+python
+class Solution(object):
+    def searchRange(self, nums, target):
+        long=len(nums)-1
+        if target in nums:
+            a=nums.index(target)
+            b=long-nums[::-1].index(target)
+        else: 
+            a=-1
+            b=-1
+        return(a,b)
+
+        # """
+        # :type nums: List[int]
+        # :type target: int
+        # :rtype: List[int]
+        # """
+

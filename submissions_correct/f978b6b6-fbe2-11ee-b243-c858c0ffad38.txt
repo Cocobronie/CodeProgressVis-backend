@@ -1,0 +1,62 @@
+cpp
+int right_bound(vector<int>&nums,int target){
+        int begin=0;
+        int end=nums.size()-1;
+        while(begin<=end)
+        {
+            int mid=(begin+end)/2;
+            if(nums[mid]==target)
+            {
+                if(mid==nums.size()-1||nums[mid+1]>target)//限制条件，边界写前面，防止越界
+               {
+                   return mid;
+               }
+                 begin=mid+1;//重要一步给忘了【紧随其后调整】
+            }
+           
+            else if(target<nums[mid])
+            {
+                end=mid-1;
+            }
+            else if(target>nums[mid])
+            {
+                begin=mid+1;
+            }
+        }
+        return -1;
+       }
+int left_bound(vector<int>&nums,int target){
+           int begin=0;
+           int end=nums.size()-1;
+           while(begin<=end)
+           {
+               int mid=(begin+end)/2;
+               if(nums[mid]==target)
+               {
+                   if(mid==0||nums[mid-1]<target)                  
+                   {
+                       return mid;
+                   }
+                   end=mid-1;//重要一步
+               }
+               else if(target<nums[mid])
+               {
+                   end=mid-1;
+               }
+               else if(target>nums[mid])
+               {
+                   begin=mid+1;
+               }
+           }
+           return -1;
+       }
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {                 
+       vector<int>result;
+       result.push_back(left_bound(nums,target));
+       result.push_back(right_bound(nums,target));
+       return result;      
+    }
+};
+

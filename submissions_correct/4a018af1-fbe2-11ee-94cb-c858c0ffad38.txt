@@ -1,0 +1,37 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+      if (nums.empty()) {
+        return vector<int> {-1, -1}; 
+      }
+      
+      int left = 0;
+      int right = nums.size() - 1;
+      int count_l, count_r;
+
+      while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+
+          count_l = mid;
+          while (count_l > 0 && nums[count_l] == nums[count_l - 1]) {
+            --count_l;
+          }
+
+          count_r = mid;
+          while (count_r < nums.size() - 1 && nums[count_r] == nums[count_r + 1]) {
+            ++count_r;
+          }
+
+          return vector<int> {count_l, count_r};
+        } else if (nums[mid] < target) {
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      return vector<int> {-1, -1};
+    }
+};
+

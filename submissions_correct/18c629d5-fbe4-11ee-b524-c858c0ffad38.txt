@@ -1,0 +1,73 @@
+java
+class Solution {
+    // 数组从小到大
+    public int bsearch(int[] nums, int left, int right, int target) {
+        if(left > right){
+            return -1;
+        }
+        while (left <= right){
+            int mid = (right + left) / 2;
+            if(nums[mid] == target){
+                return mid;
+            }else if(nums[mid] < target){
+                left = mid + 1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return -1;
+    }
+
+
+    public int bsearchLeft(int[] nums, int left, int right, int target) {
+        if(left > right){
+            return -1;
+        }
+        int lastIndex = -1;
+        int index = -1;
+        while (left <= right){
+           index = bsearch(nums, left, right, target);
+           if(index == -1){
+               break;
+           }
+           lastIndex = index;
+           right = index - 1;
+        }
+        return lastIndex;
+    }
+
+    public int bsearchRight(int[] nums, int left, int right, int target) {
+        if(left > right){
+            return -1;
+        }
+        int lastIndex = -1;
+        int index = -1;
+        while (left <= right){
+            index = bsearch(nums, left, right, target);
+            if(index == -1){
+                break;
+            }
+            lastIndex = index;
+            left = index + 1;
+        }
+        return lastIndex;
+    }
+
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = new int[2];
+        ans[0] = -1;
+        ans[1] = -1;
+        if(nums == null){
+           return ans;
+        }
+        int index = bsearch(nums, 0, nums.length - 1, target);
+        if(index == -1){
+            return ans;
+        }
+        // index 左侧，右侧继续查找最左，最右的
+        ans[0] = bsearchLeft(nums, 0, index, target);
+        ans[1] = bsearchRight(nums, index, nums.length - 1, target);
+        return ans;
+    }
+}
+

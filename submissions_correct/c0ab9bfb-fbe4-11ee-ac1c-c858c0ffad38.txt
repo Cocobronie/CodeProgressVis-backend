@@ -1,0 +1,49 @@
+c++
+vector<int> searchRange(vector<int>& nums, int target) {
+        int i = 0, j = nums.size() - 1;
+        int left = -1;
+        while(i < j) {
+            if(j-i == 1) {
+                if(nums[i] == target) {
+                    left = i;
+                } else if (nums[j] == target) {
+                    left = j;
+                } else {
+                    left = -1;
+                }
+                break;
+            }
+
+            int middle = (i+j) / 2;
+            if(nums[middle] >= target) {
+                j = middle;
+            } else {
+                i = middle;
+            }
+        }
+
+        i = 0, j = nums.size() -1;
+        int right = -1;
+        while(i < j) {
+            if(j - i == 1) {
+                if(nums[j] == target) {
+                    right = j;
+                } else if(nums[i] == target) {
+                    right = i;
+                } else {
+                    right = -1;
+                }
+                break;
+            }
+
+            int middle = (i+j) / 2;
+            if(nums[middle] <= target) {
+                i = middle;
+            } else {
+                j = middle;
+            }
+        }
+
+        return vector<int>{left, right};
+    }
+

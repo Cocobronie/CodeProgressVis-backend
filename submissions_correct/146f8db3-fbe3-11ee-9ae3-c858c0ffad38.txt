@@ -1,0 +1,31 @@
+golang
+func searchRange(nums []int, target int) []int {
+    n:=len(nums)
+    left,right:=0,n-1
+    for left<=right{//找到第一个比target小的数，下标为right
+        mid:=(left+right)/2
+        if(nums[mid]>=target){
+            right=mid-1
+        }else{
+            left=mid+1
+        }
+    }
+    //如果target存在的话，left就是起始下标
+    start:=left
+    left,right=0,n-1
+    for left<=right{//找到第一个比target大的数，下标为left
+        mid:=(left+right)/2
+        if(nums[mid]>target){
+            right=mid-1
+        }else{
+            left=mid+1
+        }
+    }
+    //如果target存在的话，right就是起始下标
+    end:=right
+    if(start>end||nums[end]!=target){//如果target不存在，那么start和end指向的值就不是target，如果只有一个数或0个数，会出现start>end
+        start,end=-1,-1
+    }
+    return []int{start,end}
+}
+

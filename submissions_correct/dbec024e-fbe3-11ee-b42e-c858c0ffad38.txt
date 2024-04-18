@@ -1,0 +1,36 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[]{-1, -1};
+        int binarySearchIndex = binarySearchIndex(nums, target);
+        System.out.println("binarySearchIndex="+binarySearchIndex);
+        if (binarySearchIndex != -1) {
+            int start = binarySearchIndex;
+            int end = binarySearchIndex;
+            while(start > 0 && nums[start] == target) start--;
+            while(end < nums.length - 1 && nums[end] == target) end++;
+            if (nums[start] < target) start++;
+            if (nums[end] > target) end--;
+            result[0] = start;
+            result[1] = end;
+        }
+        return result;
+    }
+
+    private int binarySearchIndex(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (target == nums[mid]) {
+                return mid;
+            } else if (target > nums[mid]) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return -1;
+    }
+}
+

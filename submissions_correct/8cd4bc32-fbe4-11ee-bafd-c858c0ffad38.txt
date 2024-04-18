@@ -1,0 +1,47 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let start = -1;
+    let end = -1;
+    // 提前把数组长度小于等于1的边界处理掉
+    if(nums.length <= 1){
+        if(nums[0] === target){
+            start = end = 0;
+        }
+        return [start, end]
+    }
+    let l = 0;
+    let r = nums.length - 1;
+    // 二分法收缩边界
+    while(l<=r){
+        let mid = (l+r) >>> 1;
+        // 如果中位数就是目标值，那么就直接从中间开始往两边扩散形成区间
+       if(nums[mid] === target){
+            l = r = mid;
+            while(l>=0 && nums[l] === target){
+                l--
+            }
+            while(r < nums.length && nums[r] === target){
+                r++
+            }
+            start = l +1;
+            end = r - 1;
+            break;
+       }
+        // 如果中位数小于目标，则左边设置为中位数后一位
+        if(nums[mid] < target){
+            l = mid+1
+        }
+        // 如果中位数大于目标，则右边设置为中位数前一位
+        if(nums[mid] > target){
+            r = mid-1
+        }
+
+    }
+    return [start, end]
+};
+

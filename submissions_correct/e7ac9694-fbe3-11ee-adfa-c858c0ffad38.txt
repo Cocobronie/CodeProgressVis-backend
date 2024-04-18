@@ -1,0 +1,21 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums: return [-1,-1]
+        l, r = 0, len(nums) - 1
+        if nums[l] > target or nums[r] < target: return [-1,-1]
+        while l <= r:
+            mid = (l + r) // 2
+            if target < nums[mid]: 
+                r = mid - 1
+            elif target > nums[mid]:
+                l = mid + 1
+            else:
+                plus, sub = mid, mid
+                while plus < len(nums) and target == nums[plus]:
+                    plus += 1
+                while sub > -1 and target == nums[sub]:
+                    sub -= 1
+                return [sub + 1,plus - 1]
+        return [-1,-1]
+

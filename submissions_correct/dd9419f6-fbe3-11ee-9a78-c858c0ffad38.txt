@@ -1,0 +1,26 @@
+java
+class Solution {
+    int min = Integer.MAX_VALUE;
+    int max = Integer.MIN_VALUE;
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length==0){
+            return new int[]{-1,-1};
+        }
+        this.find(nums,target,0,nums.length-1);
+        return new int[]{min==Integer.MAX_VALUE?-1:min,max==Integer.MIN_VALUE?-1:max};
+    }
+
+    public void find(int[] nums, int target, int start ,int end){
+        if(start==end){
+            if(nums[start]==target){
+                max = Math.max(max,start);
+                min = Math.min(min,start);
+            }
+            return;
+        }
+        int mid = (start+end)/2;
+        find(nums,target,mid+1,end);
+        find(nums,target,start,mid);
+    }
+}
+

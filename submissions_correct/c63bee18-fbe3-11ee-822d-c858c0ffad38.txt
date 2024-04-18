@@ -1,0 +1,30 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums:
+            return [-1, -1]
+        l, r = 0, len(nums)-1
+        while l < r:
+            mid = (l+r)>>1
+            if target > nums[mid]:
+                l = mid + 1
+            else:
+                r = mid
+        if not nums[l] == target:
+            return [-1, -1]
+        return self.searchBound(nums, l, target)
+        
+    def searchBound(self, arr, tar_ind, target):
+        l = tar_ind
+        r = tar_ind
+        if l > 0:
+            while l > 0 and arr[l] == target:
+                l -= 1
+            l += 1
+        if r < len(arr):
+            while r < len(arr) and arr[r] == target:
+                r += 1
+            r -= 1
+        return [l, r]
+        
+

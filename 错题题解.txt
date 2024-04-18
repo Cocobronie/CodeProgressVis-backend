@@ -1,0 +1,219 @@
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    // 背包容量为 j 时的金币数量
+    if(amount===0)  return 0
+    let dp = new Array(amount+1).fill(0)
+    dp[amount] = -1
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j===coins[i] ||  dp[j-coins[i]]!=0)
+                dp[j] = dp[j-coins[i]]+1
+        }
+    }
+    return dp[amount]
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    // dp[j] = 容量为 j 时的最少的硬币个数
+    // dp[j] = Math.min(dp[j-coins[i]]+1,dp[j])
+    if(amount===0)  return 0
+    coins.sort((a,b)=>a<b?-1:1)
+    let dp = Array(amount+1).fill(0)
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j-coins[i]===0 ||  dp[j-coins[i]]!=0)
+                dp[j] = dp[j-coins[i]]+1
+        }
+    }
+    if(dp[amount]!=0)  return dp[amount]
+    else return -1
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    // dp[j] = 容量为 j 时的最少的硬币个数
+    // dp[j] = Math.min(dp[j-coins[i]]+1,dp[j])
+    if(amount===0)  return 0
+    let res = amount
+    let dp = Array(amount+1).fill(0)
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j-coins[i]===0 ||  dp[j-coins[i]]!=0)
+                dp[j] = dp[j-coins[i]]+1
+        }
+        if(dp[amount]!=0)
+        res = Math.min(dp[amount],res)
+    }
+    if(res!=0)  return res
+    else return -1
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    // dp[j] = 容量为 j 时的最少的硬币个数
+    // dp[j] = Math.min(dp[j-coins[i]]+1,dp[j])
+    if(amount===0)  return 0
+    let res = amount
+    let dp = Array(amount+1).fill(0)
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j-coins[i]===0 ||  dp[j-coins[i]]!=0)
+                dp[j] = dp[j-coins[i]]+1
+        }
+        res = Math.min(dp[amount],res)
+    }
+    if(res!=0)  return res
+    else return -1
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    // dp[j] = 容量为 j 时的最少的硬币个数
+    // dp[j] = Math.min(dp[j-coins[i]]+1,dp[j])
+    if(amount===0)  return 0
+    let dp = Array(amount+1).fill(0)
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j-coins[i]===0 ||  dp[j-coins[i]]!=0)
+                dp[j] = dp[j-coins[i]]+1
+        }
+        console.log(dp)
+    }
+    if(dp[amount]!=0)  return dp[amount]
+    else return -1
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    const INT_MAX = 2e31 - 1
+    let dp = Array(amount + 1).fill(INT_MAX)
+    let res = []
+    dp[0] = 0
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if( dp[j-coins[i]] != INT_MAX) 
+                dp[j] = Math.min(dp[j-coins[i]]+1, dp[j])
+        }
+        res.push([...dp])
+    }
+    console.log(res)
+    return dp[amount]!=INT_MAX?dp[amount]:-1
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    const INT_MAX = 2e31 - 1
+    let dp = Array(amount + 1).fill(INT_MAX)
+    let res = []
+    dp[0] = 0
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if( dp[j-coins[i]] != INT_MAX) 
+                dp[j] = Math.min(dp[j-coins[i]]+1, dp[j])
+        }
+        res.push([...dp])
+    }
+    console.log(res)
+    return dp[amount]
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    const INT_MAX = 2e31 - 1
+    let dp = Array(amount + 1).fill(INT_MAX)
+    let res = []
+    dp[0] = 0
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(j-coins[i] != INT_MAX) 
+                dp[j] = Math.min(dp[j-coins[i]]+1, dp[j])
+        }
+        res.push([...dp])
+    }
+    console.log(res)
+    return dp[amount]
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    let dp = Array(amount + 1).fill(0)
+    let res = []
+    //dp[0] = 1
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(dp[j]===0 && j-coins[i]>=0) dp[j] = dp[j-coins[i]]+1
+            dp[j] = Math.min(dp[j-coins[i]]+1, dp[j])
+        }
+        res.push([...dp])
+    }
+    console.log(res)
+    return dp[amount]
+};
+JavaScript
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    let dp = Array(amount + 1).fill(0)
+    let res = []
+    //dp[0] = 1
+    for(let i=0;i<coins.length;i++){
+        for(let j=coins[i];j<=amount;j++){
+            if(dp[j]===0) dp[j] = dp[j-coins[i]]+1
+            dp[j] = Math.min(dp[j-coins[i]]+1, dp[j])
+        }
+        res.push([...dp])
+    }
+    console.log(res)
+    return dp[amount]
+};
+JavaScript
+

@@ -1,0 +1,37 @@
+java
+class Solution {
+  public int[] searchRange(int[] nums, int target) {
+       
+        return find(nums,0,nums.length-1,target);
+    }
+    public int[] find(int[] nums,int left,int right,int target){
+        if(left>right){
+            return new int[]{-1,-1};
+        }else{
+            int mid = left+(right-left)/2;
+            if(nums[mid] == target){
+                int[] res = new int[2];
+                int curResLeft[] = find(nums,left,mid-1,target);
+                if(curResLeft[0]!=-1 && curResLeft[0] <mid){
+                    res[0] = curResLeft[0];
+                }else{
+                    res[0] = mid;
+                }
+                int[] curResRight = find(nums,mid+1,right,target);
+                if(curResRight[1]!=-1 && curResRight[1]>mid){
+                    res[1] = curResRight[1];
+                }else{
+                    res[1] = mid;
+                }
+                return res;
+            }
+            else if(nums[mid] < target){
+                return find(nums,mid+1,right,target);
+            }
+            else{
+                return find(nums,left,mid-1,target);
+            }
+        }
+    }
+}
+

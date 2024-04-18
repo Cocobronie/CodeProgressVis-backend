@@ -1,0 +1,83 @@
+typescript []
+function searchRange(nums: number[], target: number): number[] {
+    let leftIndex = binarySearch(nums, target);
+    let rightIndex = binarySearch(nums, target, false);
+
+    console.log(leftIndex, rightIndex)
+    if (leftIndex !== -1 && rightIndex !== -1) {
+        return [leftIndex, rightIndex];
+    }
+
+    return [-1, -1]
+};
+
+// -1表示没有找到
+function binarySearch (arr: number[], target: number, isFindLeft = true) {
+    let li = 0;
+    let hi = arr.length - 1;
+    let res = arr.length; // 个位数的时候，res不会变，末尾-1会有问题
+
+    while (li <= hi) { // 会一直比较到最后1~2个数字，mid就是index
+        const mid = li + Math.floor((hi - li) / 2);
+        const midValue = arr[mid];
+
+        if (isFindLeft && target <= midValue || // 找左侧
+            target < midValue) { // 找右侧
+            // Math.floor导致等于时可能会死循环，
+            // 如[0,1],target=0
+            // 用另一个数来记录mid
+            hi = mid - 1;
+            res = mid;
+        } else {
+            li = mid + 1;
+        }
+    }
+
+    let index = isFindLeft ? res : res - 1;
+
+    // 需要判断index是不是符合结果的，可能没有递归
+    return target === arr[index] ? index : -1;
+}
+
+// 对于倒数第二行的解释：
+// =res ：target <= midValue时会有res=mid，target会在hi的位置结束遍历
+// =res - 1：target < midValue时会有res=mid，
+// 即target永远在hi的左侧。所以结束的时候，target就在hi的左边1位
+
+
+
+typescript []
+// 思路二，找左侧区间，找右侧区间，最后合并区间（合并区间的判断麻烦些）
+
+function searchRange(nums: number[], target: number): number[] {
+    return binarySearch(nums, target, 0, nums.length - 1);
+};
+
+function binarySearch (arr: number[], target: number, li: number, hi: number): [number, number] {
+    if (li >= hi) { // 递归结束条件1
+        return arr[hi] === target ? [hi, hi] : [-1, -1];
+    }
+    
+    // 递归条件结束2，两头相等则直接返回结果
+    if (arr[li] === target && arr[hi] === target) {
+        return [li, hi];
+    }
+
+    let mid = li + Math.floor((hi - li) / 2);
+    let midValue = arr[mid];
+
+    let left = target <= midValue // target在左半边才递归
+                ? binarySearch(arr, target, li, mid) 
+                :  [-1, -1]; 
+    let right = target >= arr[mid+1] // 在右半边才递归
+                ? binarySearch(arr, target, mid + 1, hi) 
+                : [-1, -1]; 
+
+    let leftFirst = left[0] === -1 ? right[0] : left[0];
+    let rightFirst = right[0] === -1 ? left[0] : right[0];
+    return [
+        Math.min(leftFirst, rightFirst),
+        Math.max(left[1], right[1])
+    ]
+}
+

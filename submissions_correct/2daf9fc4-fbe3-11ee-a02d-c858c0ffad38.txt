@@ -1,0 +1,50 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[]{-1, -1};
+        if (nums == null || nums.length == 0) {
+            return result;
+        }
+
+        int start = 0, end = nums.length - 1;
+        int mid;
+        while (start < end - 1) {
+            mid = (start + end) >> 1;
+            if (nums[mid] >= target) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+
+        if (nums[start] == target) {
+            result[0] = start;
+        } else if (nums[end] == target) {
+            result[0] = end;
+        }
+
+        if(result[0] == -1) {
+            //没找到target
+            return result;
+        }
+
+        end = nums.length - 1;
+        while (start < end - 1) {
+            mid = (start + end) >> 1;
+            if (nums[mid] > target) {
+                end = mid;
+            } else {
+                start = mid;
+            }
+        }
+
+        if (nums[end] == target) {
+            result[1] = end;
+        } else if (nums[start] == target) {
+            result[1] = start;
+        }
+
+        return result;
+    }
+}
+

@@ -1,0 +1,70 @@
+
+while left <= right:  
+    mid = (left + right) // 2  
+
+
+
+2. **修改后的二分查找以寻找边界**：
+在这段代码中，`binarySearch`函数通过`lower`参数来区分两种搜索场景：
+   - 当`lower=True`时，函数会返回目标值的左侧边界（即第一个等于目标值的元素的索引）。如果目标值不存在于数组中，它将返回可以插入目标值而不破坏排序的第一个位置。
+   - 当`lower=False`时，函数会返回目标值的右侧边界（即最后一个等于目标值的元素的索引的下一个位置）。如果目标值不存在于数组中，它将返回可以插入目标值而不破坏排序的最后一个位置的下一个位置。
+
+
+            if nums[mid] > target or (lower and nums[mid] >= target):  
+                right = mid - 1  
+                ans = mid  
+            else:  
+                left = mid + 1  
+        return ans 
+
+
+
+这是通过调整`if`条件来实现的：当`lower=True`时，如果`nums[mid]`大于或等于目标值，则搜索区间缩小到左半部分；否则，搜索区间缩小到右半部分。这确保了即使存在多个相同的元素，也能找到最左边的那个。
+
+3. **搜索范围**：
+`searchRange`函数首先调用`binarySearch`两次，分别找到目标值的左侧边界和右侧边界。然后，它检查找到的索引是否有效（即左侧边界不大于右侧边界，且右侧边界在数组范围内，且两个边界处的元素都等于目标值）。如果所有条件都满足，则返回这两个索引；否则，返回`[-1, -1]`表示目标值不在数组中。
+
+
+    def searchRange(self, nums, target):  
+        leftIdx = self.binarySearch(nums, target, True)  
+        rightIdx = self.binarySearch(nums, target, False) - 1  
+        if leftIdx <= rightIdx and rightIdx < len(nums) and nums[leftIdx] == target and nums[rightIdx] == target:  
+            return [leftIdx, rightIdx]  
+        return [-1, -1]
+
+
+动图可以看官解[在排序数组中查找元素的第一个和最后一个位置-官方题解](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/504484/zai-pai-xu-shu-zu-zhong-cha-zhao-yuan-su-de-di-3-4/?envType=study-plan-v2&envId=top-100-liked)
+
+# 复杂度
+
+时间复杂度:
+> 同官解 $O(logn)$
+
+空间复杂度:
+> 同官解 $O(1)$
+
+
+
+# Code
+
+Python3 []
+class Solution:
+    def binarySearch(self, nums, target, lower):  
+        left, right = 0, len(nums) - 1  
+        ans = len(nums)  
+        while left <= right:  
+            mid = (left + right) // 2  
+            if nums[mid] > target or (lower and nums[mid] >= target):  
+                right = mid - 1  
+                ans = mid  
+            else:  
+                left = mid + 1  
+        return ans  
+  
+    def searchRange(self, nums, target):  
+        leftIdx = self.binarySearch(nums, target, True)  
+        rightIdx = self.binarySearch(nums, target, False) - 1  
+        if leftIdx <= rightIdx and rightIdx < len(nums) and nums[leftIdx] == target and nums[rightIdx] == target:  
+            return [leftIdx, rightIdx]  
+        return [-1, -1]
+

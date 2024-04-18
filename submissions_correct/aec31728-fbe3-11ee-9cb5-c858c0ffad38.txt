@@ -1,0 +1,85 @@
+python
+class Solution(object):
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """        
+        start=0
+        end=len(nums)-1
+        res=-1
+        while start<=end:
+            mid=(start+end)//2
+            if nums[mid]==target:
+                res=mid
+                break
+            elif nums[mid]>target:
+                end=mid-1
+            else:
+                start=mid+1
+        if res==-1:
+            return[-1,-1]
+        else:
+            head=res
+            tail=res
+            res_list=[head,tail]
+            while True:
+                flag=False
+                if head-1>=0 and (nums[head]==nums[head-1]):
+                    head-=1
+                    res_list[0]=head
+                    flag=True
+                if tail+1<=len(nums)-1 and (nums[tail]==nums[tail+1]):
+                    tail+=1
+                    res_list[1]=tail
+                    flag=True
+                if not flag:
+                    return res_list
+                
+
+
+#以下为官方题解
+
+python
+class Solution(object):
+    def searchRange(self,nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        def left_func(nums,target): #左边第一次出现
+            left = 0
+            right = len(nums)-1
+            while(left<right):
+                mid = (left+right)//2
+                if nums[mid]>target:
+                    right=mid-1
+                elif nums[mid]==target:
+                    right=mid
+                else:
+                    left = mid+1
+            #while循环结束时，right==left
+            return left
+        def right_func(nums,target):  #右边最后一次出现
+            left = 0
+            right = len(nums)-1
+            while(left<right):
+                mid = (left+right+1)//2 #注意点：mid向上取整，不然会死循环
+                if nums[mid]>target:
+                    right=mid-1
+                elif nums[mid]==target:
+                    left=mid
+                else:
+                    left = mid+1
+            #while循环结束时，right==left
+            return left
+        a =  left_func(nums,target)
+        b = right_func(nums,target)
+        if  a == len(nums) or nums[a] != target:
+            return [-1,-1]
+        else:
+            return [a,b]
+                
+

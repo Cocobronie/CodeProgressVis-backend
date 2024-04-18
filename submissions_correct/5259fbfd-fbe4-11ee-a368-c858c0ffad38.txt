@@ -1,0 +1,57 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        ## 双指针解决
+        if not nums or target < nums[0] or target > nums[-1]:
+            return [-1,-1]
+        left = 0
+        right = len(nums)-1
+
+        flag = False
+        while left <= right:
+            mid = (right-left)//2
+            ## 找到了
+            if nums[mid] == target:
+                flag = True
+                break
+            elif nums[left] == target:
+                flag = True
+                mid = left
+                break
+            elif nums[right] == target:
+                flag = True
+                mid  = right
+                break
+            ## 在左边
+            elif nums[mid] > target:
+                left += 1
+                right = mid-1
+            ## 在右边
+            elif nums[mid] < target:
+                left = mid + 1
+                right -=1
+            else:
+                break
+        if flag:
+            ## 最左边
+            left = mid
+            while left >= 1:
+                if nums[left-1] == target:
+                    left = left-1
+                else:
+                    break
+            right = mid
+            while right <= len(nums)-2:
+                if nums[right+1] == target:
+                    right += 1
+                else:
+                    break
+            return [left, right]
+        else:
+            return [-1,-1]
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        '''
+            双指针法
+        '''
+        nums_len = len(nums)
+        if not nums:
+            return [-1, -1]
+        l, r = 0, nums_len - 1
+        temp = []
+        flag = 0
+        for i in range(nums_len):
+            if nums[i] == target:
+                flag += 1
+                temp.append(i)
+        if flag >= 1:
+            return [temp[0], temp[len(temp) -1]]
+        else:
+            return [-1, -1]
+        
+        
+

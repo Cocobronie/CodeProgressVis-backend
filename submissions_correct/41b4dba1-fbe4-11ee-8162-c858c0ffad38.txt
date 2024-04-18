@@ -1,0 +1,54 @@
+php
+class Solution {
+
+    /**
+     * @param Integer[] $nums
+     * @param Integer $target
+     * @return Integer[]
+     */
+    function searchRange($nums, $target) {
+        if(empty($nums)) return [-1,-1];
+        $length = count($nums);
+        $left = 0;
+        $right = $length - 1;
+        $low = $this->getLeft($nums,$target,$left,$right); // 最低值
+        if($low == -1) return [-1,-1];
+        $high = $this->getRight($nums,$target,$low,$right); // 最高值
+        return [$low,$high];
+    }
+    function getLeft($nums,$target,$left,$right){
+        $t = -1;
+        while($left <= $right){
+            $mid = floor($left + ($right - $left)/2);// 下取整
+            if($nums[$mid] == $target){
+                $right = $mid -1;
+                $t = $mid;  // 找到等值继续二分 从右逼近 右区间为$mid - 1
+            }elseif($nums[$mid] > $target){
+                $right = $mid - 1;
+            }else{
+                $left  = $mid + 1;
+            }
+        }
+
+        return $t;
+    }
+
+    function getRight($nums,$target,$left,$right){
+        $t = $left - 1;
+        while($left <= $right){
+            $mid = floor($left + ($right - $left)/2);// 下取整
+            if($nums[$mid] == $target){
+                $left = $mid +1;
+                $t = $mid; // 找到等值继续二分 从左逼近 左区间为$mid + 1
+            }elseif($nums[$mid] > $target){
+                $right = $mid - 1;
+            }else{
+                $left  = $mid + 1;
+            }
+        }
+
+        return $t;
+    }
+    
+}
+

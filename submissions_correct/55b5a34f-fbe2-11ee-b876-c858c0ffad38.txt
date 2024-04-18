@@ -1,0 +1,35 @@
+java
+class Solution {
+    // 思路：数组已经有序，考虑使用二分查找，且应在递归的基础上写。nums[mid]与target不等的情况与二分查找一般情况一致，需额外注意相等的情况
+    // 当nums[mid]与target相等时，需分两种情况讨论
+    // 1. nums[mid - 1]与target不等，则说明mid是查找元素的第一个位置；否则，递归左区间
+    // 2. nums[mid + 1]与target不等，则说明mid是查找元素的第二个位置；否则，递归右区间
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1,-1};
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        binarySearch(nums, l, r, target, res);
+        return res;
+    }
+
+    public void binarySearch(int[] nums, int l, int r, int target, int[] res){
+        if (l > r)
+            return;
+        int mid = (l + r) >> 1;
+        if (nums[mid] == target) {
+            if (mid - 1 < 0 || nums[mid - 1] != target)
+                res[0] = mid;
+            else
+                binarySearch(nums, l, mid - 1, target, res);
+            if (mid + 1 >= nums.length || nums[mid + 1] != target)
+                res[1] = mid;
+            else
+                binarySearch(nums, mid + 1, r, target, res);
+        }
+        else if (nums[mid] < target)
+            binarySearch(nums, mid + 1, r, target, res);
+        else
+            binarySearch(nums, l, mid - 1, target, res);
+    }
+}
+

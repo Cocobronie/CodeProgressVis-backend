@@ -1,0 +1,46 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    // 排序搜索首选二分法， 先找出第一个与target相等的数字
+    let left = 0, right = nums.length
+    let ind = null
+    while(left <= right) {
+        const mid = ((left + right) / 2) >> 0
+        if (nums[mid] === target) {
+            ind = mid
+            break
+        } else if (nums[mid] > target) {
+            right = mid - 1
+        } else {
+            left = mid + 1
+        }
+    }
+    // 尽量使用内存优化
+    left = null
+    right = null
+    // 如果没有找到相等值则返回[ -1, -1 ]
+    if (ind === null) return [ -1, -1 ]
+    const result = Array(2)
+    // 向左循环， 查找值边界
+    for (let i = ind; i >= 0; i--) {
+        if (nums[i] === target) {
+            result[0] = i
+            continue
+        }
+        break
+    }
+    // 向右循环， 查找值边界
+    for (let i = ind; i < nums.length; i++) {
+        if (nums[i] === target) {
+            result[1] = i
+            continue
+        }
+        break
+    }
+    return result
+};
+

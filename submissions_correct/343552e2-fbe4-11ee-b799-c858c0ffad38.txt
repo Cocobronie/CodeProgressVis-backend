@@ -1,0 +1,45 @@
+cpp
+class Solution {
+public:
+
+    void searchFirstInRange(const vector<int>&nums,int s,int e,int target,vector<int>&indexs)
+    {
+        if(s > e) 
+        {
+            if(nums[e + 1] == target) indexs[0] = (e + 1);
+            return;
+        }
+        int mid = (s + e) >> 1;
+        if(nums[mid] >= target)
+            searchFirstInRange(nums,s,mid - 1,target,indexs);
+        else
+            searchFirstInRange(nums,mid + 1,e,target,indexs);
+    }
+
+    void searchSecondInRange(const vector<int>&nums,int s,int e,int target,vector<int>&indexs)
+    {
+        if(s > e) 
+        {
+            if(nums[e] == target) indexs[1] = e;
+            return;
+        }
+        int mid = (s + e) >> 1;
+        if(nums[mid] > target)
+            searchSecondInRange(nums,s,mid - 1,target,indexs);
+        else
+            searchSecondInRange(nums,mid + 1,e,target,indexs);
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        vector<int> reV(2,-1);
+        int s = nums.size();
+        if(nums.empty()) return reV;
+        if(nums[0] > target || nums[s - 1] < target) return reV;
+
+        searchFirstInRange(nums,0,s - 1,target,reV);
+        searchSecondInRange(nums,reV[0],s - 1,target,reV);
+        
+        return reV;
+    }
+};
+

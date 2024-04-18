@@ -1,0 +1,31 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0, right = nums.length-1, mid;
+        while (left <= right) {
+            mid = (left + right)/2;
+            if (nums[mid] == target) {
+                int t = mid;
+                // 往左找，直到最左边那个数
+                while (t >= 0 && nums[t] == target) {
+                    --t;
+                }
+                int k = mid;
+                while (k < nums.length && nums[k] == target) {
+                    ++k;
+                }
+                return new int[] {t+1,k-1};
+            }
+            // 不等于，继续二分
+            if (nums[mid] < target) {
+                left = mid+1;
+            }
+            if (nums[mid] > target) {
+                right = mid-1;
+            }
+        }
+
+        return new int[] {-1,-1};
+    }
+}
+

@@ -1,0 +1,58 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ret(2,-1);
+        if(nums.size() == 0) return ret;
+        ret[0] = findFirstTargetIndex(nums, target);
+        ret[1] = findLastTargetIndex(nums, target);
+        return ret;
+    }
+
+    int findFirstTargetIndex(vector<int>& nums, int target){
+        int left = 0;
+        int right = nums.size()-1;
+        while(left < right){
+            int mid = left + (right-left) / 2;
+            if(nums[mid] < target){
+                left = mid+1;  // 如果走到修改left的分支,left = mid+1; 会使left的值确定会被修改，不会在搜索空间为2时因为取下整而造成死循环
+            }else{  // nums[mid] >= target 情况
+                right = mid;  // 当num[mid] == target 时，收缩右边界，确保最后返回的是最左侧的target下标
+            }
+        }
+        if(nums[left] == target){
+            return left;
+        }
+        return -1;
+    }
+
+    int findLastTargetIndex(vector<int>& nums, int target){
+        int left = 0;
+        int right = nums.size()-1;
+        while(left < right){
+            int mid = left + (right-left) / 2;
+            if(nums[mid] > target){
+                right = mid - 1;
+            }else{
+                // 当走到修改left分支时，由于mid取x下整的原因，当搜索空间为2的时候即使该修改left了也会因为mid取下整而导致left始终等于mid造成死循环。
+                // 因此需要对索空间为2时单独处理。因为次吃收缩空间中只有两个元素，单独处理也很方便。
+                if(right==left+1){  // 搜索空间为2，判断后强制移动指针退出循环
+                    if(nums[right] == target){
+                        left++;
+                    }else{
+                        right--;
+                    }
+                }else{  // nums[mid] <= target
+                    left = mid; // 当num[mid] == target 时，收缩左边界，确保最后返回的是最右侧的target下标
+               
+                }
+            }
+        }
+        if(nums[left] == target){
+            return left;
+        }
+        return -1;
+    }
+
+};
+

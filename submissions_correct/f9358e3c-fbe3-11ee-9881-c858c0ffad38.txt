@@ -1,0 +1,43 @@
+cpp
+class Solution {
+public:
+    int binSearch(vector<int> &nums,int l,int r,int target){
+        while(l<r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]>=target){
+                r = mid;
+            }else{
+                l = mid+1;
+            }
+        }
+        return l;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // cout<<nums.size()<<endl;
+        vector<int> ans;
+        if(!nums.size()) return {-1,-1};
+        if(nums.size()==1){
+            if(nums[0]==target)return {0,0};
+            else return{-1,-1};
+        }
+        int index = binSearch(nums,0,nums.size()-1,target);
+        // cout<<index<<endl;
+        if(index==nums.size())return {-1,-1};
+        if(nums[index]!=target) index++;
+        else{
+            ans.push_back(index);
+            while(index!=nums.size()&&nums[index]==target)index++;
+            ans.push_back(--index);
+            return ans;
+        }
+        if(index==nums.size()||nums[index]!=target)return {-1,-1};
+        else{
+            ans.push_back(index);
+            while(index!=nums.size()&&nums[index]==target)index++;
+            ans.push_back(--index);
+            return ans;
+        }
+        return ans;
+    }
+};
+

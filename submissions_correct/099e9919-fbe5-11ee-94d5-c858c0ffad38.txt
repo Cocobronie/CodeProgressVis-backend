@@ -1,0 +1,104 @@
+cpp
+vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res;
+        unordered_map<int,int> hash;
+        int count=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]==target)
+            {
+                hash[i]++;
+                count++;
+            }
+        }
+        if(count==0)
+        {
+            res.push_back(-1);
+            res.push_back(-1);
+        }
+        int temp=count;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(count==1&&nums.size()==1)
+            {
+                res.push_back(i);
+                res.push_back(i);
+                break;
+            }
+            if(hash[i]==1)
+            {
+                if(temp==count||temp==1)
+                    if(count==1)
+                    {
+                        res.push_back(i);
+                        res.push_back(i);
+                    }
+                    else
+                        res.push_back(i);
+                temp--;
+            }
+        }
+        return res;
+}
+
+
+
+方法二：二分法，通过查找左右边界，能有更高的效率
+### 代码
+
+
+cpp
+class Solution {
+public:
+    int getrightborder(vector<int>& nums,int target)
+    {
+        int left=0;
+        int right=nums.size()-1;
+        int rightborder=-2;  //即没有找到target
+        while(left<=right)
+        {
+            int middle=(left+right)/2;
+            if(nums[middle]>target)
+            {
+                right=middle-1;
+            }
+            else
+            {
+                left=middle+1;
+                rightborder=left;   
+            }
+        }
+        return rightborder;
+    }
+    int getleftborder(vector<int>& nums,int target)
+    {
+        int left=0;
+        int right=nums.size()-1;
+        int leftborder=-2;  //即没有找到target
+        while(left<=right)
+        {
+            int middle=(left+right)/2;
+            if(nums[middle]>=target)
+            {
+                right=middle-1;
+                leftborder=right;
+            }
+            else
+            {
+                left=middle+1;
+            }
+        }
+        return leftborder;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int leftBorder = getleftborder(nums, target);
+        int rightBorder = getrightborder(nums, target);
+        // 情况一
+        if (leftBorder == -2 || rightBorder == -2) return {-1, -1};
+        // 情况三
+        if (rightBorder - leftBorder > 1) return {leftBorder + 1, rightBorder - 1};
+        // 情况二
+        return {-1, -1};
+    }
+};
+

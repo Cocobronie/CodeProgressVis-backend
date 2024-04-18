@@ -1,0 +1,53 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int m=nums.size();
+        vector<int> res(2,-1);
+        bool front=false;
+        if(m==0 || nums[0]>target || nums[m-1]<target){
+            return res;
+        }
+        int left=0,right=m-1;
+        int mid=0;
+        bool find=false;
+        while(left<=right){
+            mid=(left+right)/2;
+            if(nums[mid]==target){
+                find=true;
+                break;
+            }else if(nums[mid]<target){
+                left=mid+1;
+            }else{
+                right=mid-1;
+            }
+        }
+        if(!find){
+            return res;
+        }
+        res[0]=mid;
+        res[1]=mid;
+        for(int i=mid-1;i>=0;i--){
+            if(nums[0]==target){
+                res[0]=0;
+                break;
+            }
+            if(nums[i]!=target){
+                res[0]=i+1;
+                break;
+            }
+        }
+        for(int i=mid+1;i<m;i++){
+            if(nums[m-1]==target){
+                res[1]=m-1;
+                break;
+            }
+            if(nums[i]!=target){
+                res[1]=i-1;
+                break;
+            }
+        }
+        return res;
+    }
+};
+

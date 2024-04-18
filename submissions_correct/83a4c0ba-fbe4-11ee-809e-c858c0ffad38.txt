@@ -1,0 +1,36 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.size()==0)
+            return vector<int>{-1,-1};
+        int l=0,r=nums.size()-1;
+        int left,right,mid;
+        while(l<=r){
+            mid=(r-l)/2+l;
+            if(nums[mid] == target){
+                left = mid;
+                right=mid;
+                break;
+            }else if(nums[mid]>target)
+                r=mid-1;
+            else
+                l=mid+1;
+        }
+        if(nums[left]!=target)
+            return vector<int>{-1,-1};
+        for(int i=left;i>=0;i--)
+            if(nums[i]==target)
+                left=i;
+            else
+                break;
+        for(int i=right;i<nums.size();i++)
+            if(nums[i]==target)
+                right=i;
+            else
+                break;
+       return vector<int>{left,right};
+    }
+    
+};
+

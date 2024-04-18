@@ -1,0 +1,22 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    if(!nums.includes(target)) return [-1,-1];
+    let left=0,right=nums.length-1;
+    while(left!==right){
+        if(nums[left]<target){left++;}
+        if(nums[right]>target){right--;} 
+        if(nums[right]==nums[left]){
+            break;
+            //return [left,right];JavaScript内部循环中不能返回？放在这里会返回undefined
+        }
+        console.log(left);
+        console.log(right);
+    }
+   return [left,right]; 
+};
+

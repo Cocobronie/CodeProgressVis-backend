@@ -1,0 +1,22 @@
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int m = nums.size();
+        if(m == 0) {
+            return {-1,-1};
+        }
+        int index1,index2;
+        //掉包侠
+        index1 = lower_bound(nums.begin(),nums.end(),target) - nums.begin();
+        index2 = upper_bound(nums.begin(),nums.end(),target) - nums.begin() - 1;
+        if(index1 != m && nums[index1] == target && nums[index2] == target) {
+            return {index1,index2};
+        }
+        else if(index1 != m && nums[index1] == target && index2 == m-1) {
+            return {index1,index1};
+        }
+        return {-1,-1};
+    }
+};
+

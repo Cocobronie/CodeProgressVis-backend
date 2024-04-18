@@ -1,0 +1,64 @@
+javascript
+function binarySearch(arr,target) {
+  const len = arr.length
+  let left = 0
+  let right = len - 1
+
+  while (left <= right) {
+    const middle = Math.round((left + right) / 2)
+    if (arr[middle] > target) {
+      right = middle - 1
+    } else if (arr[middle] < target) {
+      left = middle + 1
+    } else {
+      return middle
+    }
+  }
+  return -1
+}
+
+
+找到对应的值即返回下标。但是在这里，我们不能直接返回，因为这个序号并不能确定是这个值出现的边界下标。因此我们要返回的是边界的情况。
+
+当我们寻找左边界时，查找第一个大于等于 target 的下标
+
+当我们寻找右边界时，查找第一个大于 target 的下标。则右边界是target-1。
+
+数组中可能不存在targt，因此需要校验左右边界是否有效。
+
+### 代码
+
+
+javascript
+function binarySearch(arr,target,lower) {
+  const len = arr.length
+  let left = 0
+  let right = len - 1
+  let ans = arr.length
+
+  while (left <= right) {
+    const middle = Math.floor((left + right) / 2)
+    if (arr[middle] > target || (lower && arr[middle] >= target)) {
+      right = middle - 1
+      ans = middle
+    } else {
+      left = middle + 1
+    }
+  }
+
+  return ans
+}
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function (nums, target) {
+  const leftIndex =  binarySearch(nums,target,true)
+  const rightIndex =  binarySearch(nums,target,false) -1
+  if(leftIndex>=0 && (rightIndex<=nums.length-1) && leftIndex <=rightIndex){
+    return [leftIndex,rightIndex]
+  }
+  return [-1,-1]
+};
+

@@ -1,0 +1,21 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        firstIndex = self.findFirst(nums, target)
+        lastIndex = self.findFirst(nums, target+1) - 1
+        if len(nums) == firstIndex or nums[firstIndex] != target:
+            return [-1, -1]
+        else:
+            return [firstIndex, max(firstIndex, lastIndex)]
+
+    def findFirst(self, nums:list, target:int):
+        li = 0
+        ri = len(nums)
+        while li < ri:
+            mid = int(li + (ri - li)/2)
+            if nums[mid] >= target:
+                ri = mid
+            else:
+                li = mid + 1
+        return li
+

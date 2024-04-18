@@ -1,0 +1,22 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty()) return {-1,-1};
+        int ip = 0;int jp = nums.size()-1;
+        int mid = (ip+jp)/2;
+        while(ip<jp){
+            if(nums[mid]<target){
+                ip = mid+1;
+            }
+            else jp = mid;
+            mid = (ip+jp)/2;
+        }
+        if(nums[mid]!=target) return{-1,-1};
+        int a=mid;int b= mid;
+        while(--a>=0&&nums[a]==target);
+        while(++b<nums.size()&&nums[b]==target);
+        return {a+1,b-1};
+    }
+};
+

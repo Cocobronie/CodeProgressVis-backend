@@ -1,0 +1,12 @@
+C++ []
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if (!nums.size()) return {-1, -1};
+        auto index1 = lower_bound(nums.begin(), nums.end(),target); // 返回第一个大于等于迭代器
+        auto index2 = upper_bound(nums.begin(), nums.end(),target); // 返回第一个大于tar的迭代器
+        if (index1 == nums.end() || *index1 != target) return {-1, -1}; // 这个值根本不存在
+        return {(int)distance(nums.begin(), index1),(int)distance(nums.begin(), index2 - 1)};
+    }
+};
+

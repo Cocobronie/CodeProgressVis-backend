@@ -1,0 +1,48 @@
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = lower_bound(nums, target, 0, nums.size());
+        int r = upper_bound(nums, target, 0, nums.size());
+
+        if (r - 1 < 0 || nums[r-1]!=target) {   //使用r判断，nums如果为空，那r直接变-1；如果target存在，nums[r-1]一定等于target
+            vector<int> res = {-1,-1};
+            return res;
+        }
+
+        vector<int> res;
+        res.push_back(l);
+        res.push_back(r-1);
+        return res;
+    }
+
+    int lower_bound(vector<int> &nums, int target, int l, int r) {
+        while(l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                r = mid;
+            }else if (nums[mid] > target) {
+                r = mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+
+    int upper_bound(vector<int> &nums, int target, int l, int r) {
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                l = mid + 1;
+            } else if(nums[mid] > target) {
+                r = mid;
+            } else if(nums[mid] < target) {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+
+};
+

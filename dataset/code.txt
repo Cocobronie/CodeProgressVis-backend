@@ -1,0 +1,12 @@
+# 根据文件名称返回文件内容
+def read_file_content(filename):
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:  # 使用'with'语句可以确保文件在操作完成后正确关闭
+            content = file.read()  # 读取文件内容
+            return content
+    except FileNotFoundError:
+        print(f"文件 {filename} 未找到。")
+        return None
+    except Exception as e:
+        print(f"读取文件 {filename} 时发生错误: {e}")
+        return None

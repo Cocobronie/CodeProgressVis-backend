@@ -1,0 +1,32 @@
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        
+        def lower_bound(array, begin, end, value):#[begin, end)
+            while begin < end:
+                mid = begin + (end - begin)//2
+                if array[mid] >= value:#把边界向左边推
+                    end = mid
+                else:
+                    begin = mid + 1
+            return begin
+        
+        def upper_bound(array, begin, end, value):
+            while begin < end:
+                mid = begin + (end - begin)//2
+                if array[mid] <= value:#把边界向右边推
+                    begin = mid + 1
+                else:
+                    end = mid
+            return begin
+        
+        n = len(nums)
+        # if n == 0:
+        #     return [-1, -1]
+        
+        lb = lower_bound(nums, 0, n, target)
+        ub = upper_bound(nums, 0, n, target)#[lb, ub)
+        if lb == ub:
+            return [-1, -1]
+        return [lb, ub-1]
+

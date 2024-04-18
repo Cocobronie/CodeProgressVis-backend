@@ -1,0 +1,53 @@
+javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var searchRange = function(nums, target) {
+    let start = 0, end = nums.length - 1, i = Math.ceil((end - start) / 2);
+    if (end === -1 || nums[start] > target || nums[end] < target) return [-1, -1];
+
+    while (start < end) {
+        // 区间首位数字都与target相等
+        if (nums[start] === target && nums[end] === target) {
+            return [start, end];
+        }
+        // 区间首位数字与target相等
+        if (nums[start] === target && nums[end] != target) {
+            let endIndex = start;
+            while(nums[endIndex + 1] === target) {
+                endIndex++;
+            }
+            return [start, endIndex];
+        }
+        // 区间末尾数字与target相等
+        if (nums[start] != target && nums[end] === target) {
+            let firstIndex = end;
+            while(nums[firstIndex - 1] === target) {
+                firstIndex--;
+            }
+            return [firstIndex, end];
+        }
+
+        if (nums[i] === target) {
+            let firstIndex = i, endIndex = i;
+            while(nums[firstIndex - 1] === target) {
+                firstIndex--;
+            }
+            while(nums[endIndex + 1] === target) {
+                endIndex++;
+            }
+            return [firstIndex, endIndex];
+        } else if (nums[i] > target) {
+            end = i - 1;
+        } else {
+            start = i + 1;
+        }
+        i = start + Math.ceil((end - start)/2);
+    }
+
+    return nums[start] === target ? [0, 0] : [-1, -1];
+};
+
+

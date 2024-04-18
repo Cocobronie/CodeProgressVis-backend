@@ -1,0 +1,28 @@
+cpp
+class Solution {
+public:
+    int searchrange(vector<int>& nums,int target,int i,int j)
+    {
+        if(i>j) return -1;  //防止出现数组为空的情况
+        if(i==j)
+        {
+            if(nums[i]>=target) return i;
+            else return -1;
+        }
+        int mid=(i+j)/2;
+        if(searchrange(nums,target,i,mid)>=0) return searchrange(nums,target,i,mid);
+        else return searchrange(nums,target,mid+1,j);
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+    int a=searchrange(nums,target,0,nums.size()-1);
+    int b=searchrange(nums,target+1,0,nums.size()-1)-1;
+    int l=nums.size();
+    if(a>=0&&nums[a]==target)
+    {
+        if(b>=0) return {a,b};
+        else return {a,l-1};
+    }
+    return {-1,-1};
+    }
+};
+

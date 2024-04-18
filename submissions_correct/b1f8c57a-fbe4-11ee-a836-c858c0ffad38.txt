@@ -1,0 +1,92 @@
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length == 0 ){
+            return new int[]{-1,-1};
+        }
+         if(nums.length == 1 && nums[0] ==target  ){
+            return new int[]{0,0};
+        }
+
+        int max = maxIndex(nums,target);
+        int min = minIndex(nums,target);
+
+        if(min == nums.length ||nums[min] != target){
+            return new int[]{-1,-1};
+        }   
+        return new int[]{min,max};
+    }
+
+    public int maxIndex( int[] nums,int target){
+
+        int max = nums.length - 1, min = 0 ,ans = nums.length;
+        
+        while(max >= min){
+            int mid = (max + min)/2;
+            if(nums[mid] > target){
+                max = mid - 1;
+                ans = mid;
+            }else{
+                min = mid + 1;
+            }  
+        }
+        return ans - 1;
+    }
+
+    public int minIndex(int[] nums, int target){
+        int max = nums.length - 1, min = 0, ans = 0 ;
+
+        while(max >= min){
+            int mid = min + (max - min)/2;
+            if(nums[mid] >= target){
+                max = mid - 1;
+                ans = mid;
+            }else{
+                min = mid + 1;               
+            }
+        } 
+        return ans; 
+    }
+}
+
+
+二分傻瓜式查找：找到相等的数，再向两边搜索
+
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] arr ={-1,-1};
+
+        if(nums.length == 0){
+            return arr;
+        }
+
+
+        int left = 0 ,right = nums.length - 1, mid = 0 ;
+        
+        while(left <= right){
+            mid = (left+right)/2;
+            if(nums[mid] == target){
+                break;
+            }else if(nums[mid] > target){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+
+        int num = mid;
+        while(num >= 0 && nums[num] == target){
+            arr[0] = num;
+            num--;
+        }
+
+        while(mid <nums.length && nums[mid] == target){
+            arr[1] = mid;
+            mid++;
+        }
+        return arr;
+
+    }
+}
+

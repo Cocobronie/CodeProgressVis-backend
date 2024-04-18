@@ -1,0 +1,38 @@
+java
+/*
+ * 解题思路: 二分法
+ * 解题步骤:
+ *          1. 二分法找到等于target的位置
+ *          2. 左右移动找到开始和结束的下标
+ */
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        // 最右的下标等于数组长度减一
+        int right = nums.length - 1;
+        // 相等的情况也需要进循环
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                left = mid;
+                // 注意判断下标越界
+                while(left > 0 && nums[left - 1] == target) {
+                    left--;
+                }
+                right = mid;
+                // 注意判断下标越界(nums.length - 1)
+                while(right < nums.length - 1 && nums[right + 1] == target) {
+                    right++;
+                }
+                return new int[]{left, right};
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return new int[]{-1, -1};
+    }
+}
+

@@ -1,0 +1,82 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2,-1);
+        //先处理边界情况
+        if(nums.size()<1){
+            return res;
+        }
+        if(nums.size()==1){
+            if(target==nums[0]){
+                res[0]=0;
+                res[1]=0;
+            }
+            return res;
+        }
+        res[0]=bl_search(nums,0,nums.size()-1,target);
+        //数组内没有target
+        if(res[0]==-1){
+            res[1]=-1;
+            return res;
+        }
+        res[1]=br_search(nums,res[0],nums.size()-1,target);
+        return res;
+    }
+private:
+    //查找左边界
+    static int bl_search(vector<int>& nums,int lt,int rt,int target){
+        int mid=(lt+rt)/2;
+        //找到数组中的某个target元素
+        if(nums[mid]==target){
+            //该元素在nums[0]，直接返回0；
+            if(mid==0){
+                return mid;
+            //该元素为左边界
+            }else if(nums[mid-1]!=target){
+                return mid;
+            //否则该元素在相同元素序列的中间部分，继续查找做半边
+            }else{
+                return bl_search(nums,lt,mid-1,target);
+            }
+        //后面是普通的二分查找
+        }else if(lt==rt){
+            return -1;
+        }else if(nums[mid]>target){
+            if(mid==0){
+                return -1;
+            }
+            return bl_search(nums,lt,mid-1,target);
+        }else{
+            return bl_search(nums,mid+1,rt,target);
+        }
+    }
+    //查找右边界
+    static int br_search(vector<int>& nums,int lt,int rt,int target){
+        int mid=(lt+rt)/2;
+        //找到数组中的某个target元素
+        if(nums[mid]==target){
+            //该元素在nums[nums.size()-1]，直接返回0；
+            if(mid==nums.size()-1){
+                return mid;
+            //该元素为左边界
+            }else if(nums[mid+1]!=target){
+                return mid;
+            //否则该元素在相同元素序列的中间部分,继续查找右半边
+            }else{
+                return br_search(nums,mid+1,rt,target);
+            }
+        //后面是普通的二分查找
+        }else if(lt==rt){
+            return -1;
+        }else if(nums[mid]>target){
+             if(mid==nums.size()-1){
+                return -1;
+            }
+            return br_search(nums,lt,mid-1,target);
+        }else{
+            return br_search(nums,mid+1,rt,target);
+        }
+    }
+};
+

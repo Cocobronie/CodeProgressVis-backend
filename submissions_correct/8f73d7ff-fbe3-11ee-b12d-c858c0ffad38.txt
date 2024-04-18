@@ -1,0 +1,42 @@
+java
+class Solution {
+    int[] indexs=new int[2];
+    public int[] searchRange(int[] nums, int target) {
+        indexs[0]=-1;
+        indexs[1]=-1;
+        if(nums==null||nums.length==0) return indexs;
+        binarySearch(nums,0,nums.length-1,target);
+        return indexs;
+    }
+    public void binarySearch(int[] nums,int start,int end,int target){
+        if(start==end){
+            if(nums[start]==target) {
+                if(indexs[0]==-1&&indexs[1]==-1){
+                    indexs[0]=start;
+                    indexs[1]=start;
+                }else{
+                    if(start<indexs[0]) indexs[0]=start;
+                    if(start>indexs[1]) indexs[1]=start;
+                }
+            }
+        }else{
+            int mid=(start+end)/2;
+            if(nums[mid]==target){
+                if(indexs[0]==-1&&indexs[1]==-1){
+                    indexs[0]=mid;
+                    indexs[1]=mid;
+                }else{
+                    if(mid<indexs[0]) indexs[0]=mid;
+                    if(mid>indexs[1]) indexs[1]=mid;
+                }
+                if(mid<end) binarySearch(nums,mid+1,end,target);
+                if(mid>start) binarySearch(nums,start,mid-1,target);
+            }else if(nums[mid]<target){
+                if(mid<end) binarySearch(nums,mid+1,end,target);
+            }else{
+                if(mid>start) binarySearch(nums,start,mid-1,target);
+            }
+        }
+    }
+}
+

@@ -1,0 +1,29 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        l = 0
+        r = len(nums) - 1
+        ret = []
+        while l <= r:
+            mid = l + ((r - l) >> 1)
+            if nums[mid] > target:
+                r = mid - 1
+            elif nums[mid] < target:
+                l = mid + 1
+            else:
+                tmp = mid
+                leftIdx = 0
+                while tmp >= 0 and nums[tmp] == target:
+                    leftIdx = tmp
+                    tmp -= 1
+                ret.append(leftIdx)
+                rightIdx = leftIdx
+                while mid <= len(nums) - 1 and nums[mid] == target:
+                    rightIdx = mid
+                    mid += 1
+                ret.append(rightIdx)
+                return ret
+                
+        return [-1, -1]
+
+

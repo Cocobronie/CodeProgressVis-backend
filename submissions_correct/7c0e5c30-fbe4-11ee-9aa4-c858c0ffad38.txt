@@ -1,0 +1,54 @@
+java
+class Solution {
+     public int[] searchRange(int[] nums, int target) {
+        int len = nums.length;
+        if (len == 0) {
+            return new int[]{-1, -1};
+        }
+
+        int firstPosition = findFirstPosition(nums, target);
+        if (firstPosition == -1) {
+            return new int[]{-1, -1};
+        }
+
+        int lastPosition = findLastPosition(nums, target);
+
+        return new int[]{firstPosition, lastPosition};
+    }
+
+
+    private int findFirstPosition(int[] nums, int target) {//注意第一个位置的查找是使用int mid = left + (right - left) / 2
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;//取左中位数
+            if (nums[mid] < target) { //小于 这排除[left,mid]这一部分 减治法
+                left = mid + 1;// 下一轮搜索区间是 [mid + 1, right]
+            } else {
+                right = mid;//收缩右边界不影响 first
+            }
+        }
+        if (nums[left] == target) {
+            return left;
+        }
+        return -1;
+    }
+
+    private int findLastPosition(int[] nums, int target) {//第一个位置的查找是使用int mid = left + (right - left+1) / 2
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left + 1) / 2;//取右中位数
+            if (nums[mid] > target) { //大于 则排除[mid,right]这一部分
+                right = mid - 1;
+            } else {
+                left = mid;  // 收缩左边界不影响 last 
+            }
+        }
+        return left;
+    }
+
+    
+    
+}
+

@@ -1,0 +1,33 @@
+python3
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        left = self.findleft(nums, target)
+        right = self.findright(nums, target)
+        if left == len(nums)  or nums[left] != target:
+            return [-1,-1]
+        else:
+            return [left, right]
+    
+    def findleft(self, nums, target):
+        n = len(nums)
+        low, high = 0, n #为什么设置为n而非n-1呢，因为可能取值为最后一个值n-1，若为n-1则取不到n-1（其实这里可以设置为n-1，并无影响，但查找有边界函数不行）
+        while low < high:
+            mid = low + (high - low) // 2
+            if nums[mid] >= target:
+                high = mid
+            else:
+                low = mid + 1
+        return low
+
+    def findright(self, nums, target):
+        n = len(nums)
+        low, high = 0, n # 为什么设置为n，而非n-1呢，因为可能目标值的有边界为n-1,则这是low应该为n，若为n-1，则到不了n
+        while low < high:
+            mid = low + (high - low) // 2
+            #if nums[mid] <= target: # 此句可能会造成死循环，low = high + 1， mid将等于low,mid对应的值等于target，而上面判断左边界的函数则不会出现这个问题，因为Mid不会等于High
+            if nums[mid] <= target:
+                low = mid + 1 # 这样，low的值始终比有边界大1
+            else:
+                high = mid
+        return low - 1
+

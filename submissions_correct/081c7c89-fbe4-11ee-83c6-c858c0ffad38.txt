@@ -1,0 +1,58 @@
+cpp
+class Solution
+{
+public:
+    void bin_trav(vector<int>& nums, int target,int le,int ri,vector<int>& res1)
+    {
+        if(le>ri)return;
+        if(le==ri)
+        {
+            if(target==nums[le])
+            {
+                res1.push_back(le);
+            }
+            return;
+        }
+        int mid = (le+ri)/2;
+        if(nums[mid]<target)
+        {
+            bin_trav(nums,target,mid+1,ri,res1);
+        }
+        else if(nums[mid]>target)
+        {
+            bin_trav(nums,target,le,mid-1,res1);
+        }
+        else
+        {
+            bin_trav(nums,target,le,mid,res1);
+            bin_trav(nums,target,mid+1,ri,res1);
+        }
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target)
+    {
+        vector<int>res1;
+        vector<int>res2;
+        if(nums.size()==0)
+        {
+            res2.push_back(-1);
+            res2.push_back(-1);
+        }
+        else
+        {
+            bin_trav(nums,target,0,nums.size()-1,res1);
+            if(res1.size()==0)
+            {
+                res2.push_back(-1);
+                res2.push_back(-1);
+            }
+            else
+            {
+                res2.push_back(*res1.begin());
+                res2.push_back(*(res1.end()-1));
+            }
+        }
+        return res2;
+    }
+};
+

@@ -1,0 +1,32 @@
+c++
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        /*基本的二分操作*/
+        int l = 0, r = nums.size()-1;
+        int mid;
+        int flag = 0;
+        while(l <= r){
+            mid = (l+r)>>1;
+            if(nums[mid] == target){
+                flag = 1;
+                break;
+            }else if(nums[mid] > target){
+                r = mid-1;
+            }else{
+                l = mid+1;
+            }
+        }
+        /*判断是否找到target 如果数组中不存在target 则直接返回{-1, -1}*/
+        if(flag == 0)
+            return {-1, -1};
+
+        /*找到了target 沿target分别向左向右寻找最小最大边界 并返回{min, max}*/
+        int mid_l = mid, mid_r = mid;
+        int maxlen = nums.size();
+        while(mid_l>-1 && nums[mid_l]==target)     mid_l--;
+        while(mid_r<maxlen && nums[mid_r]==target) mid_r++;
+        return {mid_l+1, mid_r-1};
+    }
+};
+

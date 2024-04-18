@@ -1,0 +1,45 @@
+python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums:
+            return [-1,-1]
+        left,right,mid = 0,len(nums)-1,0
+        result = [-1,-1]
+        # 二分搜索 ，这里压根就别处理二分的边界了，稍微不注意就出错。只要找到了target，就直接break进入中心扩展。
+        while left<=right:
+            mid = (left+right)//2
+            if nums[mid] == target:
+                break
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                left = mid + 1
+        # 中心扩展，能来到这里有两种情况，1.left>right 2.nums[mid] == target
+        # 从中心开始，往两边走。
+        if nums[mid] == target:
+            left = mid
+            while left > 0 and nums[left-1] == nums[mid]:
+                left -= 1
+            right = mid
+            while right < len(nums)-1 and nums[right+1] == nums[mid]:
+                right += 1
+            result = [left,right]
+        return result
+
+
+
+### 遍历求解代码
+
+
+python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums or target not in nums:
+            return [-1,-1]
+        count,start_i = 0,-1
+        for i,num in enumerate(nums):
+            if num == target:
+                if start_i == -1:start_i = i
+                count += 1
+        return [start_i,start_i + count-1]
+

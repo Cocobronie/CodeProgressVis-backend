@@ -1,0 +1,85 @@
+java
+class Solution {
+   
+    public static int[] searchRange(int[] nums, int target) {
+        int[] result = new int[2];
+        // 处理情况一
+        if (nums.length == 1) {
+            if (nums[0] == target) {
+                // 当数组元素等于目标值时
+                result[0] = 0;
+                result[1] = 0;
+                return result;
+            } else {
+                // 当数组元素不等于目标值时
+                result[0] = -1;
+                result[1] = -1;
+            }
+        }
+        // 处理情况二
+        if (nums.length == 2) {
+            // 当数组两个元素都等于目标值时            
+            if (nums[0] == nums[1] && nums[0] == target) {
+                result[0] = 0;
+                result[1] = 1;
+            } else if (nums[0] == target && nums[1] != target) {
+            // 当数组第一个元素等于目标值，第二个元素不等于目标值时
+                result[0] = 0;
+                result[1] = 0;
+            } else if (nums[1] == target && nums[0] != target) {
+            // 当数组第二个元素等于目标值，第一个元素不等于目标值时
+                result[0] = 1;
+                result[1] = 1;
+            } else {
+            // 当数组两个元素都不等于目标值时            
+                result[0] = -1;
+                result[1] = -1;
+            }
+            return result;
+        }
+        // 处理情况三
+        int left = 0;
+        int right = nums.length - 1;
+        // 返回第一个索引的下标
+        result[0] = fun1(nums, left, right, target);
+        // 返回第二个索引的下标
+        result[1] = fun2(nums, left, right, nums.length, target);
+        return result;
+
+    }
+
+    public static int fun1(int[] arr, int left, int right, int target) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // 当前元素等于目标值，并且当前元素的索引等于0或者前一个元素不等于目标值时
+            if (arr[mid] == target && (mid == 0  || arr[mid - 1] != target)) {
+               return mid;
+            } else if (arr[mid] < target) {
+            // 当前元素小于目标值时
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        // 如果数组中没有目标值，就返回 -1
+        return -1;
+    }
+
+    public static int fun2(int[] arr, int left, int right, int length, int target) {
+            while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // 当前元素等于目标值，并且当前元素的索引等于length - 1或者后一个元素不等于目标值时
+            if (arr[mid] == target && (mid == length - 1 || arr[mid + 1] != target)) {
+               return mid;
+            } else if (arr[mid] > target) {
+            // 当前元素大于目标值时            
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // 如果数组中没有目标值，就返回 -1
+        return -1;
+    }
+}
+

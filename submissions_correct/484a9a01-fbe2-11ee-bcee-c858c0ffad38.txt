@@ -1,0 +1,29 @@
+C++
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = 0, right = n-1;
+        while(left <= right){
+            int mid = (left+right) >> 1;
+            if(nums[mid] == target){
+                left = mid, right = mid;
+                // 向左扩展
+                while(left > 0 && nums[left] == nums[left-1]){
+                    left -= 1;
+                }
+                // 向右扩展
+                 while(right < n-1 && nums[right] == nums[right+1]){
+                    right += 1;
+                }
+                return vector<int>{left, right};
+            }else if(nums[mid] < target){
+                left = mid + 1;
+            }else{
+                right = mid - 1;
+            }
+        }
+        return vector<int>{-1, -1};
+    }
+};
+

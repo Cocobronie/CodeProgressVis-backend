@@ -1,0 +1,65 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int [] ans=new int [2];
+
+        ans[0]=getLeft(nums,target);
+        if(ans[0]==-1){
+            ans[1]=-1;
+            return ans;
+        }
+        int temp=-1;
+        for(int i=ans[0];i<nums.length;i++){
+            if(nums[i]!=target){
+                break;
+            }
+            temp=i;
+        }
+        ans[1]=temp;
+        return ans;
+    }
+    public int getLeft(int []nums,int target){
+        if(nums.length==0){
+            return -1;
+        }
+        int right=nums.length;
+        int left=0;
+        while(left<right){
+            int mid=(left+right)/2;
+            if(nums[mid]==target){
+                right=mid;
+            }
+            else if(nums[mid]<target){
+                left=mid+1;
+            }
+            else if(nums[mid]>target){
+                right=mid;
+            }
+        }
+        if (left == nums.length) return -1;
+        return nums[left] == target ? left : -1;
+    }
+    public int getRight(int []nums,int target){
+        if(nums.length==0){
+            return -1;
+        }
+        int right=nums.length;
+        int left=0;
+        while(left<right){
+            int mid=(left+right)/2;
+            if(nums[mid]==target){
+                left=mid-1;
+            }
+            else if(nums[mid]<target){
+                left=mid;
+            }
+            else if(nums[mid]>target){
+                right=mid-1;
+            }
+        }
+        if (left == nums.length) return -1;
+        return nums[left] == target ? left : -1;
+    }
+    
+}
+

@@ -1,0 +1,85 @@
+
+class Solution {
+    // 双指针
+    /*
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        int right = 0;
+        int[] res = new int[]{-1, -1};
+        while (left < nums.length && right < nums.length) {
+            if (nums[left] != target) {
+                left ++;
+            } else {
+                res[0] = left;
+                right = left + 1;
+                while (right < nums.length && nums[right] == target) {
+                    right ++;
+                } 
+                res[1] = right - 1;
+                break;
+            }
+        }
+        return res;
+    }
+    */
+    // 二分法：
+    /*
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = (left + right) / 2;
+        int[] res = new int[]{-1, -1};
+        while (left <= right) {
+            mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                break;
+            } else if (nums[mid] < target){
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        } 
+        if (left <= right) {
+            left = mid;
+            right = mid;
+            while (left >= 0 && nums[left] == target) {
+                left --;
+            }
+            res[0] = left + 1;
+            while (right < nums.length && nums[right] == target) {
+                right ++;
+            }
+            res[1] = right - 1;
+        }
+        return res;
+    }
+    */
+    // 官方的二分查找：
+    public int[] searchRange(int[] nums, int target) {
+        // 为true时，当nums[mid] 与target相等，右指针会向左移动，因此最后肯定会停在第一个与target相等的数的左边一位
+        // 因此最终的ans = mid 就是第一个与target相等的数
+        int leftIdx = binarySearch(nums, target, true);
+        // 为false时，当nums[mid] 与target相等，左指针会向右移动，符合nums[mid] > target时，ans=mid可以确定的是ans
+        // 指的位置肯定是最后一个相等数的右边一位，如果这个条件始终没进入，由于初始时ans为nums.length，因此也成立。
+        int rightIdx = binarySearch(nums, target, false) - 1;
+        if (leftIdx <= rightIdx && rightIdx < nums.length && nums[leftIdx] == target && nums[rightIdx] == target) {
+            return new int[]{leftIdx, rightIdx};
+        } 
+        return new int[]{-1, -1};
+    }
+
+    public int binarySearch(int[] nums, int target, boolean lower) {
+        int left = 0, right = nums.length - 1, ans = nums.length;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > target || (lower && nums[mid] >= target)) {
+                right = mid - 1;
+                ans = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
+}
+

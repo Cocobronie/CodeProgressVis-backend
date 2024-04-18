@@ -1,0 +1,62 @@
+python
+class Solution(object):
+    def searchRange(self, nums, target):
+        if not nums:
+            return [-1, -1]
+
+        fp = self.findfirstposition(nums, target)
+        lp = self.findlastposition(nums, target)
+
+        if fp == -1:
+            return [-1, -1]
+
+        return [fp, lp]
+
+    def findfirstposition(self, nums, target):
+        """
+        mid 用(l + r) / 2计算时，如果程序中有l = mid ,程序会陷入死循环。
+        mid 用(l + r + 1) / 2计算时，如果程序中有r = mid ,程序会陷入死循环。
+        """
+        l = 0
+        r = len(nums) - 1
+
+        while l < r:
+            mid = (r + l) / 2
+            if nums[mid] > target:
+                # search in [l, mid-1]
+                r = mid - 1
+            elif nums[mid] < target:
+                # search in [mid+1, r]
+                l = mid + 1
+            elif target == nums[mid]:
+                # search in [l, mid]
+                r = mid
+
+        if nums[l] == target:
+            return l
+        else:
+            return -1
+
+
+    def findlastposition(self, nums, target):
+        """
+        mid 用(l + r) / 2计算时，如果程序中有l = mid ,程序会陷入死循环。
+        mid 用(l + r + 1) / 2计算时，如果程序中有r = mid ,程序会陷入死循环。
+        """
+        l = 0
+        r = len(nums) - 1
+
+        while l < r:
+            mid = (l + r + 1) / 2
+            if nums[mid] > target:
+                # search in [l, mid-1]
+                r = mid - 1
+            elif nums[mid] < target:
+                # search in [mid+1, r]
+                l = mid + 1
+            elif target == nums[mid]:
+                # search in [l, mid]
+                l = mid
+
+        return l
+

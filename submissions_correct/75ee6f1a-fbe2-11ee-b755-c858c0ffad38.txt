@@ -1,0 +1,57 @@
+java
+class Solution {
+
+    private int res[];
+
+    public int[] searchRange(int[] nums, int target) {
+        res = new int[2];
+        res[0] = nums.length;
+        res[1] = -1;
+        if(nums.length == 0) {
+            res[0] = -1;
+            return res;
+        }
+        twoSearch(nums, 0, nums.length - 1, target);
+        if(res[1] == -1) {
+            res[0] = -1;
+        }
+        return res;
+    }
+
+    private void twoSearch(int[] nums, int start, int end, int target) {
+        int mid = (start + end) / 2;
+        if(nums[start] == target) {
+            if(res[0] > start)
+                res[0] = start;
+            if(res[1] < start)
+                res[1] = start;
+        }
+        if (nums[end] == target) {
+            if(res[0] > end)
+                res[0] = end;
+            if(res[1] < end)
+                res[1] = end;
+        }
+        if(nums[mid] == target) {
+            if(res[0] > mid)
+                res[0] = mid;
+            if(res[1] < mid)
+                res[1] = mid;
+        }
+
+        if(mid == start || mid == end)
+            return;
+
+        if(nums[mid] > target) {
+            twoSearch(nums, start, mid, target);
+        } else if(nums[mid] < target) {
+            twoSearch(nums, mid, end, target);
+        } else {
+            if(nums[end] > target)
+                twoSearch(nums, mid, end, target);
+            if(nums[start] < target)
+                twoSearch(nums, start, mid, target);
+        }
+    }
+}
+

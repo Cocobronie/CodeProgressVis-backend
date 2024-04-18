@@ -1,0 +1,48 @@
+swift
+class Solution {
+    func searchRange(_ nums: [Int], _ target: Int) -> [Int] {
+        var result = [-1, -1]
+        guard nums.count > 0 else { return result }
+        var left = 0
+        var right = nums.count - 1
+        
+        /// 第一遍找开始节点
+        while left <= right {
+            if nums[(left + right) / 2] >= target {
+                right = (left + right) / 2
+            } else {
+                left = (left + right) / 2
+            }
+            
+            if right - left <= 1 {
+                break
+            }
+        }
+        
+        if nums[right] == target || nums[left] == target {
+            result[0] = nums[left] == target ? left : right
+            
+            /// 第二遍遍找结束节点
+            left = 0
+            right = nums.count - 1
+            while left <= right {
+                if nums[(left + right) / 2] > target {
+                    right = (left + right) / 2
+                } else {
+                    left = (left + right) / 2
+                }
+                
+                if right - left <= 1 {
+                    break
+                }
+            }
+            
+            if nums[right] == target || nums[left] == target {
+                result[1] = nums[right] == target ? right : left
+            }
+        }
+        
+        return result
+    }
+}
+

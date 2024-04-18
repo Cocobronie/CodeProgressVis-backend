@@ -1,0 +1,44 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums == null || nums.length == 0){
+            return new int[]{-1,-1};
+        }
+        int n = nums.length;
+        int left = 0, right = n - 1;
+        int[] res = {-1,-1};
+        while(left < right){
+            int mid = left+right>>1;
+            // 如果中间值等于目标值，那么左边界在[left,mid]
+            // 如果中间值大于目标值，那么左边界在[left,mid-1]   ===>  [left,mid][mid+1,right]
+            // 如果中间值小于目标值，那么左边界在[mid+1,right]
+            if(nums[mid] >= target){
+                right = mid;
+            }else{
+                left = mid + 1;
+            }
+        }
+        if(nums[left] != target){
+            return res;
+        }
+        res[0] = left;
+        left = 0;
+        right = n - 1;
+        while(left < right){
+            // 由于是向下取整，当left+1 == right的时候，mid = left,这个时候我们一直更新left = mid,
+            // 其实是left没有发生变化，所以陷入了死循环中
+            int mid = left+right+1>>1;
+            // 如果中间值等于目标值，那么说明右边界在[mid,right]
+            // 如果中间值小于目标值，说明右边界在[mid+1,right]之中 ===> [left,mid-1][mid,right]
+            // 如果中间值大于目标值，说明右边界在[left,mid-1]之中
+            if(nums[mid] <= target){
+                left = mid;
+            }else {
+                right = mid - 1;
+            }
+        }
+        res[1] = left;
+        return res;
+    }
+}
+

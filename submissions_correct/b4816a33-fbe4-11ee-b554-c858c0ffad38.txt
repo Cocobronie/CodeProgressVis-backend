@@ -1,0 +1,38 @@
+cpp
+class Solution {
+public:
+//解释一下为什么视频里在确定右边界时要+1，因为不加1的话在[5,7,7,8,8,10]时，最后left = 4,right = 5，这样确定的mid还是4，就会一直卡在left=mid，形成死循环，但是+1之后就可以顺利跳出
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res;
+        if(nums.size() == 0)
+            return {-1, -1};
+        int left = 0, right = nums.size() - 1;
+        //找左端点
+        while(left < right)
+        {
+            int middle = left + (right - left) / 2;
+            if(target > nums[middle])
+                left = middle + 1;
+            else
+                right = middle;
+        }
+        int i = left;
+        if(nums[i] != target)
+            return {-1, -1};
+        left = 0, right = nums.size() - 1;
+        //找右端点
+        while(left < right)
+        {
+            int middle = left + (right - left) / 2 + 1;
+            if(target < nums[middle])
+                right = middle - 1;
+            else
+                left = middle;
+        }
+        int j = right;
+        res.push_back(i);
+        res.push_back(j);
+        return res;
+    }
+};
+

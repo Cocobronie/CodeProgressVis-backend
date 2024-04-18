@@ -1,0 +1,415 @@
+py [sol-Python3]
+# lower_bound 返回最小的满足 nums[i] >= target 的 i
+# 如果数组为空，或者所有数都 < target，则返回 len(nums)
+# 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+# 闭区间写法
+def lower_bound(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1  # 闭区间 [left, right]
+    while left <= right:  # 区间不为空
+        # 循环不变量：
+        # nums[left-1] < target
+        # nums[right+1] >= target
+        mid = (left + right) // 2
+        if nums[mid] < target:
+            left = mid + 1  # 范围缩小到 [mid+1, right]
+        else:
+            right = mid - 1  # 范围缩小到 [left, mid-1]
+    return left
+
+# 左闭右开区间写法
+def lower_bound2(nums: List[int], target: int) -> int:
+    left = 0
+    right = len(nums)  # 左闭右开区间 [left, right)
+    while left < right:  # 区间不为空
+        # 循环不变量：
+        # nums[left-1] < target
+        # nums[right] >= target
+        mid = (left + right) // 2
+        if nums[mid] < target:
+            left = mid + 1  # 范围缩小到 [mid+1, right)
+        else:
+            right = mid  # 范围缩小到 [left, mid)
+    return left  # 返回 left 还是 right 都行，因为循环结束后 left == right
+
+# 开区间写法
+def lower_bound3(nums: List[int], target: int) -> int:
+    left, right = -1, len(nums)  # 开区间 (left, right)
+    while left + 1 < right:  # 区间不为空
+        mid = (left + right) // 2
+        # 循环不变量：
+        # nums[left] < target
+        # nums[right] >= target
+        if nums[mid] < target:
+            left = mid  # 范围缩小到 (mid, right)
+        else:
+            right = mid  # 范围缩小到 (left, mid)
+    return right
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        start = lower_bound(nums, target)  # 选择其中一种写法即可
+        if start == len(nums) or nums[start] != target:
+            return [-1, -1]  # nums 中没有 target
+        # 如果 start 存在，那么 end 必定存在
+        end = lower_bound(nums, target + 1) - 1
+        return [start, end]
+
+
+
+
+java [sol-Java]
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int start = lowerBound(nums, target); // 选择其中一种写法即可
+        if (start == nums.length || nums[start] != target) {
+            return new int[]{-1, -1}; // nums 中没有 target
+        }
+        // 如果 start 存在，那么 end 必定存在
+        int end = lowerBound(nums, target + 1) - 1;
+        return new int[]{start, end};
+    }
+
+    // lowerBound 返回最小的满足 nums[i] >= target 的 i
+    // 如果数组为空，或者所有数都 < target，则返回 nums.length
+    // 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+    // 闭区间写法
+    private int lowerBound(int[] nums, int target) {
+        int left = 0, right = nums.length - 1; // 闭区间 [left, right]
+        while (left <= right) { // 区间不为空
+            // 循环不变量：
+            // nums[left-1] < target
+            // nums[right+1] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1; // 范围缩小到 [mid+1, right]
+            } else {
+                right = mid - 1; // 范围缩小到 [left, mid-1]
+            }
+        }
+        return left;
+    }
+
+    // 左闭右开区间写法
+    private int lowerBound2(int[] nums, int target) {
+        int left = 0, right = nums.length; // 左闭右开区间 [left, right)
+        while (left < right) { // 区间不为空
+            // 循环不变量：
+            // nums[left-1] < target
+            // nums[right] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1; // 范围缩小到 [mid+1, right)
+            } else {
+                right = mid; // 范围缩小到 [left, mid)
+            }
+        }
+        return left; // 返回 left 还是 right 都行，因为循环结束后 left == right
+    }
+
+    // 开区间写法
+    private int lowerBound3(int[] nums, int target) {
+        int left = -1, right = nums.length; // 开区间 (left, right)
+        while (left + 1 < right) { // 区间不为空
+            // 循环不变量：
+            // nums[left] < target
+            // nums[right] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid; // 范围缩小到 (mid, right)
+            } else {
+                right = mid; // 范围缩小到 (left, mid)
+            }
+        }
+        return right;
+    }
+}
+
+
+
+
+cpp [sol-C++]
+class Solution {
+    // lower_bound 返回最小的满足 nums[i] >= target 的 i
+    // 如果数组为空，或者所有数都 < target，则返回 nums.size()
+    // 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+    // 闭区间写法
+    int lower_bound(vector<int> &nums, int target) {
+        int left = 0, right = (int) nums.size() - 1; // 闭区间 [left, right]
+        while (left <= right) { // 区间不为空
+            // 循环不变量：
+            // nums[left-1] < target
+            // nums[right+1] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1; // 范围缩小到 [mid+1, right]
+            } else {
+                right = mid - 1; // 范围缩小到 [left, mid-1]
+            }
+        }
+        return left;
+    }
+
+    // 左闭右开区间写法
+    int lower_bound2(vector<int> &nums, int target) {
+        int left = 0, right = nums.size(); // 左闭右开区间 [left, right)
+        while (left < right) { // 区间不为空
+            // 循环不变量：
+            // nums[left-1] < target
+            // nums[right] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1; // 范围缩小到 [mid+1, right)
+            } else {
+                right = mid; // 范围缩小到 [left, mid)
+            }
+        }
+        return left; // 返回 left 还是 right 都行，因为循环结束后 left == right
+    }
+
+    // 开区间写法
+    int lower_bound3(vector<int> &nums, int target) {
+        int left = -1, right = nums.size(); // 开区间 (left, right)
+        while (left + 1 < right) { // 区间不为空
+            // 循环不变量：
+            // nums[left] < target
+            // nums[right] >= target
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid; // 范围缩小到 (mid, right)
+            } else {
+                right = mid; // 范围缩小到 (left, mid)
+            }
+            // 也可以这样写
+            // (nums[mid] < target ? left : right) = mid;
+        }
+        return right;
+    }
+
+public:
+    vector<int> searchRange(vector<int> &nums, int target) {
+        int start = lower_bound(nums, target); // 使用其中一种写法即可
+        if (start == nums.size() || nums[start] != target) {
+            return {-1, -1}; // nums 中没有 target
+        }
+        // 如果 start 存在，那么 end 必定存在
+        int end = lower_bound(nums, target + 1) - 1;
+        return {start, end};
+    }
+};
+
+
+
+
+c [sol-C]
+// lowerBound 返回最小的满足 nums[i] >= target 的 i
+// 如果数组为空，或者所有数都 < target，则返回 len(nums)
+// 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+// 闭区间写法
+int lowerBound(int *nums, int numsSize, int target) {
+    int left = 0, right = numsSize - 1; // 闭区间 [left, right]
+    while (left <= right) { // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right+1] >= target
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1; // 范围缩小到 [mid+1, right]
+        } else {
+            right = mid - 1; // 范围缩小到 [left, mid-1]
+        }
+    }
+    return left;
+}
+
+// 左闭右开区间写法
+int lowerBound2(int *nums, int numsSize, int target) {
+    int left = 0, right = numsSize; // 左闭右开区间 [left, right)
+    while (left < right) { // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right] >= target
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1; // 范围缩小到 [mid+1, right)
+        } else {
+            right = mid; // 范围缩小到 [left, mid)
+        }
+    }
+    return left; // 返回 left 还是 right 都行，因为循环结束后 left == right
+}
+
+// 开区间写法
+int lowerBound3(int *nums, int numsSize, int target) {
+    int left = -1, right = numsSize; // 开区间 (left, right)
+    while (left + 1 < right) { // 区间不为空
+        // 循环不变量：
+        // nums[left] < target
+        // nums[right] >= target
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid; // 范围缩小到 (mid, right)
+        } else {
+            right = mid; // 范围缩小到 (left, mid)
+        }
+    }
+    return right;
+}
+
+int *searchRange(int *nums, int numsSize, int target, int *returnSize) {
+    int *ans = malloc(2 * sizeof(int));
+    *returnSize = 2;
+    int start = lowerBound(nums, numsSize, target); // 使用其中一种写法即可
+    if (start == numsSize || nums[start] != target) {
+        ans[0] = -1; // nums 中没有 target
+        ans[1] = -1;
+        return ans;
+    }
+    // 如果 start 存在，那么 end 必定存在
+    int end = lowerBound(nums, numsSize, target + 1) - 1;
+    ans[0] = start;
+    ans[1] = end;
+    return ans;
+}
+
+
+
+
+go [sol-Go]
+// lowerBound 返回最小的满足 nums[i] >= target 的 i
+// 如果数组为空，或者所有数都 < target，则返回 len(nums)
+// 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+// 闭区间写法
+func lowerBound(nums []int, target int) int {
+    left, right := 0, len(nums)-1 // 闭区间 [left, right]
+    for left <= right {           // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right+1] >= target
+        mid := left + (right-left)/2
+        if nums[mid] < target {
+            left = mid + 1 // 范围缩小到 [mid+1, right]
+        } else {
+            right = mid - 1 // 范围缩小到 [left, mid-1]
+        }
+    }
+    return left
+}
+
+// 左闭右开区间写法
+func lowerBound2(nums []int, target int) int {
+    left, right := 0, len(nums) // 左闭右开区间 [left, right)
+    for left < right {          // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right] >= target
+        mid := left + (right-left)/2
+        if nums[mid] < target {
+            left = mid + 1 // 范围缩小到 [mid+1, right)
+        } else {
+            right = mid // 范围缩小到 [left, mid)
+        }
+    }
+    return left // 返回 left 还是 right 都行，因为循环结束后 left == right
+}
+
+// 开区间写法
+func lowerBound3(nums []int, target int) int {
+    left, right := -1, len(nums) // 开区间 (left, right)
+    for left+1 < right {         // 区间不为空
+        // 循环不变量：
+        // nums[left] < target
+        // nums[right] >= target
+        mid := left + (right-left)/2
+        if nums[mid] < target {
+            left = mid // 范围缩小到 (mid, right)
+        } else {
+            right = mid // 范围缩小到 (left, mid)
+        }
+    }
+    return right
+}
+
+func searchRange(nums []int, target int) []int {
+    start := lowerBound(nums, target) // 使用其中一种写法即可
+    if start == len(nums) || nums[start] != target {
+        return []int{-1, -1} // nums 中没有 target
+    }
+    // 如果 start 存在，那么 end 必定存在
+    end := lowerBound(nums, target+1) - 1
+    return []int{start, end}
+}
+
+
+
+
+js [sol-JavaScript]
+// lowerBound 返回最小的满足 nums[i] >= target 的 i
+// 如果数组为空，或者所有数都 < target，则返回 nums.length
+// 要求 nums 是非递减的，即 nums[i] <= nums[i + 1]
+
+// 闭区间写法
+var lowerBound = function (nums, target) {
+    let left = 0, right = nums.length - 1; // 闭区间 [left, right]
+    while (left <= right) { // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right+1] >= target
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] < target) {
+            left = mid + 1; // 范围缩小到 [mid+1, right]
+        } else {
+            right = mid - 1; // 范围缩小到 [left, mid-1]
+        }
+    }
+    return left;
+}
+
+// 左闭右开区间写法
+var lowerBound2 = function (nums, target) {
+    let left = 0, right = nums.length; // 左闭右开区间 [left, right)
+    while (left < right) { // 区间不为空
+        // 循环不变量：
+        // nums[left-1] < target
+        // nums[right] >= target
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] < target) {
+            left = mid + 1; // 范围缩小到 [mid+1, right)
+        } else {
+            right = mid; // 范围缩小到 [left, mid)
+        }
+    }
+    return left; // 返回 left 还是 right 都行，因为循环结束后 left == right
+}
+
+// 开区间写法
+var lowerBound3 = function (nums, target) {
+    let left = -1, right = nums.length; // 开区间 (left, right)
+    while (left + 1 < right) { // 区间不为空
+        // 循环不变量：
+        // nums[left] < target
+        // nums[right] >= target
+        const mid = Math.floor((left + right) / 2);
+        if (nums[mid] < target) {
+            left = mid; // 范围缩小到 (mid, right)
+        } else {
+            right = mid; // 范围缩小到 (left, mid)
+        }
+    }
+    return right;
+}
+
+var searchRange = function (nums, target) {
+    const start = lowerBound(nums, target); // 选择其中一种写法即可
+    if (start === nums.length || nums[start] !== target) {
+        return [-1, -1]; // nums 中没有 target
+    }
+    // 如果 start 存在，那么 end 必定存在
+    const end = lowerBound(nums, target + 1) - 1;
+    return [start, end];
+};
+

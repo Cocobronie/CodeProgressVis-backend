@@ -1,0 +1,52 @@
+java
+class Solution {
+    class Status{
+        public int left;
+        public int right;
+        public int index;
+
+        public Status(int left, int right, int index) {
+            this.left = left;
+            this.right = right;
+            this.index = index;
+        }
+    }
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length==0)return new int[]{-1,-1};
+        Status status=searchOne(nums,0,nums.length-1,target);
+        if(status.left==-1){
+            return new int[]{-1,-1};
+        }
+        int left,right;
+        for(left=status.index-1;left>=status.left;left--){
+            if(nums[left]!=target){
+                break;
+            }
+        }
+        left++;
+        for(right=status.index+1;right<=status.right;right++){
+            if(nums[right]!=target){
+                break;
+            }
+        }
+        right--;
+        return new int[]{left,right};
+    }
+    public Status searchOne(int[] nums,int left,int right,int target){
+        if(left==right){
+            if(nums[left]==target)return new Status(left,right,left);
+            else return new Status(-1,-1,left);
+        }
+        int mid=(left+right)>>1;
+        if(nums[mid]==target){
+            return new Status(left,right,mid);
+        }
+        else if(nums[mid]<target){
+            return searchOne(nums,mid+1,right,target);
+        }
+        else {
+            return searchOne(nums,left,mid,target);
+        }
+    }
+}
+

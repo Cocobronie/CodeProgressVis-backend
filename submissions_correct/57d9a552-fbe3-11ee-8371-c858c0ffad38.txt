@@ -1,0 +1,50 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = new int[]{-1, -1};
+
+        //边界条件处理
+        if (nums == null || nums.length == 0) {
+            return ans;
+        }
+
+        //边界条件处理
+        if (nums.length == 1) {
+            return nums[0] == target ? new int[]{0, 0} : ans;
+        }
+
+        //二分法找到目标值
+        int left = 0, right = nums.length - 1;
+        int index = -1;
+        while (left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if (nums[mid] == target) {
+                index = mid;
+                break;
+            }
+            if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        
+        //如果index == -1，表示不存在目标值，那么直接返回ans即可
+        //如果存在，那么就沿着目标值的位置，分别向左、向右寻找不等于目标值的下标，即找到了开始位置和结束位置。
+        if (index != -1) {
+            int start = index, end = index;
+            while (start - 1 >= 0 && nums[start - 1] == target) {
+                start--;
+            }
+            while (end + 1 <= nums.length - 1 && nums[end + 1] == target) {
+                end++;
+            }
+            ans[0] = start;
+            ans[1] = end;
+        }
+        return ans;
+    }
+}
+
+
+

@@ -1,0 +1,50 @@
+
+var searchRange_1 = function(nums, target) { //循环
+   let tarArr = [-1, -1];
+	 for(let i=0; i < nums.length; i++){
+		 if(nums[i] == target){
+			 if(tarArr[0] == -1){
+				  tarArr=[i,i];
+			 }else{
+				 tarArr[1] = i
+			 }
+		 }else if(nums[i] > target){
+			 return tarArr;
+		 }
+	 }
+	 return tarArr;
+};
+
+
+第二种：二分查找
+![image.png](https://pic.leetcode-cn.com/1620468415-pyMleS-image.png)
+
+
+
+var searchRange = function(nums, target) { //二分
+	 var findArr = function(arr, no){
+		 let i = no, j = arr.length; 
+		 if(arr[i]>target || arr[j-1]<target) return -1;
+		 while(i < j ){
+			  let midIdx = Math.ceil((j+i)/2);
+			  let midNum = arr[midIdx]; 
+				if(midNum == target) {return midIdx}
+				else if(midNum < target) { i = midIdx}
+				else if(midNum > target) { j = midIdx}
+				if(j - i == 1){ 
+					if(arr[i]==target) return i;
+					else return -1;
+				}
+		 }
+		 return -1;
+	 }
+	 let idx = findArr(nums,0);
+	 if(idx==-1) return [-1,-1];
+	 let q = idx, w = idx, tarArr = [idx,idx];
+	 while(nums[q]==target || nums[w]==target){
+			if(nums[q] == target){ tarArr[0]=q; q--;}
+			if(nums[w] == target){ tarArr[1]=w; w++;}
+	 }
+	 return tarArr;
+}
+

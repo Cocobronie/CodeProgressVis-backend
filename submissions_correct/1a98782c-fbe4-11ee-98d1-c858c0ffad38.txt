@@ -1,0 +1,43 @@
+cpp
+class Solution {
+private:
+    int binarySearch(vector<int> &arr,int target){
+        int low=0;
+        int high=arr.size()-1;
+        while(low<=high){
+            int mid=floor((low+high)/2);
+            if(arr[mid]==target)
+                return mid;
+            else if(arr[mid]<target)
+                low=mid+1;
+            else
+                high=mid-1;
+        }
+        return -1;
+    }
+public:
+//34. 在排序数组中查找元素的第一个和最后一个位置
+    //需要找到下标(手撕二分查找),可能存在多个，需要找到之后在左右检索。
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2,-1);
+        int location = binarySearch(nums, target);
+        if (location == -1)
+            return res;
+        int left = location;
+        int right = location;
+        while (left-1 >= 0) {
+            if (nums[left-1] != target)
+                break;
+            --left;//如果相等继续向左扩展
+        }
+        while (right+1 < nums.size()) {
+            if (nums[right+1] != target)
+                break;
+            ++right;
+        }
+        res[0] = left;
+        res[1] = right;
+        return res;
+    }
+};
+

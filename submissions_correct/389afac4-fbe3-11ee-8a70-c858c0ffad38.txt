@@ -1,0 +1,100 @@
+cpp
+//解法一：暴力解法。正序遍历 nums 数组，找到目标值出现的第一个及最后一个位置索引。
+vector<int> searchRange(vector<int>& nums, int target)
+{
+	vector<int> ret(2, -1);
+	int n = nums.size();
+	bool hasFind = false;
+	for (int i = 0; i < n; i++)
+	{
+		if (nums[i] == target && !hasFind) //找到目标值出现的起始位置
+		{
+			ret[0] = i;
+			hasFind = true;
+		}
+		if (nums[i] != target && hasFind) //找到目标值出现的结束位置
+		{
+			ret[1] = i - 1;
+			return ret;
+		}
+	}
+	if (ret[0] != -1 && ret[1] == -1) //处理 nums 数组最后一个元素是目标值的情况
+		ret[1] = n - 1;
+	return ret;
+}
+
+
+解法二：二分查找。
+
+cpp
+class Solution {
+public:
+
+    //解法二：二分查找。使用二分查找法分别找到目标值出现的第一个及最后一个位置索引。
+    vector<int> searchRange(vector<int>& nums, int target)
+    {
+        vector<int> ret(2, -1);
+        int n = nums.size();
+        if (n == 0)
+            return ret;
+
+        //找到目标值出现的第一个位置
+        int left = 0;
+        int right = n - 1;
+        int mid;
+        while (left < right) //二分查找：查找区域 [left,right]
+        {
+            mid = (left + right) / 2;
+            if (nums[mid] < target) //目标值只能位于 [mid + 1,right] 中
+                left = mid + 1;
+            else //目标值只能位于 [left,mid] 中
+                right = mid;
+        }
+
+        if (nums[left] != target) //处理 nums 数组中不包含目标值的情况
+            return ret;
+        ret[0] = left;
+
+        //找到目标值出现的最后一个位置
+        left = 0;
+        right = n - 1;
+        while (left < right)
+        {
+            mid = (left + right + 1) / 2;
+            if (nums[mid] <= target) //目标值只能位于 [mid,right] 中
+                left = mid;
+            else //目标值只能位于 [left,mid - 1] 中
+                right = mid - 1;
+        }
+        ret[1] = left;
+        return ret;
+    }
+};
+
+
+### 二分查找模板
+模板一：根据 mid 值，选取 [left,mid] 或 [mid + 1,right] 。使用此模板，即 mid 只能与 left 分在一起。
+
+cpp
+while (left < right) //二分查找：查找区域 [left,right]
+{
+    mid = (left + right) / 2;
+    if ... //目标值只能位于 [left,mid] 中
+        right = mid;
+    else //目标值只能位于 [mid + 1,right] 中
+        left = mid + 1;
+}
+
+
+模板二：根据 mid 值，选取 [left,mid - 1] 或 [mid,right] 。使用此模板，即 mid 只能与 right 分在一起。
+
+cpp
+while (left < right)
+{
+    mid = (left + right + 1) / 2;
+    if ... //目标值只能位于 [left,mid - 1] 中
+        right = mid - 1;
+    else //目标值只能位于 [mid,right] 中
+        left = mid;
+}
+

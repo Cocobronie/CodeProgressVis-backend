@@ -1,0 +1,55 @@
+java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length == 0) return new int[]{-1,-1};
+
+        int left = getLow(nums,target);
+        int right = getHigh(nums,target);
+
+        // 判断left和right是否满足区间约束，平且判断最终是否能找到target
+        if(left>=0 && left <= nums.length-1 && right <= nums.length-1 && nums[left] == target && nums[right] == target){
+            return new int[]{left,right};
+        }
+
+        // 这是target不存在的情况
+        return new int[]{-1,-1};
+    }
+
+    // 寻找target的下界
+    int getLow(int[] nums,int target){
+        int left = 0, right = nums.length-1;
+        while(left <= right){
+            int mid = left + (right - left) / 2;
+            // 如果发现target == nums[mid]要继续向左边的区间搜索
+            // 因为左侧区间还可能存在等于target的元素
+            // 就算不在存在等于target的元素，最终也因为区间不断向右侧收缩而让left又重新指向了target最左侧的索引
+            // 如果最后找不到，也没关系，因为主函数还会做一次最终判断
+            if(target <= nums[mid]){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+        // 因为如果左侧区间不存在target，left指针一定会一直的向右侧移动，所以只要target存在最终left还是会指向了target
+        return left;
+    }
+
+    int getHigh(int nums[], int target){
+        int left = 0, right = nums.length-1;
+        while(left <= right){
+            int mid = left + (right - left) /2;
+            // 如果发现target == nums[target]要继续向右边区间搜索，
+            // 因为右侧的区间还可能存在等于target的元素，
+            // 就算不存在等于target的元素，最终也因为区间不断向左侧收缩，又让right指针重新指向了最右侧的target
+            // 如果最后找不到，也没有关系，因为主函数还会做一次最终的判断
+            if(target >= nums[mid]){
+                left = mid + 1;
+            }else{
+                right = mid - 1;
+            }
+        }
+        // 因为如果右侧区间不存在target，right指针一定会一直的向左移动，所以只要target存在，最终right还是会指向target
+        return right;
+    }
+}
+

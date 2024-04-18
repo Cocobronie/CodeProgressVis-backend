@@ -1,0 +1,60 @@
+cpp
+class Solution {
+public:
+	vector<int> searchRange(vector<int>& nums, int target) {
+        if (nums.size() == 0)
+            {return vector<int> {-1,-1};}
+		int right = nums.size() - 1;
+		int left = 0;
+		int mid = right / 2;
+		int output_right = -1;
+		int output_left = -1;
+		while (left < right)
+		{
+			if (target <= nums[mid])
+			{
+				right = mid;
+				mid = (left + right) / 2;
+			}
+			else
+			{
+				left = mid + 1;
+				mid = (left + right) / 2;
+			}
+		}
+			if (nums[mid] == target)
+			{
+				output_left = mid;
+			}
+			else{ output_left = -1; }
+
+		right = nums.size() - 1;
+		left = 0;
+		mid = right / 2;
+		while (left < right)
+		{
+			if (mid + 1 <= nums.size() - 1)
+			{
+				if (target >= nums[mid + 1])
+				{
+					left = mid + 1;
+					mid = (left + right) / 2;
+				}
+				else
+				{
+					right = mid;
+					mid = (left + right) / 2;
+				}
+			}
+			else { break; }
+		}
+			if (nums[mid] == target)
+			{
+				output_right = mid;
+			}
+			else {  output_right = -1; }
+		vector<int> result = {output_left,output_right};
+		return result;
+		}
+};
+
