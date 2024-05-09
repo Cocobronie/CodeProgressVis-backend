@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-
+import random
 from submissions import correct_count, correct_error_count
 from tools.tools import read_file_content
 
 app = Flask(__name__)
 # 数据库连接
-uri = 'mysql+pymysql://root:root@127.0.0.1:3306/CodeProgressVis'
+uri = 'mysql+pymysql://root:root@127.0.0.1:3306/CodeProgressVis?charset=utf8mb4'
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
@@ -14,12 +14,16 @@ db = SQLAlchemy(app)
 class Submission(db.Model):
     __tablename__ = 'submissions'
     id = db.Column(db.String(255), primary_key=True)
+    sId = db.Column(db.Integer)
+    sName = db.Column(db.String(255))
     x = db.Column(db.Float)
     y = db.Column(db.Float)
 
     def to_dict(self):
         return {
             'id': self.id,
+            'sId': self.sId,
+            'sName': self.sName,
             'x': self.x,
             'y': self.y
         }
@@ -31,17 +35,32 @@ def add_submissions_to_db(submissions_list):
         for submission_dict in submissions_list:
             submission = Submission(
                 id=submission_dict['id'],
+                sId=random.randint(1, 10),
+                sName='张三',
                 x=submission_dict['x'],
                 y=submission_dict.get('y', None)  # 如果'y'不存在，则为None
             )
             db.session.add(submission)
         db.session.commit()  # 提交所有变更到数据库
-
+# 根据id查询sId
+def get_sid_by_id(submission_id):
+    # 假设 submission_id 是您想要查询的 id 值
+    # 使用 SQLAlchemy 的 session 来查询数据库
+    submission = Submission.query.filter_by(id=submission_id).first()
+    if submission:
+        # 如果找到了匹配的记录，返回
+        return submission
+    else:
+        # 如果没有找到匹配的记录，返回 None 或其他适当的值
+        return None
 
 # 获取全部的Submissions
 def getSubmissions():
-    # submissions_list = correct_error_count('cpp')
-    # add_submissions_to_db(submissions_list)
+    # 下面的四行代码只需要运行一次：作用将爬虫计算的数据存储到数据库，不过只用存储一次
+    # submissions_list_error = correct_error_count('cpp')
+    # add_submissions_to_db(submissions_list_error)
+    # submissions_list_correct = correct_count('cpp')
+    # add_submissions_to_db(submissions_list_correct)
     submissions = Submission.query.all()
     submissions_dicts = [submission.to_dict() for submission in submissions]
     for s in submissions_dicts:
@@ -138,10 +157,21 @@ def submissions():
 def submissionsByid():
     id = request.args.get('id')  # 获取名为 'id' 的查询参数
     # filename = 'dataset/{id}.txt'.format(id=id)  # 替换为你的文件名
+    # 从数据库中查询学生ID
+    submission = get_sid_by_id(id)
+    print(submission)
     content = read_file_content(id, 'submissions_error')
     if (content == None):
         content = read_file_content(id, 'submissions_correct')
-    return jsonify(content)
+    data = {
+        'sId': submission.sId,
+        'sName':submission.sName,
+        'content': content
+    }
+    print(data)
+    return jsonify(data)
+
+
 
 
 if __name__ == '__main__':
