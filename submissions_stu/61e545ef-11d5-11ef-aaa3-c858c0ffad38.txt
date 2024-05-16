@@ -1,0 +1,44 @@
+cpp
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target)
+    {
+        if(nums.size() == 0){return {-1,-1};}
+        int left = 0;
+        int right =nums.size()-1;
+        int mid =0;
+        bool find = false;
+        while(left<= right)
+        {
+            mid = left + (right - left) /2;
+            if(nums[mid] == target){find = true;break;}
+            if(nums[mid]> target){ right = mid-1;}
+            else{left = mid+1;}
+        }
+
+        if(find)
+        {
+            int i = mid;
+            int j = mid;
+            while(i>0)
+            {
+                //比如1进来了
+                /*先判断左边一项合理不，合理再判断左边一项是不是target*/
+                if(i-1 >= 0 && nums[i-1] == target){i--;}
+                else{break;}
+            }
+            while(j < nums.size()-1)
+            {
+                if( j + 1 <= nums.size()-1 && nums[j+1] == target){j++;}
+                else{break;}
+            }
+            return {i,j};
+        }
+        else
+        {
+            return {-1,-1};
+        }
+       
+    }
+};
+

@@ -8,7 +8,6 @@ import shutil
 from tools.normolize import normalize_code
 from tools.tools import read_file_content
 
-
 class Submission:
     def __init__(self, id_value: str, x_value: float,y_value: float):
         self.id = id_value
@@ -129,7 +128,8 @@ def correct_count(language):
             except Exception as e:
                 print(f"Error reading file {filename}: {e}")
     submissions_dicts = [submission.to_dict() for submission in submissions]
-    print(submissions_dicts)
+    # print("submissions_dicts:")
+    # print(submissions_dicts)
     return submissions_dicts
 
 # 找到差值最小的元素
@@ -146,6 +146,19 @@ def find_closest_y_value_element(array, target_y):
             closest_element = element  # 更新最接近的元素
 
     return closest_element
+
+# 所有 code 的基准值：clean_correct文件夹中第一个文件的代码
+def getBase(language):
+    # 基准值：第一个文件的代码
+    target_dir = 'clean_correct'
+    language_dir = os.path.join(target_dir, language)
+    base = find_java_file_content(language_dir, language)
+    if base:
+        print(base)
+        return base
+    else:
+        print("No file with 'Java' in the first line was found.")
+
 
 # 错解文件处理
 def error_count(language,correct_submission):
@@ -176,12 +189,18 @@ def error_count(language,correct_submission):
     submissions_dicts = [submission.to_dict() for submission in submissions]
     return submissions_dicts
 
-# 计算横坐标
-
-
-# 存入数据库
-
-
+# 计算单个提交代码的 x,y 坐标
+def xy_count(language,code):
+    # 基准值：第一个文件的代码
+    target_dir = 'clean_correct'
+    language_dir = os.path.join(target_dir, language)
+    base = getBase(language)
+    y = round(calculate_cosine_similarity(base, code) * 100, 4)
+    correct_submission = correct_count(language)
+    solution = find_closest_y_value_element(correct_submission, y)
+    print("solution:" + str(solution))
+    x = round(calculate_cosine_similarity(read_file_content(solution['id'], language_dir), code) * 100, 4)
+    return [x,y]
 
 
 # 删除指定目录
@@ -206,6 +225,8 @@ def correct_error_count(language):
     error_submission = error_count(language,correct_submission)
     print(error_submission)
     return error_submission
+
+
 def main():
     # clear_directory('submissions_correct')
     # clear_directory('submissions_error')

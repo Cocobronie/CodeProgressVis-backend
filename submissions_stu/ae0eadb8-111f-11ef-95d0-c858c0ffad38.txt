@@ -1,0 +1,19 @@
+class Solution {
+public:
+    //logN就是要二分的意思，其实就是二分找左右端点（check条件）
+    vector<int> searchRange(vector<int>& nums, int target) {
+        //corner case
+        if(nums.empty()) return{-1,-1};
+        int l = 0, r = nums.size()-1;
+        while(l<r){
+            int mid=(l+r)>>1;
+            if(nums[mid]>=target) r=mid;
+            else l=mid+1;
+        }
+        cout<<l;
+        cout<<r;
+        return {left,r};
+    }
+};
+
+

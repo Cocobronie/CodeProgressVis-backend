@@ -1,0 +1,26 @@
+c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* searchRange(int* nums, int numsSize, int target, int* returnSize){
+    int i, j;
+    int flag0 = 0;
+    int *returnnums;
+
+    returnnums = (int *)malloc(sizeof(int) * 2);
+    if (NULL == returnnums) {
+        return NULL;
+    }
+    *returnSize = 2;
+    memset(returnnums, -1, sizeof(returnnums[0]) * (*returnSize));/*初始化数组，只是为了熟悉memset使用*/
+    if (numsSize == 0) {
+   = 1;
+            } else {/*不停更新数组中新的下标*/
+                returnnums[1] = i;
+            }
+        }
+    }
+
+    return returnnums;
+}
+

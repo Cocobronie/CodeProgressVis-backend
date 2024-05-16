@@ -1,0 +1,44 @@
+cpp
+class Solution {
+public:
+    int my_lower_bound(vector<int>& nums, int target){
+        // 第一个大于等于traget的数
+        int l =0 , r = nums.size();
+        while(l<r){
+            int mid = (l+r)>>1;
+            if(nums[mid]>target){r = mid;}
+            else if(nums[mid]<target){l = mid+1;}
+            else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+    int my_upper_bound(vector<int>& nums, int target){
+        // 第一个大于traget的数(如果存在)
+        int l =0 , r = nums.size();
+        
+        while(l<r){
+            int mid = (l+r)>>1;
+            if(nums[mid]>target){r = mid;}
+            else if(nums[mid]<=target){l = mid+1;}
+            else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if(nums.empty()) return vector<int>{-1,-1};
+        int idx1 = my_lower_bound(nums, target);
+        if(idx1>= nums.size() || nums[idx1]!=target){// 没找着(不在范围和每个这个数)
+            return vector<int>{-1,-1};
+        }
+        int idx2 = my_upper_bound(nums, target);
+        cout<<idx2<<endl;
+        return vector<int>{idx1,idx2-1};
+        // if(idx2<nums.size())return vector<int>{idx1, idx2-1};
+        // else return vector<int>{idx1,idx1};
+    }
+};
+
